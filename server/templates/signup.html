@@ -1,0 +1,55 @@
+ {% extends "layout.html" %}
+ {% import "bootstrap/wtf.html" as wtf %}
+
+ {% block body %}
+
+ <div id="signup-container">
+
+   <h3 class="title"> Security is at the <br> core of our business </h3>
+
+   <div id="text-form-container">
+     <div id="text-container">
+       <div class="text">
+         <div class="header">
+           <i class="far fa-envelope"></i>
+           <h4>Email</h4>
+         </div>
+         <p> Use your umich email so we can verify you're a student!</p>
+         <p class = "divider"> ___________________________________________ </p>
+       </div>
+       <div class="text">
+         <div class="header">
+           <i class="fas fa-user-circle"></i>
+           <h4> Name</h4>
+         </div>
+         <p> Use your full first and last name so tickets can be transferred to/from you</p>
+         <p class = "divider"> ___________________________________________ </p>
+       </div>
+     </div>
+
+
+     <div id="form-container" class="shadow-background">
+       <form action="/signup" method="post">
+         {{form.hidden_tag()}}
+         {{wtf.form_field(form.first)}}
+         {{wtf.form_field(form.last)}}
+         {{wtf.form_field(form.email)}}
+         {{wtf.form_field(form.username)}}
+         {{wtf.form_field(form.password)}}
+         <button> Sign up! </button>
+         <!-- <p class = "terms"> Signing up signifies that you have read and agree to the Terms of Service and our Privacy Policy</p> -->
+       </form>
+
+
+     </div>
+   </div>
+ </div>
+
+
+
+
+
+
+
+
+ {% endblock %}

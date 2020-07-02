@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div id="input-container" class="shadow-background">
+
+  <!-- Pass in buy or sell url to Flask depending on which form user desires -->
+  {% if type == "buying" %}
+  <h2 class="exchange-header"> Buying </h2>
+  <form action='/exchange/buying' method="POST">
+
+  {% elif type == "selling" %}
+  <h2 class="exchange-header"> Selling </h2>
+  <form action='/exchange/selling' method="POST">
+
+  {% endif %}
+
+      <div id="exchange-form-container">
+        <!-- Select Game -->
+        <div class="form-group">
+          <label> What game? </label> <span class="asterisk">*</span>
+          <select class="form-control" name="game" required>
+            <option value=""> Select </option>
+            <option {{ "selected" if session.game == "Michigan vs. Ball State" else "" }}>Michigan vs. Ball State</option>
+            <option {{ "selected" if session.game == "Michigan vs. Arkansas State" else "" }}>Michigan vs. Arkansas State</option>
+            <option {{ "selected" if session.game == "Michigan vs. Wisconsin" else "" }}>Michigan vs. Wisconsin</option>
+            <option {{ "selected" if session.game == "Michigan vs. Penn State" else "" }}>Michigan vs. Penn State </option>
+            <option {{ "selected" if session.game == "Michigan vs. Maryland " else "" }}>Michigan vs. Maryland </option>
+            <option {{ "selected" if session.game == "Michigan vs. Indiana" else "" }}>Michigan vs. Indiana</option>
+          </select>
+        </div>
+
+
+        <!-- # of tickets -->
+        <!--
+        <div class="form-group">
+          <label> Number of tickets? </label> <span class="asterisk">*</span>
+          <select class="form-control" name="quant" required>
+            <option value=""> Select </option>
+            <option {{ "selected" if session.tickets == "1" else "" }}>1</option>
+            <option {{ "selected" if session.tickets == "2" else "" }}>2</option>
+            <option {{ "selected" if session.tickets == "3" else "" }}>3</option>
+            <option {{ "selected" if session.tickets == "4" else "" }}>4</option>
+            <option {{ "selected" if session.tickets == "5" else "" }}>5</option>
+            <option {{ "selected" if session.tickets == "6" else "" }}>6</option>
+            <option {{ "selected" if session.tickets == "7" else "" }}>7</option>
+            <option {{ "selected" if session.tickets == "8" else "" }}>8</option>
+          </select>
+        </div>
+        -->
+
+
+        <!-- Price -->
+        <div class="form-group">
+          {% if type == "buying" %}
+          <label> Expected price? </label> <span class="asterisk">*</span>
+          {% elif type == "selling" %}
+          <label> Listing price? </label> <span class="asterisk">*</span>
+          {% endif %}
+          <span class="price"> <input class="form-control" name="price" placeholder="25" required value={{session.price}}> </span>
+        </div>
+
+        <!-- Section -->
+
+        <div class="form-group">
+          {% if type == "buying" %}
+          <label> Desired Section? </label>
+          <select class="form-control" name="section">
+            {% elif type == "selling" %}
+            <label> Section? </label> <span class="asterisk">*</span>
+            <select class="form-control" name="section" required>
+              {% endif %}
+              <option value=""> Select </option>
+              <option {{ "selected" if session.section == "26" else "" }}>26</option>
+              <option {{ "selected" if session.section == "27" else "" }}>27</option>
+              <option {{ "selected" if session.section == "28" else "" }}>28</option>
+              <option {{ "selected" if session.section == "29" else "" }}>29</option>
+              <option {{ "selected" if session.section == "30" else "" }}>30</option>
+              <option {{ "selected" if session.section == "31" else "" }}>31</option>
+              <option {{ "selected" if session.section == "32" else "" }}>32</option>
+              <option {{ "selected" if session.section == "33" else "" }}>33</option>
+              <option {{ "selected" if session.section == "34" else "" }}>34</option>
+              <option {{ "selected" if session.section == "35" else "" }}>35</option>
+
+            </select>
+        </div>
+
+        {% if type == "selling" %}
+        <div class="form-group">
+        <label> Venmo username? </label> <span class="asterisk">*</span>
+        <span class="venmo"> <input class="form-control" name="venmo" placeholder="venmo" required value={{session.venmo}}> </span>
+        <small class="form-text text-muted"> This is so you can get paid. Your username won't be used for anything else</small>
+        </div>
+
+        {% endif %}
+
+
+
+        <!--Submit -->
+        <div>
+          <button> Submit! </button>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> MasterSeats </title>
+
+  <link rel="icon" type="image/png" href="static/images/logo-icon.png">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="../static/css/main.css" rel="stylesheet" type="text/css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+</head>
+
+<body>
+
+
+  <div id="index-container">
+
+    <nav class="nav-container" class="index-nav">
+      <a href = '/'>
+        <img src='../static/images/logo-white.png' alt="logo">
+      </a>
+      <ul>
+        <li> <a href="/"> Home </a> </li>
+        {% if current_user.is_authenticated %}
+        <li> <a href="#"> {{current_user.first}} </a> </li>
+        <li> <a href="/logout"> Log Out </a> </li>
+        {% else %}
+        <li><a href="/login"> Log In </a></li>
+        <li><a href="/signup"> Sign Up </a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="flash">
+        {{message}}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </div>
+
+
+    <div id="title-container">
+      <p> <strong> The sports ticket marketplace exclusively for Michigan students</strong></p>
+    </div>
+
+    <div id="subtitle-container">
+      <p> We take the hassle out of buying and selling tickets while protecting you from scammers in the process! </p>
+    </div>
+
+    <div id="buttons-container">
+      <button onclick='location.href = "/exchange/buying"'> I'm Buying </button>
+      <button onclick='location.href = "/exchange/selling"'> I'm Selling </button>
+    </div>
+
+    <div class="mouse">
+
+      <div class="mouse-icon">
+        <span class="mouse-wheel"></span>
+      </div>
+
+    </div>
+
+    <div id="how-works-container">
+      <h1> <strong> How It Works </strong></h1>
+      <h1 class="line"> ________ </h1>
+
+      <div class="how-works-info">
+
+        <div>
+          <h2 class="title"> Buying </h2>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2 col-sm-4">
+            <i class="fas fa-search"></i>
+            <p> Search for a ticket on the buying page </p>
+          </div>
+
+          <div class="col-lg-2 col-sm-8">
+            <i class="fas fa-mouse-pointer"></i>
+            <p> Choose and purchase your desired ticket </p>
+          </div>
+          <div class="col-lg-4 col-sm-4">
+            <i class="fas fa-random"></i>
+            <p> Your seller will e-transfer you the ticket within 2 days via Michigan's transfer website </p>
+          </div>
+          <div class="col-lg-2 col-sm-4">
+            <i class="far fa-check-circle"></i>
+            <p> Confirmed you’ve received the ticket </p>
+          </div>
+          <div class="col-lg-2 col-sm-4">
+            <i class="far fa-smile-beam"></i>
+            <p> Watch Michigan Win! </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-works-info">
+
+        <div>
+          <h2 class="title"> Selling </h2>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2 col-sm-4">
+            <i class="fas fa-poll-h"></i>
+            <p> Tell us about your ticket </p>
+          </div>
+          <div class="col-lg-3 col-sm-4">
+            <i class="far fa-credit-card"></i>
+            <p> Wait for buyer to purchase your ticket </p>
+          </div>
+          <div class="col-lg-3 col-sm-4">
+            <i class="fas fa-random"></i>
+            <p> E-transfer your ticket on Michigan's ticket platform</p>
+          </div>
+          <div class="col-lg-4 col-sm-4">
+            <i class="fas fa-dollar-sign"></i>
+            <p> Receive payment to your venmo within 24 hours after buyer confirms transfer! </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id=value-props-container>
+
+      <h1> Benefits </h1>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <i class='far fa-hand-pointer'></i> <br></br>
+          <h3> Convenient </h3> <br>
+          <p> We find buyers and sellers so you don't have to. Simply list a request and we'll find the perfect match </p>
+        </div>
+
+        <div class="col-lg-4">
+          <i class='fas fa-lock'></i><br></br>
+          <h3> Secure </h3> <br>
+          <p> By only being accessible to those with an .edu email address, users are more protected from scammers</p>
+        </div>
+
+        <div class="col-lg-4">
+          <i class='far fa-clock'></i> <br></br>
+          <h3> Quick </h3> <br>
+          <p> We streamline the ticket exchange process. You simply choose or list your ticket without wasting time communicating with anyone! </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
