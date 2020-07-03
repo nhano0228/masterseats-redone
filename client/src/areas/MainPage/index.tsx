@@ -4,15 +4,16 @@ import Navbar from '../../components/Navbar'
 import styled from 'styled-components'
 import Greetings from './Sections/Greetings'
 import BackgroundPolygons from '../../components/BackgroundPolygons';
-import PageDivider from '../../components/PageDivider'
 import HowItWorks from './Sections/HowItWorks'
+import WhyUs from './Sections/WhyUs'
+import Footer from './Footer'
 
 const LayoutStyled = styled(Layout)`
     background: rgba(0,0,0,0);
 `
 
-const FULL_SCREEN_WITH_BAR = {height:"100vh", marginTop: -90, paddingTop: 90}
-const FULL_SCREEN = {height:"100vh"}
+const FULL_SCREEN_WITH_BAR = {minHeight:"100vh", marginTop: -90, paddingTop: 90}
+const FULL_SCREEN = {minHeight:"100vh"}
 
 interface PageProps {
     style: Object
@@ -42,7 +43,10 @@ const MainPage: React.FC = () => {
             <Page style={FULL_SCREEN}>
                 <HowItWorks/>
             </Page>
-
+            <Page style={{...FULL_SCREEN, backgroundColor: '#00274c'}}>
+                <WhyUs/>
+            </Page>
+            <Footer/>
         </LayoutStyled>
     )
 };

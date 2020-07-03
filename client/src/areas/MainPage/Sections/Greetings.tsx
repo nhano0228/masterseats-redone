@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Layout, Button, Space } from 'antd';
 import styled from 'styled-components'
-import {TitleStyled, SubtitleStyled} from '../Sections.styled/Universal'
+import {TitleStyled, SubtitleStyled} from './Sections.styled'
 
 const { Content } = Layout
 const {Title, Paragraph} = Typography
@@ -26,7 +26,7 @@ const Greetings: React.FC = () => {
     return (
         <Container size="middle" direction="vertical">
             <TitleStyled>The Sports Ticket Marketplace of the Future</TitleStyled>
-            <SubtitleStyled level={4}>We make it both easier and safer to buy and sell Michigan Football tickets!</SubtitleStyled>
+            <SubtitleStyled level={4}>We make it both easier and safer to buy and sell Football tickets!</SubtitleStyled>
             <GetStartedButton>Get Started</GetStartedButton>
         </Container>
     )

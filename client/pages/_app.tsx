@@ -33,6 +33,14 @@ const GlobalInjection = createGlobalStyle`
         color: rgba(0,39,76, 0.65);
     }
 
+    .ant-carousel .slick-dots li button {
+        background: rgb(0,39,76);
+    }
+
+    .ant-carousel .slick-dots li.slick-active button {
+        background: rgb(0,39,76);
+    }
+
     .ant-btn {
         border: none;
         border-radius: 15px;
