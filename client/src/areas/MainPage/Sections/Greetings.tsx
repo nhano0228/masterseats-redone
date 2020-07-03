@@ -20,6 +20,11 @@ const GetStartedButton = styled(Button)`
     color: #FFCB05;
     background-color: #00274c;
     font-size: 17px;
+    &:hover, &:focus {
+        color: #FFCB05;
+        background-color: #00274c;
+        opacity: 0.7;
+    }
 `
 
 const Greetings: React.FC = () => {

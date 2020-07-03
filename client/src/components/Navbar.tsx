@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
+import OpenPage from '../areas/OpenPage'
+import _ from 'lodash'
 
-const Navbar: React.FC = () => {
+const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
+    {title: 'Home', onClick: () => OpenPage('/')},
+    {title: 'Login', onClick: () => OpenPage('/login')},
+    {title: 'Sign Up', onClick: () => OpenPage('/register')},
+]
+
+interface NavbarProps {
+    selected: number
+}
+
+const Navbar: React.FC<NavbarProps> = (props) => {
+    const {selected} = props
     const [isAtTop, setIsAtTop] = useState(true);
   
     useEffect(() => {
@@ -29,17 +42,21 @@ const Navbar: React.FC = () => {
                     <img height={42} src={require('../../assets/images/logo.png')} alt={"MasterSeats Logo"}/>
                 </LogoBackground>
                 <MenuStyled>
-                    <NavBarItemMain>
-                        Home
-                    </NavBarItemMain>
-                    <div style={{width: 20}}/>
-                    <NavBarItem>
-                        Login
-                    </NavBarItem>
-                    <div style={{width: 5}}/>
-                    <NavBarItem>
-                        Sign Up
-                    </NavBarItem>
+                    {_.map(NAV_OPTIONS, ({title, onClick}, index) => {
+                        if (index === selected) {
+                            return (
+                                    <NavBarItemMain onClick={onClick}>
+                                        {title}
+                                    </NavBarItemMain>
+                            )
+                        } else {
+                            return (
+                                    <NavBarItem onClick={onClick}>
+                                        {title}
+                                    </NavBarItem>
+                            )
+                        }
+                    })}
                 </MenuStyled>
             </MenuLogoContainer>
         </StyledHeader>

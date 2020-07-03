@@ -42,6 +42,7 @@ const GlobalInjection = createGlobalStyle`
     }
 
     .ant-btn {
+        font-family: 'Mark Pro Medium';
         border: none;
         border-radius: 15px;
         padding: 25px;
@@ -49,6 +50,38 @@ const GlobalInjection = createGlobalStyle`
         justify-content: center;
         align-items: center;
     }
+
+    .ant-card-head {
+        display: -webkit-flex;
+        justify-content: center;
+        padding-top: 16px;
+        padding-bottom: 18px;
+        border-bottom-width: 0px;
+    }
+
+    .ant-form-item-has-error .ant-input:focus {
+        box-shadow: none;
+    }
+
+    .ant-form-item-label {
+        font-family: 'Mark Pro';
+        font-weight: bold;
+        opacity: 0.8;
+    }
+
+    .ant-input {
+        font-family: 'Mark Pro';
+        border: none;
+        background-color: rgba(0,0,0,0) !important;
+        color: #000;
+        padding: 2px 11px;
+        border-bottom: 1px solid #DAE2EF;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
 `
 
 export default function App({ Component, pageProps }) {

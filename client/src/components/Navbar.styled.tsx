@@ -38,6 +38,7 @@ export const NavBarItemMain = styled(Menu.Item)`
     color: #FFCB05;
     border-radius: 15px;
     transition: 0.3s;
+    margin-right: 8px;
     &:hover {
         color: #FFCB05;
         opacity: 0.7;
@@ -47,6 +48,7 @@ export const NavBarItem = styled(NavBarItemMain)`
     background-color: rgba(0,0,0,0) !important;
     color: #00274c !important;
     font-family: 'Mark Pro Medium';
+    margin-right: 0px;
 `
 
 export const LogoBackground = styled.a`

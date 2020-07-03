@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, ReactNode, CSSProperties } from 'react';
 import { Layout, Row, Col, Divider } from 'antd';
 import Navbar from '../../components/Navbar'
 import styled from 'styled-components'
@@ -16,7 +16,7 @@ const FULL_SCREEN_WITH_BAR = {minHeight:"100vh", marginTop: -90, paddingTop: 90}
 const FULL_SCREEN = {minHeight:"100vh"}
 
 interface PageProps {
-    style: Object
+    style: CSSProperties
     children?: ReactNode
 }
 
@@ -35,7 +35,7 @@ const Page: React.FC<PageProps> = (props) => {
 const MainPage: React.FC = () => {
     return (
         <LayoutStyled>
-            <Navbar/>
+            <Navbar selected={0}/>
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
                 <Greetings/>

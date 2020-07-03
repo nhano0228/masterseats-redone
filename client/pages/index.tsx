@@ -6,7 +6,7 @@ const Index: React.FC = () => {
     return (
         <>
             <Head>
-                <title>MasterSeats</title>
+                <title>MasterSeats • Home</title>
             </Head>
             <MainPage/>
         </>

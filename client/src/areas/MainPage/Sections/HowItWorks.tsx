@@ -82,7 +82,7 @@ const Section: React.FC<SectionProps> = (props) => {
     return (
         <MiniContainer>
                 <SubtitleStyled level={3}>{title}</SubtitleStyled>
-                <CarouselContainer>
+                <CarouselContainer autoplay>
                     {_.map(data, ({text, img}) => {
                         return (
                             <CardContainer>
