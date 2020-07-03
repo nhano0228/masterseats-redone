@@ -1,13 +1,14 @@
 import React from 'react'
 import Head from 'next/head'
+import MainPage from '../src/areas/MainPage'
 
 const Index: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Login</title>
+                <title>MasterSeats</title>
             </Head>
-            <p>Hello</p>
+            <MainPage/>
         </>
     );
 };

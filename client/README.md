@@ -1,1 +1,1 @@
-# Template React-Typescript-Next-StyledComponent-AntD
+# MasterSeats Client
