@@ -1,6 +1,6 @@
 import React, { useEffect, ReactNode, CSSProperties } from 'react';
 import { Layout, Row, Col, Divider } from 'antd';
-import Navbar from '../../components/Navbar'
+import Navbar from '../Navbar'
 import styled from 'styled-components'
 import Greetings from './Sections/Greetings'
 import BackgroundPolygons from '../../components/BackgroundPolygons';

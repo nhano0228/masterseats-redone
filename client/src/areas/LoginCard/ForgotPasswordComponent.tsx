@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
 import OpenPage from '../OpenPage'
-import Navbar from '../../components/Navbar'
+import Navbar from '../Navbar'
 import {OuterContainer, CardButton, CardContainer} from './Card.styled'
 
 const TextContainer = styled(Typography.Text)`

@@ -1,8 +1,9 @@
 import React from 'react'
 import { Tabs } from 'antd';
 import styled from 'styled-components'
-import SellSection from './SellSection'
-import BuySection from './BuySection'
+import SellSection from './Sections/Sell'
+import BuySection from './Sections/Buy'
+import ProfileSection from './Sections/Profile'
 
 const { TabPane } = Tabs;
 
@@ -18,6 +19,9 @@ const BuySellTab: React.FC = () => {
             </TabPane>
             <TabPane tab="Sell" key="2">
                 <SellSection />
+            </TabPane>
+            <TabPane tab="Profile" key="3">
+                <ProfileSection />
             </TabPane>
         </Tabs>
     )

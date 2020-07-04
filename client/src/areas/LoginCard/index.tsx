@@ -5,7 +5,7 @@ import Router from 'next/router'
 import styled from 'styled-components'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
 import OpenPage from '../OpenPage'
-import Navbar from '../../components/Navbar'
+import Navbar from '../Navbar'
 import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from './Card.styled'
 import Footer from '../Footer'
 

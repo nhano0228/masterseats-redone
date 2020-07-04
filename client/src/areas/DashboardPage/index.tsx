@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card} from 'antd'
-import Navbar from '../../components/Navbar'
+import Navbar from '../Navbar'
 import Page from '../../components/Page'
 import {LayoutNoBG, FULL_SCREEN_WITH_BAR} from '../PageUniversal'
 import Footer from '../Footer'

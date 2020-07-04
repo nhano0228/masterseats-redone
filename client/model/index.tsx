@@ -20,3 +20,17 @@ export interface Ticket {
     section: number
     price: number
 }
+
+export const GAMES: MichiganFootballGame[] = [MichiganFootballGame.Ball, 
+    MichiganFootballGame.Arkansas, 
+    MichiganFootballGame.Wisconsin, 
+    MichiganFootballGame.PennState, 
+    MichiganFootballGame.Maryland, 
+    MichiganFootballGame.Indiana 
+]
+
+export const FILTER_OPTIONS: FilterOptions[] = [FilterOptions.LowestHighest, 
+    FilterOptions.HighestLowest,
+    FilterOptions.LowestSection,
+    FilterOptions.HighestSection
+]

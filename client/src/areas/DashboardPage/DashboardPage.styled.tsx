@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
 import React, {CSSProperties} from 'react'
 import {MichiganFootballGame} from '../../../model'
+import {PlusCircleOutlined} from '@ant-design/icons'
 
 export const Container = styled.div`
     padding-left: 5%;
@@ -15,11 +16,6 @@ export const FilterContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 35px;
-`
-
-export const SelectStyled = styled(Select)`
-    text-align: left;
-    width: 40%;
 `
 
 export const SelectContainer = styled.div`
@@ -36,26 +32,42 @@ export const EmojifiedImage = styled.img`
     margin-right: 5px;
 `
 
-interface SearchButtonProps {
-    onClick: () => void
-    children: string
-    style?: CSSProperties
-}
+export const GenButton = styled(Button)`
+    background-color: #00274c;
+    color: #fff;
+    font-family: 'Mark Pro';
+    padding-bottom: 18px !important;
+    padding-top: 18px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    font-size: 14px;
+    &:hover {
+        background-color: #00274c;
+        color: #fff;
+        opacity: 0.7;
+    }
 
-export const SearchButton: React.FC<SearchButtonProps> = (props) => {
-    const {onClick, children, style} = props
-    return (
-        <Button style={{
-            color: '#00274c',
-            border: '1px solid #00274c',
-            paddingBottom: 4,
-            paddingTop: 4,
-            ...style
-        }} onClick={onClick}>
-            {children}
-        </Button>
-    )
-}
+    &:focus {
+        background-color: #00274c;
+        color: #fff;
+    }
+`
+
+export const GenIconButton = styled(Button)`
+    background-color: rgba(0,0,0,0);
+    color: #00274c;
+    box-shadow: none;
+    &:hover {
+        background-color: rgba(0,0,0,0);
+        color: #00274c;
+        opacity: 0.7;
+    }
+
+    &:focus {
+        background-color: rgba(0,0,0,0);
+        color: #00274c;
+    }
+`
 
 export const returnEmojiString = (game: MichiganFootballGame) => {
     var destination = <EmojifiedImage src={require('../../../assets/images/football/ballstate.png')}/>
