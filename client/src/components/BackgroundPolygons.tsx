@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import Particles from 'react-particles-js'
 
-const BackgroundPolygons: React.FC = () => {
+const BackgroundPolygons: React.FC<{style?: CSSProperties}> = (props) => {
     return (
         <Particles 
             style={{
@@ -10,7 +10,8 @@ const BackgroundPolygons: React.FC = () => {
                 height: '100vh',
                 width: '100%',
                 marginTop: -90,
-                paddingTop: 90
+                paddingTop: 90,
+                ...props.style
             }}
             params={{ 
             "particles": {

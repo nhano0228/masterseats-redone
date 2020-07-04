@@ -5,6 +5,18 @@ import {createGlobalStyle} from 'styled-components'
 import { NextSeo } from 'next-seo';
 
 const GlobalInjection = createGlobalStyle`
+    .ant-table {
+        background: rgba(0,0,0,0);
+        color: #000;
+    }
+
+    .ant-table tbody > tr > th {
+        border-bottom: 0px solid #DAE2EF;
+    }
+
+    tbody {
+        background: rgba(0,0,0,0);
+    }
     .ant-menu {
         background: rgba(0,0,0,0);
     }
@@ -80,6 +92,14 @@ const GlobalInjection = createGlobalStyle`
         &:focus {
             box-shadow: none;
         }
+    }
+
+    .ant-tabs-top > .ant-tabs-nav::before {
+        border-bottom: 0px;
+    }
+
+    .ant-tabs-large > .ant-tabs-nav .ant-tabs-tab {
+        font-size: 20px;
     }
 
 `

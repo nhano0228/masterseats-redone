@@ -44,6 +44,7 @@ export const NavBarItemMain = styled(Menu.Item)`
         opacity: 0.7;
     }
 `
+
 export const NavBarItem = styled(NavBarItemMain)`
     background-color: rgba(0,0,0,0) !important;
     color: #00274c !important;

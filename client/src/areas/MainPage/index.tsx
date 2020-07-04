@@ -6,35 +6,13 @@ import Greetings from './Sections/Greetings'
 import BackgroundPolygons from '../../components/BackgroundPolygons';
 import HowItWorks from './Sections/HowItWorks'
 import WhyUs from './Sections/WhyUs'
-import Footer from './Footer'
-
-const LayoutStyled = styled(Layout)`
-    background: rgba(0,0,0,0);
-`
-
-const FULL_SCREEN_WITH_BAR = {minHeight:"100vh", marginTop: -90, paddingTop: 90}
-const FULL_SCREEN = {minHeight:"100vh"}
-
-interface PageProps {
-    style: CSSProperties
-    children?: ReactNode
-}
-
-const Page: React.FC<PageProps> = (props) => {
-    return (
-        <Row style={props.style}>
-                <Col span={4}/>
-                <Col style={props.style} span={16}>
-                    {props.children}
-                </Col>
-                <Col span={4}/>
-        </Row>
-    )
-}
+import Footer from '../Footer'
+import Page from '../../components/Page'
+import {LayoutNoBG, FULL_SCREEN, FULL_SCREEN_WITH_BAR} from '../PageUniversal'
 
 const MainPage: React.FC = () => {
     return (
-        <LayoutStyled>
+        <LayoutNoBG>
             <Navbar selected={0}/>
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
@@ -47,7 +25,7 @@ const MainPage: React.FC = () => {
                 <WhyUs/>
             </Page>
             <Footer/>
-        </LayoutStyled>
+        </LayoutNoBG>
     )
 };
 

@@ -8,10 +8,10 @@ interface MasterSeatsCardProps {
 }
 
 const MasterSeatsCard: React.FC<MasterSeatsCardProps> = (props) => {
-    var logo = <img height={35} src={require('../../assets/images/logo.png')}/>
+    var logo = <img height={35} src={require('../../assets/images/logo/logo.png')}/>
     if (props.withLink) {
         logo =  <a href={'/'}>
-                    <img height={35} src={require('../../assets/images/logo.png')}/>
+                    <img height={35} src={require('../../assets/images/logo/logo.png')}/>
                 </a>
     } else if (props.withLogo === false) {
         logo = null

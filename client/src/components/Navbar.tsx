@@ -9,12 +9,18 @@ const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Sign Up', onClick: () => OpenPage('/register')},
 ]
 
+const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
+    {title: 'Dashboard', onClick: () => OpenPage('/dashboard')},
+    {title: 'Log Out', onClick: () => OpenPage('/')}
+] 
+
 interface NavbarProps {
     selected: number
+    isDashboard?: boolean
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
-    const {selected} = props
+    const {selected, isDashboard} = props
     const [isAtTop, setIsAtTop] = useState(true);
   
     useEffect(() => {
@@ -36,13 +42,14 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     return (
         <StyledHeader style={{backgroundColor: isAtTop ? '#FFCB05' : 'rgba(255,255,255,0.85)'}}>
             <MenuLogoContainer>
-                <LogoBackground style={{visibility: isAtTop ? 'hidden' : 'visible',
-                                        opacity: isAtTop ? 0 : 1}}
-                                         href={'/'}>
-                    <img height={42} src={require('../../assets/images/logo.png')} alt={"MasterSeats Logo"}/>
-                </LogoBackground>
+                {!isDashboard || isDashboard === undefined ? 
+                    <LogoBackground style={{visibility: isAtTop ? 'hidden' : 'visible', opacity: isAtTop ? 0 : 1}} href={'/'}>
+                        <img height={42} src={require('../../assets/images/logo/logo.png')} alt={"MasterSeats Logo"}/>
+                    </LogoBackground>
+                : null}
+                
                 <MenuStyled>
-                    {_.map(NAV_OPTIONS, ({title, onClick}, index) => {
+                    {_.map(!isDashboard || isDashboard === undefined ? NAV_OPTIONS : DASHBOARD_NAV_OPTIONS, ({title, onClick}, index) => {
                         if (index === selected) {
                             return (
                                     <NavBarItemMain onClick={onClick}>
