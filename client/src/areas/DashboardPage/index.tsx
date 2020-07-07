@@ -12,7 +12,7 @@ const DashboardPage: React.FC = () => {
         <LayoutNoBG>
             <Navbar isDashboard={true} selected={0}/>
             <BackgroundPolygons/>
-            <Page style={{...FULL_SCREEN_WITH_BAR, backgroundColor: '#FFCB05'}}>
+            <Page style={{...FULL_SCREEN_WITH_BAR, backgroundColor: '#FFCB05', paddingLeft: 0, paddingRight: 0}}>
                 <Card style={{marginBottom: 50}}>
                     <BuySellTab/>
                 </Card>

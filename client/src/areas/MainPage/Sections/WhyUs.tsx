@@ -1,10 +1,13 @@
-import React, {ReactNode} from 'react'
-import { Typography, Layout, Space, Carousel, Divider } from 'antd';
+import React, {ReactNode, useEffect, useState} from 'react'
+import { Typography, Layout, Space, Carousel, Divider, Grid } from 'antd';
 import {SmileOutlined, LockOutlined, ClockCircleOutlined, DollarCircleOutlined} from '@ant-design/icons'
 import styled from 'styled-components'
+import {ScreenSize} from '../../../../model'
 import {TitleYellowStyled, SubtitleYellowStyled} from './Sections.styled'
 import _ from 'lodash'
+import media from "styled-media-query";
 
+const {useBreakpoint} = Grid
 const {Paragraph} = Typography
 
 const DividerStyled = styled(Divider)`
@@ -46,6 +49,10 @@ const BoxContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 50%;
+
+    ${media.lessThan("small")`
+        padding: inherit;
+    `}
 `
 
 const BoxParagraph = styled(Paragraph)`
@@ -55,7 +62,15 @@ const BoxParagraph = styled(Paragraph)`
     font-size: 17px;
 `
 
-const ICON_OBJ = {fontSize: 80, paddingBottom: 25, color: 'rgba(255,203,5, 0.9)' }
+const WhyUsTitle = styled(TitleYellowStyled)`
+    ${media.lessThan("small")`
+        margin-bottom: 25px !important;
+    `}
+`
+
+const ICON_OBJ = (isBigSize: boolean) => {
+    return {fontSize: isBigSize ? 80 : 50, paddingBottom: 25, color: 'rgba(255,203,5, 0.9)'}
+}
 
 interface BoxProps {
     title: string
@@ -74,19 +89,33 @@ const Box: React.FC<BoxProps> = (props) => {
 }
 
 const WhyUs: React.FC = () => {
+    const screens = useBreakpoint()
+    const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
+
+    useEffect(() => {
+        Object.entries(screens)
+        .filter(screen => !!screen[1])
+        .map(screen => {
+            if (screen[0] !== ScreenSize[screenSize]) {
+                setScreenSize(ScreenSize[screen[0]])
+            }
+        })
+    }, [screens])
+    const icon_props = ICON_OBJ(screenSize >= 1)
+
     return (
         <Container>
-            <TitleYellowStyled>Why Us?</TitleYellowStyled>
+            <WhyUsTitle>Why Us?</WhyUsTitle>
             <SectionAboveContainer>
                 <SectionContainer>
                     <Box 
-                        icon={<SmileOutlined style={ICON_OBJ} />}
+                        icon={<SmileOutlined style={icon_props} />}
                         title={'Convenient'}
                         message={'We find buyers and sellers so you don\'t have to. Simply list a request and we\'ll find the perfect match.'}
                     />
                     <VerticalDivider type="vertical"/>
                     <Box 
-                        icon={<LockOutlined style={ICON_OBJ} />}
+                        icon={<LockOutlined style={icon_props} />}
                         title={'Secure'}
                         message={'We only allow those with an .edu email address. This ensures our users are more protected from scammers.'}
                     />
@@ -94,13 +123,13 @@ const WhyUs: React.FC = () => {
                 <DividerStyled style={{margin: 0}}/>
                 <SectionContainer>
                     <Box 
-                        icon={<ClockCircleOutlined style={ICON_OBJ} />}
+                        icon={<ClockCircleOutlined style={icon_props} />}
                         title={'Quick'}
                         message={'We streamline the ticket exchange process. You simply choose or list your ticket without wasting time communicating with anyone!'}
                     />
                     <VerticalDivider type="vertical"/>
                     <Box 
-                        icon={<DollarCircleOutlined style={ICON_OBJ}/>}
+                        icon={<DollarCircleOutlined style={icon_props}/>}
                         title={'Cheap'}
                         message={'By offering a platform for a free-market, we ensure you can compare prices to other offerings so you buy the ticket right for you!'}
                     />

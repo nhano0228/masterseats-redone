@@ -1,7 +1,16 @@
 import React, {CSSProperties, ReactNode, useState, useEffect} from 'react'
 import {Row, Col, Grid} from 'antd'
 import {ScreenSize} from '../../model'
+import styled from 'styled-components'
+import media from 'styled-media-query'
 const {useBreakpoint} = Grid
+
+const RowStyled = styled(Row)`
+    ${media.lessThan("small")`
+        padding-left: 35px;
+        padding-right: 35px;
+    `}
+`
 
 interface PageProps {
     style: CSSProperties
@@ -22,7 +31,7 @@ const Page: React.FC<PageProps> = (props) => {
         })
     }, [screens])
     return (
-        <Row style={props.style}>
+        <RowStyled style={{...props.style}}>
             {screenSize <= 1 ? 
                 <Col style={props.style} span={24}>
                     {props.children}
@@ -36,7 +45,7 @@ const Page: React.FC<PageProps> = (props) => {
                 <Col span={4}/>
             </>
             }
-        </Row>
+        </RowStyled>
     )
 }
 
