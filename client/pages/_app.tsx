@@ -3,6 +3,7 @@ import Head from 'next/head'
 import '../assets/theme.less'
 import {createGlobalStyle} from 'styled-components'
 import { NextSeo } from 'next-seo';
+import media from 'styled-media-query'
 
 const GlobalInjection = createGlobalStyle`
     .ant-table {
@@ -57,10 +58,18 @@ const GlobalInjection = createGlobalStyle`
         font-family: 'Mark Pro Medium';
         border: none;
         border-radius: 15px;
-        padding: 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        padding: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        height: auto !important;
+        display: inline-block;
+        margin-left:auto;
+        margin-right:auto;
+
+        ${media.lessThan("small")`
+            padding-top: 12px !important;
+            padding-bottom: 12px !important;
+        `}
     }
 
     .ant-card-head {
