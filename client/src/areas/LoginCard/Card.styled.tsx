@@ -33,7 +33,7 @@ export const BottomText = styled(Typography.Text)`
 export const ButtonLink = styled(Button)`
     padding: 0;
     font-weight: bold;
-    margin-left: 4px;
+    margin-left: 5px !important;
     padding: 0px !important;
 `
 
