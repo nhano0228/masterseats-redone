@@ -3,6 +3,7 @@ import { Typography, Layout, Button, Space } from 'antd';
 import styled from 'styled-components'
 import {TitleStyled, SubtitleStyled} from './Sections.styled'
 import OpenPage from '../../OpenPage'
+import media from "styled-media-query";
 
 const { Content } = Layout
 const {Title, Paragraph} = Typography
@@ -14,6 +15,9 @@ const Container = styled(Space)`
     flex-direction: column;
     height: 100%;
     margin-top: -7%;
+    ${media.lessThan("large")`
+        margin-top: -2%;
+    `}
 `
 
 const GetStartedButton = styled(Button)`
@@ -26,6 +30,11 @@ const GetStartedButton = styled(Button)`
         background-color: #00274c;
         opacity: 0.7;
     }
+
+    ${media.lessThan("medium")`
+        font-size: 15px;
+        padding: 20px !important;
+    `}
 `
 
 const Greetings: React.FC = () => {

@@ -1,6 +1,8 @@
 import { Menu, Layout } from 'antd';
 import styled from 'styled-components'
 
+import media from "styled-media-query";
+
 const { Header } = Layout;
 
 export const StyledHeader = styled(Header)`
@@ -30,6 +32,11 @@ export const MenuStyled = styled(Menu)`
     flex-direction: row;
     flex: 1;
     justify-content: flex-end;
+
+
+    ${media.lessThan("small")`
+        justify-content: center !important;
+    `}
 `
 
 export const NavBarItemMain = styled(Menu.Item)`

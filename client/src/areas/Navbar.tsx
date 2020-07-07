@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
 import OpenPage from './OpenPage'
+import {ScreenSize} from '../../model'
+import {Grid} from 'antd'
 import _ from 'lodash'
+
+const {useBreakpoint} = Grid
 
 const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Home', onClick: () => OpenPage('/')},
@@ -22,6 +26,20 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = (props) => {
     const {selected, isDashboard} = props
     const [isAtTop, setIsAtTop] = useState(true);
+    const screens = useBreakpoint()
+    const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
+    
+    console.log(screenSize)
+    useEffect(() => {
+        Object.entries(screens)
+        .filter(screen => !!screen[1])
+        .map(screen => {
+            console.log(screen)
+            if (screen[0] !== ScreenSize[screenSize]) {
+                setScreenSize(ScreenSize[screen[0]])
+            }
+        })
+    }, [screens])
   
     useEffect(() => {
       const handleScroll = () => {
@@ -42,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     return (
         <StyledHeader style={{backgroundColor: isAtTop ? '#FFCB05' : 'rgba(255,255,255,0.85)'}}>
             <MenuLogoContainer>
-                {!isDashboard || isDashboard === undefined ? 
+                {(!isDashboard || isDashboard === undefined) && screenSize !== 0 ? 
                     <LogoBackground style={{visibility: isAtTop ? 'hidden' : 'visible', opacity: isAtTop ? 0 : 1}} href={'/'}>
                         <img height={42} src={require('../../assets/images/logo/logo.png')} alt={"MasterSeats Logo"}/>
                     </LogoBackground>

@@ -1,6 +1,15 @@
 import React, { CSSProperties } from 'react'
 import {Card} from 'antd'
+import styled from 'styled-components'
+import media from "styled-media-query";
 
+const MasterSeatsContainer = styled(Card)`
+    width: 100vh;
+
+    ${media.lessThan("small")`
+        width: auto !important;
+    `}
+`
 interface MasterSeatsCardProps {
     withLink?: boolean
     withLogo?: boolean
@@ -18,15 +27,14 @@ const MasterSeatsCard: React.FC<MasterSeatsCardProps> = (props) => {
     }
 
     return (
-        <Card bodyStyle={{padding: props.withLogo === false ? 0 : 'auto'}} 
+        <MasterSeatsContainer bodyStyle={{padding: props.withLogo === false ? 0 : 'auto'}} 
             style={{paddingLeft: props.withLogo === false ? 0 : 20, 
                     paddingRight: props.withLogo === false ? 0 : 20, 
-                    width: '100vh',
                     ...props.style
                     }} 
             title={logo}>
                 {props.children}
-        </Card>
+        </MasterSeatsContainer>
     )
 }
 

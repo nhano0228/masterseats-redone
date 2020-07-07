@@ -1,8 +1,12 @@
-import React from 'react'
-import { Typography, Layout, Space, Carousel, Divider } from 'antd';
+import React, {useState, useEffect} from 'react'
+import { Grid, Layout, Space, Carousel, Divider } from 'antd';
 import styled from 'styled-components'
 import {TitleStyled, SubtitleStyled} from './Sections.styled'
+import media from "styled-media-query";
+import {ScreenSize} from '../../../../model'
 import _ from 'lodash'
+
+const { useBreakpoint } = Grid;
 
 const DividerStyled = styled(Divider)`
     border-top-color: rgba(0,39,76, 0.75);
@@ -10,6 +14,7 @@ const DividerStyled = styled(Divider)`
 
 const VerticalDivider = styled(Divider)`
     border-left-color: rgba(0,39,76, 0.75);
+    border-top-color: rgba(0,39,76, 0.75);
     height: 100%;
 `
 
@@ -28,6 +33,9 @@ const MiniContainer = styled.div`
     justify-content: flex-start;
     padding-bottom: 10%;
     padding-top: 3%;
+    ${media.lessThan("medium")`
+        max-width: 100%;
+    `}
 `
 
 const CarouselContainer = styled(Carousel)`
@@ -55,6 +63,9 @@ const SectionContainer = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
+    ${media.lessThan("medium")`
+        flex-direction: column;
+    `}
 `
 
 const BUYING_DATA: {text: string, img: object}[] = [
@@ -97,13 +108,26 @@ const Section: React.FC<SectionProps> = (props) => {
 }
 
 const HowItWorks: React.FC = () => {
+    const screens = useBreakpoint()
+    const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
+    
+    useEffect(() => {
+        Object.entries(screens)
+        .filter(screen => !!screen[1])
+        .map(screen => {
+            if (screen[0] !== ScreenSize[screenSize]) {
+                setScreenSize(ScreenSize[screen[0]])
+            }
+        })
+    }, [screens])
+
     return (
         <Container>
             <TitleStyled level={2}>How It Works</TitleStyled>
             <DividerStyled/>
             <SectionContainer>
                 <Section title={'Buy'} data={BUYING_DATA}/>
-                <VerticalDivider type="vertical"/>
+                <VerticalDivider type={screenSize > 1 ? "vertical" : "horizontal"}/>
                 <Section title={'Sell'} data={SELLING_DATA}/>
             </SectionContainer>
         </Container>

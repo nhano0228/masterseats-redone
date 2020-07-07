@@ -4,11 +4,25 @@ import React, {CSSProperties} from 'react'
 import _ from 'lodash'
 import {GAMES, FILTER_OPTIONS, MichiganFootballGame, FilterOptions} from '../../model'
 
+import media from "styled-media-query";
+
 const { Option } = Select;
 
 export const SelectStyled = styled(Select)`
     text-align: left;
     width: 40%;
+    margin-right: 15px;
+    
+    ${media.lessThan("small")`
+        width: 90%;
+        margin-bottom: 10px;
+    `}
+`
+
+const FilterSelectStyled = styled(SelectStyled)`
+    ${media.lessThan("small")`
+        margin-bottom: 0px;
+    `}
 `
 
 interface SelectGameProps {
@@ -48,7 +62,7 @@ export const GameSelect: React.FC<SelectGameProps> = (props) => {
 export const FilterSelect: React.FC<SelectFilterProps> = (props) => {
     const {value, setValue} = props
     return (
-        <SelectStyled
+        <FilterSelectStyled
             placeholder="Select a filter option"
             optionFilterProp="children"
             value={value}
@@ -59,6 +73,6 @@ export const FilterSelect: React.FC<SelectFilterProps> = (props) => {
                     <Option value={filter.toLowerCase()}>{filter}</Option>
                 )
             })}
-        </SelectStyled>
+        </FilterSelectStyled>
     )
 }

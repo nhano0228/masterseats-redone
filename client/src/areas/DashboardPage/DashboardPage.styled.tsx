@@ -1,8 +1,21 @@
 import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
+import {DollarOutlined, CloseOutlined} from '@ant-design/icons'
 import React, {CSSProperties} from 'react'
 import {MichiganFootballGame} from '../../../model'
-import {PlusCircleOutlined} from '@ant-design/icons'
+import media from "styled-media-query";
+
+export const DollarAdjustedOutline = styled(DollarOutlined)`
+    ${media.lessThan("small")`
+        font-size: 25px;
+    `}
+`
+
+export const CloseAdjustedOutline = styled(CloseOutlined)`
+    ${media.lessThan("small")`
+        font-size: 25px;
+    `}
+`
 
 export const Container = styled.div`
     padding-left: 5%;
@@ -18,11 +31,22 @@ export const FilterContainer = styled.div`
     margin-bottom: 35px;
 `
 
+export const AddTicketContainer = styled(FilterContainer)`
+    justify-content: flex-end;
+    ${media.lessThan("small")`
+        justify-content: center;
+    `}
+`
+
 export const SelectContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
+
+    ${media.lessThan("small")`
+        flex-direction: column !important;
+    `}
 `
 
 export const EmojifiedImage = styled.img`
@@ -51,6 +75,10 @@ export const GenButton = styled(Button)`
         background-color: #00274c;
         color: #fff;
     }
+
+    ${media.lessThan("small")`
+        padding: 30px !important;
+    `}
 `
 
 export const GenIconButton = styled(Button)`
@@ -67,6 +95,18 @@ export const GenIconButton = styled(Button)`
         background-color: rgba(0,0,0,0);
         color: #00274c;
     }
+`
+
+const EmojiGameContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 45px;
+
+    ${media.lessThan("small")`
+        flex-direction: column !important;
+        max-height: fit-content;
+    `}
 `
 
 export const returnEmojiString = (game: MichiganFootballGame) => {
@@ -91,9 +131,9 @@ export const returnEmojiString = (game: MichiganFootballGame) => {
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', maxHeight: 45}}>
+        <EmojiGameContainer>
             <EmojifiedImage src={require('../../../assets/images/football/michigan.png')}/>
             <Typography.Paragraph style={{marginLeft: 10, marginRight: 4, marginBottom: 0}}>{' vs. '}</Typography.Paragraph>
             {destination}
-        </div>)
+        </EmojiGameContainer>)
 }

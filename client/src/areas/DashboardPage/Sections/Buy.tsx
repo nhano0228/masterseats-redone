@@ -1,49 +1,21 @@
-import React, { useState } from 'react'
-import { Select, Button, Table, Typography } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Select, Button, Table, Typography, Grid } from 'antd';
 import styled from 'styled-components'
 import _ from 'lodash'
-import {MichiganFootballGame, FilterOptions, Ticket} from '../../../../model'
+import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize} from '../../../../model'
 import {
     GenButton, 
     Container, 
     FilterContainer, 
     SelectContainer, 
     returnEmojiString, 
-    GenIconButton
+    GenIconButton,
+    DollarAdjustedOutline
     } from '../DashboardPage.styled'
-import {SearchOutlined, DollarOutlined} from '@ant-design/icons'
+import {SearchOutlined} from '@ant-design/icons'
 import {GameSelect, FilterSelect} from '../../../components/SelectOptions'
 
-const COLUMNS = [
-    {
-        title: 'Game',
-        key: 'game',
-        dataIndex: 'game',
-        render: (text, data) => returnEmojiString(data.game)
-    },
-    {
-        title: 'Section',
-        key: 'section',
-        dataIndex: 'section'
-    },
-    {
-        title: 'Price ($)',
-        key: 'price',
-        dataIndex: 'price'
-    },
-    {
-        title: '',
-        key: 'buy',
-        dataIndex: 'ticketId',
-        render: (text, data) => (
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <GenIconButton icon={<DollarOutlined/>} onClick={() => {}}>
-                    Purchase
-                </GenIconButton>
-            </div>
-          )
-    }
-];
+const {useBreakpoint} = Grid
   
 const DATA: Ticket[] = [
     {
@@ -90,19 +62,61 @@ const DATA: Ticket[] = [
 const Buy: React.FC = () => {
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [filterValue, setFilterValue] = useState<FilterOptions>(undefined)
+    
+    const screens = useBreakpoint()
+    const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
+    
+    useEffect(() => {
+        Object.entries(screens)
+        .filter(screen => !!screen[1])
+        .map(screen => {
+            if (screen[0] !== ScreenSize[screenSize]) {
+                setScreenSize(ScreenSize[screen[0]])
+            }
+        })
+    }, [screens])
 
     return (
         <Container>
             <FilterContainer>
                 <SelectContainer>
-                    <GameSelect style={{marginRight: 15}} value={gameValue} setValue={(e) => setGameValue(e)}/>
+                    <GameSelect value={gameValue} setValue={(e) => setGameValue(e)}/>
                     <FilterSelect value={filterValue} setValue={(e) => setFilterValue(e)} />
                 </SelectContainer>
                 <GenButton onClick={() => {}} icon={<SearchOutlined />}>
-                    Search
+                    {screenSize !== 0 ? "Search" : null}
                 </GenButton>
             </FilterContainer>
-            <Table columns={COLUMNS} dataSource={DATA} pagination={{ position: ['bottomCenter'] }} />
+            <Table columns={[
+                    {
+                        title: 'Game',
+                        key: 'game',
+                        dataIndex: 'game',
+                        render: (text, data) => returnEmojiString(data.game)
+                    },
+                    {
+                        title: 'Section',
+                        key: 'section',
+                        dataIndex: 'section'
+                    },
+                    {
+                        title: 'Price ($)',
+                        key: 'price',
+                        dataIndex: 'price'
+                    },
+                    {
+                        title: '',
+                        key: 'buy',
+                        dataIndex: 'ticketId',
+                        render: (text, data) => (
+                            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                <GenIconButton icon={<DollarAdjustedOutline/>} onClick={() => {}}>
+                                    {screenSize !== 0 ? "Purchase" : null}
+                                </GenIconButton>
+                            </div>
+                        )
+                    }
+                    ]} dataSource={DATA} pagination={{ position: ['bottomCenter'] }} />
         </Container>
     )
 }
