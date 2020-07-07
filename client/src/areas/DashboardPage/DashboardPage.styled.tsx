@@ -1,9 +1,16 @@
 import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
-import {DollarOutlined, CloseOutlined} from '@ant-design/icons'
+import {DollarOutlined, CloseOutlined, PlusCircleOutlined} from '@ant-design/icons'
 import React, {CSSProperties} from 'react'
 import {MichiganFootballGame} from '../../../model'
 import media from "styled-media-query";
+
+
+export const PlusCircleAdjustedOutline = styled(PlusCircleOutlined)`
+    ${media.lessThan("small")`
+        font-size: 20px;
+    `}
+`
 
 export const DollarAdjustedOutline = styled(DollarOutlined)`
     ${media.lessThan("small")`
@@ -76,9 +83,20 @@ export const GenButton = styled(Button)`
         color: #fff;
     }
 
-    ${media.lessThan("small")`
-        padding: 30px !important;
+    ${media.lessThan("medium")`
+        padding-left: 20px !important;
+        padding-right: 40px !important;
     `}
+`
+
+export const PurchaseContainer = styled.div`
+    display: flex; 
+    justify-content: flex-end;
+
+    ${media.lessThan("small")`
+        justify-content: flex-start;
+    `}
+
 `
 
 export const GenIconButton = styled(Button)`
@@ -95,6 +113,11 @@ export const GenIconButton = styled(Button)`
         background-color: rgba(0,0,0,0);
         color: #00274c;
     }
+
+    ${media.lessThan("small")`
+        padding: 0 !important;
+        width: fit-content;
+    `}
 `
 
 const EmojiGameContainer = styled.div`

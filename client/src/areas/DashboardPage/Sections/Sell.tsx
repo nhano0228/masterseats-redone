@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Table, Modal, Grid} from 'antd'
-import {CloseOutlined, PlusCircleOutlined} from '@ant-design/icons'
-import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer} from '../DashboardPage.styled'
+import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline} from '../DashboardPage.styled'
 import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize} from '../../../../model'
 import AddTicketModal from '../AddTicketModal'
 import media from "styled-media-query";
@@ -44,8 +43,8 @@ const Sell: React.FC = () => {
             <AddTicketModal visible={visible} 
                             onCancel={() => setVisibility(false)}/>
             <AddTicketContainer>
-                <GenButton onClick={() => setVisibility(true)} icon={<PlusCircleOutlined />}>
-                    Add Ticket
+                <GenButton onClick={() => {}} icon={<PlusCircleAdjustedOutline />}>
+                    {screenSize !== 0 ? "Search" : null}
                 </GenButton>
             </AddTicketContainer>
             <Table columns={[

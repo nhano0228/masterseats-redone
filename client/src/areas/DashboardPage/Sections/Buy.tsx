@@ -10,7 +10,8 @@ import {
     SelectContainer, 
     returnEmojiString, 
     GenIconButton,
-    DollarAdjustedOutline
+    DollarAdjustedOutline,
+    PurchaseContainer
     } from '../DashboardPage.styled'
 import {SearchOutlined} from '@ant-design/icons'
 import {GameSelect, FilterSelect} from '../../../components/SelectOptions'
@@ -84,7 +85,7 @@ const Buy: React.FC = () => {
                     <FilterSelect value={filterValue} setValue={(e) => setFilterValue(e)} />
                 </SelectContainer>
                 <GenButton onClick={() => {}} icon={<SearchOutlined />}>
-                    {screenSize !== 0 ? "Search" : null}
+                    {screenSize >= 1 ? "Search" : null}
                 </GenButton>
             </FilterContainer>
             <Table columns={[
@@ -109,11 +110,11 @@ const Buy: React.FC = () => {
                         key: 'buy',
                         dataIndex: 'ticketId',
                         render: (text, data) => (
-                            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                            <PurchaseContainer>
                                 <GenIconButton icon={<DollarAdjustedOutline/>} onClick={() => {}}>
                                     {screenSize !== 0 ? "Purchase" : null}
                                 </GenIconButton>
-                            </div>
+                            </PurchaseContainer>
                         )
                     }
                     ]} dataSource={DATA} pagination={{ position: ['bottomCenter'] }} />
