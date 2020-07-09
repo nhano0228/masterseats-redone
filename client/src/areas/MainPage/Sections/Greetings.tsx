@@ -37,16 +37,28 @@ const GetStartedButton = styled(Button)`
     `}
 `
 
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
 const Greetings: React.FC = () => {
-    const greetingsOnClick = () => {
-        OpenPage('/login')
+    const sellingOnClick = () => {
+        OpenPage('/selling')
+    }
+
+    const buyingOnClick = () => {
+        OpenPage('/buying')
     }
 
     return (
         <Container size="middle" direction="vertical">
             <TitleStyled>The Sports Ticket Marketplace of the Future</TitleStyled>
             <SubtitleStyled level={4}>We make it both easier and safer to buy and sell Football tickets!</SubtitleStyled>
-            <GetStartedButton onClick={greetingsOnClick}>Get Started</GetStartedButton>
+            <ButtonContainer>
+                <GetStartedButton onClick={buyingOnClick}>I'm Buying</GetStartedButton>
+                <GetStartedButton style={{marginLeft: 25}} onClick={sellingOnClick}>I'm Selling</GetStartedButton>
+            </ButtonContainer>
         </Container>
     )
 }

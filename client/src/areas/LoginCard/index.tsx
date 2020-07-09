@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
 import OpenPage from '../OpenPage'
 import Navbar from '../Navbar'
-import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from './Card.styled'
+import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Card.styled'
 import Footer from '../Footer'
 
 interface LoginComponentProps {
@@ -19,7 +19,7 @@ const LoginComponent: React.FC<LoginComponentProps> = (props) => {
 
     return (
         <OuterContainer>
-            <Navbar selected={1}/>
+            <Navbar isLoggedIn={false} selected={1}/>
             <CardContainer>
                 <MasterSeatsCard style={{maxWidth: 450}} withLink={true}>
                     <Form
@@ -44,7 +44,7 @@ const LoginComponent: React.FC<LoginComponentProps> = (props) => {
                         >
                             <Input type="password" placeholder="Password"/>
                         </Form.Item>
-                        {/*<div style={{width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
+                        <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
                             <Button style={{fontFamily: 'Mark Pro',
                                         color: "#000000",
                                         opacity: "0.5",
@@ -56,7 +56,7 @@ const LoginComponent: React.FC<LoginComponentProps> = (props) => {
                                     type="link">                    
                                     Forgot Password.
                             </Button>
-                        </div>*/}
+                        </div>
 
                         <Form.Item>
                             <Row justify="center">

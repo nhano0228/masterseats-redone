@@ -1,9 +1,9 @@
 import React from 'react'
 import { Tabs } from 'antd';
 import styled from 'styled-components'
-import SellSection from './Sections/Sell'
-import BuySection from './Sections/Buy'
-import ProfileSection from './Sections/Profile'
+import SellSection from '../Sections/Sell'
+import BuySection from '../Sections/Buy'
+import ProfileSection from '../Sections/Profile'
 
 const { TabPane } = Tabs;
 

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
 import OpenPage from '../OpenPage'
 import Navbar from '../Navbar'
-import {OuterContainer, CardButton, CardContainer} from './Card.styled'
+import {OuterContainer, CardButton, CardContainer} from '../Card.styled'
 
 const TextContainer = styled(Typography.Text)`
     display: flex;
@@ -29,7 +29,7 @@ const ForgotPasswordComponent: React.FC<LoginComponentProps> = (props) => {
 
     return (
         <OuterContainer>
-            <Navbar selected={1}/>
+            <Navbar isLoggedIn={true} selected={1}/>
             <CardContainer>
                 <MasterSeatsCard withLink={true} style={{width: '70vh'}}>
                     <Form

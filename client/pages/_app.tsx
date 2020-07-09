@@ -6,6 +6,10 @@ import { NextSeo } from 'next-seo';
 import media from 'styled-media-query'
 
 const GlobalInjection = createGlobalStyle`
+    .ant-table-cell {
+        font-family: 'Mark Pro Bold';
+    }
+
     .ant-table {
         background: rgba(0,0,0,0);
         color: #000;

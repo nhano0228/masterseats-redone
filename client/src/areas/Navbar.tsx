@@ -18,13 +18,18 @@ const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Log Out', onClick: () => OpenPage('/')}
 ] 
 
+const NOT_LOGGED_IN_OPTIONS: {title: string, onClick: () => void}[] = [
+    {title: 'Log In', onClick: () => OpenPage('/login')}
+] 
+
 interface NavbarProps {
     selected: number
     isDashboard?: boolean
+    isLoggedIn: boolean
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
-    const {selected, isDashboard} = props
+    const {selected, isDashboard, isLoggedIn} = props
     const [isAtTop, setIsAtTop] = useState(true);
     const screens = useBreakpoint()
     const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
@@ -57,6 +62,17 @@ const Navbar: React.FC<NavbarProps> = (props) => {
       return () => window.removeEventListener("scroll", handleScroll);
     }, [isAtTop]);
 
+    var options = []
+    if (!isDashboard || isDashboard === undefined) {
+        options = NAV_OPTIONS
+    } else {
+        if (isLoggedIn) {
+            options = DASHBOARD_NAV_OPTIONS
+        } else {
+            options = NOT_LOGGED_IN_OPTIONS
+        }
+    }
+
     return (
         <StyledHeader style={{backgroundColor: isAtTop ? '#FFCB05' : 'rgba(255,255,255,0.85)'}}>
             <MenuLogoContainer>
@@ -67,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                 : null}
                 
                 <MenuStyled>
-                    {_.map(!isDashboard || isDashboard === undefined ? NAV_OPTIONS : DASHBOARD_NAV_OPTIONS, ({title, onClick}, index) => {
+                    {_.map(options, ({title, onClick}, index) => {
                         if (index === selected) {
                             return (
                                     <NavBarItemMain onClick={onClick}>

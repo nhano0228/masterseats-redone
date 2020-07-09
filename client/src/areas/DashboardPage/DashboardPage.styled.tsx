@@ -83,7 +83,7 @@ export const GenButton = styled(Button)`
         color: #fff;
     }
 
-    ${media.lessThan("medium")`
+    ${media.lessThan("small")`
         padding-left: 20px !important;
         padding-right: 40px !important;
     `}

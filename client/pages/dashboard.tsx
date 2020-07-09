@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import Head from 'next/head'
 import DashboardPage from '../src/areas/DashboardPage'
 
-const ForgotPassword: React.FC = () => {
+const Dashboard: React.FC = () => {
     const onFinish = () => {}
 
     return (
@@ -15,4 +15,4 @@ const ForgotPassword: React.FC = () => {
     );
 };
 
-export default ForgotPassword;
+export default Dashboard;
