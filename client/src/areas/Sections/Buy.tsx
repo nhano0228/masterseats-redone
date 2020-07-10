@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Select, Button, Table, Typography, Grid } from 'antd';
 import styled from 'styled-components'
 import _ from 'lodash'
-import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize} from '../../../model'
+import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize, TicketStatus} from 'masterseats-model'
 import {
     GenButton, 
     Container, 
@@ -23,37 +23,61 @@ const DATA: Ticket[] = [
         game: MichiganFootballGame.Ball,
         price: 25,
         id: '12345',
-        section: 24
+        section: 24,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
         game: MichiganFootballGame.Arkansas,
         price: 25,
         id: '1234567',
-        section: 25
+        section: 25,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
         game: MichiganFootballGame.Wisconsin,
         price: 25,
         id: '1234578',
-        section: 26
+        section: 26,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
         game: MichiganFootballGame.Ball,
         price: 25,
         id: '1234576',
-        section: 27
+        section: 27,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
         game: MichiganFootballGame.PennState,
         price: 25,
         id: '1234554',
-        section: 20
+        section: 20,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
         game: MichiganFootballGame.Wisconsin,
         price: 25,
         id: '1234532',
-        section: 19
+        section: 19,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     
 ];

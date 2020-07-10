@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {Select} from 'antd'
 import React, {CSSProperties} from 'react'
 import _ from 'lodash'
-import {GAMES, FILTER_OPTIONS, MichiganFootballGame, FilterOptions} from '../../model'
+import {GAMES, FILTER_OPTIONS, MichiganFootballGame, FilterOptions} from 'masterseats-model'
 
 import media from "styled-media-query";
 

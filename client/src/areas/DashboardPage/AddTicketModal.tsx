@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Modal, Form, Input, Row} from 'antd'
 import {GenButton} from './DashboardPage.styled'
 import {GameSelect} from '../../components/SelectOptions'
-import {MichiganFootballGame} from '../../../model'
+import {MichiganFootballGame} from 'masterseats-model'
 
 interface AddTicketModalProps {
     visible: boolean

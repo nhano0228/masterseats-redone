@@ -3,7 +3,7 @@ import { Grid, Layout, Space, Carousel, Divider } from 'antd';
 import styled from 'styled-components'
 import {TitleStyled, SubtitleStyled} from './Sections.styled'
 import media from "styled-media-query";
-import {ScreenSize} from '../../../../model'
+import {ScreenSize} from 'masterseats-model'
 import _ from 'lodash'
 
 const { useBreakpoint } = Grid;

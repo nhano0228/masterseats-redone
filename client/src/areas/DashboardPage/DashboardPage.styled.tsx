@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
 import {DollarOutlined, CloseOutlined, PlusCircleOutlined} from '@ant-design/icons'
 import React, {CSSProperties} from 'react'
-import {MichiganFootballGame} from '../../../model'
+import {MichiganFootballGame} from 'masterseats-model'
 import media from "styled-media-query";
 
 

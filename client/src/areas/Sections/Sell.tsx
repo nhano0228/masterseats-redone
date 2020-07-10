@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Table, Modal, Grid} from 'antd'
 import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline} from '../DashboardPage/DashboardPage.styled'
-import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize} from '../../../model'
+import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize, TicketStatus} from 'masterseats-model'
 import AddTicketModal from '../DashboardPage/AddTicketModal'
 import media from "styled-media-query";
 const {useBreakpoint} = Grid
@@ -11,13 +11,21 @@ const DATA: Ticket[] = [
         game: MichiganFootballGame.Ball,
         price: 25,
         id: '12345',
-        section: 24
+        section: 24,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     {
-        game: MichiganFootballGame.Arkansas,
+        game: MichiganFootballGame.Wisconsin,
         price: 25,
-        id: '1234567',
-        section: 25
+        id: '1234578',
+        section: 26,
+        user_id: '1',
+        status: TicketStatus.Open,
+        confirmed_seller_transfer: false,
+        confirmed_buyer_transfer: false,
     },
     
 ];

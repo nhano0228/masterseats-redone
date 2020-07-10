@@ -1,6 +1,6 @@
 import React, {CSSProperties, ReactNode, useState, useEffect} from 'react'
 import {Row, Col, Grid} from 'antd'
-import {ScreenSize} from '../../model'
+import {ScreenSize} from 'masterseats-model'
 import styled from 'styled-components'
 import media from 'styled-media-query'
 const {useBreakpoint} = Grid
