@@ -1,0 +1,8 @@
+*.js
+
+/dist/
+/node_modules/
+/package-lock.json
+/src/routes/
+/api/
+/.github/

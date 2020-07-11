@@ -1,0 +1,11 @@
+version: "3.2"
+services:
+  web:
+    image: aerabi/express-ts
+    build: .
+    ports:
+     - "8000:8000"
+    environment:
+      NODE_ENV : docker
+    volumes:
+     - .:/usr/src/app

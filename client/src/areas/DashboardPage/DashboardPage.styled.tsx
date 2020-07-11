@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
 import {DollarOutlined, CloseOutlined, PlusCircleOutlined} from '@ant-design/icons'
 import React, {CSSProperties} from 'react'
-import {MichiganFootballGame} from 'masterseats-model'
+import {MichiganFootballGame} from '../../../api'
 import media from "styled-media-query";
 
 
@@ -135,7 +135,7 @@ const EmojiGameContainer = styled.div`
 export const returnEmojiString = (game: MichiganFootballGame) => {
     var destination = <EmojifiedImage src={require('../../../assets/images/football/ballstate.png')}/>
     switch (game) {
-        case MichiganFootballGame.Arkansas:
+        case MichiganFootballGame.ArkansasState:
             destination = <EmojifiedImage src={require('../../../assets/images/football/arkansasstate.png')}/>
             break;
         case MichiganFootballGame.PennState:

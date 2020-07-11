@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Select, Button, Table, Typography, Grid } from 'antd';
 import styled from 'styled-components'
 import _ from 'lodash'
-import {MichiganFootballGame, FilterOptions, Ticket, ScreenSize, TicketStatus} from 'masterseats-model'
+import {MichiganFootballGame, FilterOptions, Ticket, TicketStatus, User} from '../../../api'
+import {ScreenSize} from '../../local_models'
 import {
     GenButton, 
     Container, 
@@ -20,21 +21,37 @@ const {useBreakpoint} = Grid
   
 const DATA: Ticket[] = [
     {
-        game: MichiganFootballGame.Ball,
+        game: MichiganFootballGame.BallState,
         price: 25,
         id: '12345',
         section: 24,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,
     },
     {
-        game: MichiganFootballGame.Arkansas,
+        game: MichiganFootballGame.ArkansasState,
         price: 25,
         id: '1234567',
         section: 25,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,
@@ -44,17 +61,33 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234578',
         section: 26,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,
     },
     {
-        game: MichiganFootballGame.Ball,
+        game: MichiganFootballGame.BallState,
         price: 25,
         id: '1234576',
         section: 27,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,
@@ -64,7 +97,15 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234554',
         section: 20,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,
@@ -74,7 +115,15 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234532',
         section: 19,
-        user_id: '1',
+        user_id: {
+            first_name: 'john',
+            last_name: 'smith',
+            email: 'john@smith.com',
+            password: 'password',
+            id: 'string',
+            is_email_verified: true,
+            ticket_wallet: []
+        },
         status: TicketStatus.Open,
         confirmed_seller_transfer: false,
         confirmed_buyer_transfer: false,

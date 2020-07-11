@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
 import OpenPage from './OpenPage'
-import {ScreenSize} from 'masterseats-model'
+import {ScreenSize} from '../local_models'
 import {Grid} from 'antd'
 import _ from 'lodash'
 

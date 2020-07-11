@@ -1,0 +1,13 @@
+{
+    "type": "postgres",
+    "host": "ec2-18-235-20-228.compute-1.amazonaws.com",
+    "port": 5432,
+    "username": "lzobthstnysxoy",
+    "password": "7404b778c5e3d89e0f2f918c6e170d83351d2dab57e4c5c36bbe83699f0773f9",
+    "database": "d4dd2clgspm6c4",
+    "ssl": true,
+    "schema": "test_db",
+    "entities": [
+        "./src/entity/*.js"
+    ]
+ }

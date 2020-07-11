@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,  // this line
+        "outDir": "../dist",
+        "baseUrl": "",
+        "module": "commonjs",
+        "emitDecoratorMetadata": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+    }
+}
