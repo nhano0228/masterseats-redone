@@ -1,30 +1,27 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, } from "express";
 import * as jwt from "jsonwebtoken";
-import {jwtSecret} from "../config/config";
+import {jwtSecret} from "../config";
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-  //Get the jwt token from the head
-  const token = <string>req.headers["auth"];
-  let jwtPayload;
-  
-  //Try to validate the token and get data
-  try {
-    jwtPayload = <any>jwt.verify(token, jwtSecret);
-    res.locals.jwtPayload = jwtPayload;
-  } catch (error) {
-    //If token is not valid, respond with 401 (unauthorized)
-    res.status(401).send();
-    return;
-  }
-
-  //The token is valid for 1 hour
-  //We want to send a new token on every request
-  const { userId, username } = jwtPayload;
-  const newToken = jwt.sign({ userId, username }, jwtSecret, {
-    expiresIn: "1h"
-  });
-  res.setHeader("token", newToken);
-
-  //Call the next middleware or controller
-  next();
+export const expressAuthentication = (req: Request, securityName: string, scopes?: string[]) => {
+    if (securityName === "bearer") {
+        return new Promise((resolve, reject) => {
+          const token = req.headers.authorization.replace('Bearer ', '')
+          if (!token) {
+            reject(new Error("No token provided"));
+          }
+          jwt.verify(token, jwtSecret, (err: any, decoded: any) => {
+            if (err) {
+              reject(err);
+            } else {
+              const scopes = ["email", "email_verified", "first_name", "last_name", "id"]
+              for (const scope in scopes) {
+                if (!(scopes[scope] in decoded)) {
+                  reject(new Error("JWT does not contain required scope."));
+                }
+              }
+              resolve(decoded);
+            }
+          });
+        });
+    }
 };

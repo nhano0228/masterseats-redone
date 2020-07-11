@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
 import {User} from './User'
-import {TicketStatus, MichiganFootballGame, FilterOptions} from '../types'
+import {TicketStatus, MichiganFootballGame, FilterOptions} from '../config/types'
 
 @Entity()
 export class Ticket {
@@ -13,11 +13,11 @@ export class Ticket {
     @Column("integer")
     section: number;
 
-    @Column("double")
+    @Column("decimal")
     price: number;
 
     @Column({
-        default: TicketStatus.Open
+        default: "Open"
     })
     status: TicketStatus;
 
@@ -27,8 +27,8 @@ export class Ticket {
     })
     confirmed_seller_transfer: boolean;
 
-    @ManyToOne(type => User, user => user.ticket_wallet)
-    user_id: User;
+    @ManyToOne(() => User, (user: User) => user.ticket_wallet)
+    user: User;
 
     @Column({
         type: "boolean",

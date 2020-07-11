@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany} from "typeorm";
 import {Ticket} from './Ticket'
+import * as bcrypt from "bcryptjs";
 
 @Entity()
 @Unique(["email"])
@@ -25,9 +26,14 @@ export class User {
     is_email_verified: boolean;
 
 
-    @OneToMany(type => Ticket, ticket => ticket.user_id)
-    @Column({
-        default: []
-    })
+    @OneToMany(() => Ticket, (ticket: Ticket) => ticket.user)
     ticket_wallet: Ticket[]
+
+    hashPassword() {
+        this.password = bcrypt.hashSync(this.password, 8);
+    }
+
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
+        return bcrypt.compareSync(unencryptedPassword, this.password);
+    }
 }

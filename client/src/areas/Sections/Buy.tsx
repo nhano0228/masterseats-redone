@@ -16,6 +16,7 @@ import {
     } from '../DashboardPage/DashboardPage.styled'
 import {SearchOutlined} from '@ant-design/icons'
 import {GameSelect, FilterSelect} from '../../components/SelectOptions'
+import {DefaultApi} from '../../../api'
 
 const {useBreakpoint} = Grid
   

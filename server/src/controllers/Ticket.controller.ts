@@ -1,7 +1,7 @@
-import { Controller, Post, Route, Security, Body } from 'tsoa';
+import { Controller, Post, Route, Security, Body, Get } from 'tsoa';
 import {Ticket} from '../entity/Ticket'
 import {getCustomRepository} from 'typeorm'
-import { FilterOptions, MichiganFootballGame, TicketStatus } from '../types';
+import { FilterOptions, MichiganFootballGame, TicketStatus } from '../config/types';
 import { TicketRepository } from '../repositories/TicketRepository';
 
 @Route('ticket/')
@@ -13,6 +13,11 @@ export class TicketController extends Controller {
         const ticket_arr = await getCustomRepository(TicketRepository).sortByGameAndFilter(game, filter)
 
         return ticket_arr
+    }
+
+    @Get('test')
+    public async test() {
+        return {message: "HAPPY DAYS"}
     }
 
 }

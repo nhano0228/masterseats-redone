@@ -1,6 +1,6 @@
 import {EntityRepository, Repository} from "typeorm";
 import {Ticket} from "../entity/Ticket";
-import { MichiganFootballGame, FilterOptions } from "../types";
+import { MichiganFootballGame, FilterOptions } from "../config/types";
 
 @EntityRepository()
 export class TicketRepository extends Repository<Ticket> {

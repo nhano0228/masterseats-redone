@@ -1,5 +1,12 @@
 {
     "swagger": {
+      "securityDefinitions": {
+        "bearer": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+      },
       "schemes": ["https"],
       "host": "masterseats-server.herokuapp.com",
       "basePath": "/api/v1",
@@ -8,7 +15,8 @@
       "outputDirectory": "./api/dist",
       "controllerPathGlobs": [
         "./src/controllers/**/*controller.ts"
-      ]
+      ],
+      "noImplicitAdditionalProperties": "silently-remove-extras"
     },
     "routes": {
       "basePath": "/api/v1",

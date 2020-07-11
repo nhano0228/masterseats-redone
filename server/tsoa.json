@@ -1,5 +1,12 @@
 {
   "swagger": {
+    "securityDefinitions": {
+      "bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+      }
+    },
     "schemes": ["http"],
     "host": "localhost:8000",
     "basePath": "/api/v1",
@@ -8,12 +15,14 @@
     "outputDirectory": "./api/dist",
     "controllerPathGlobs": [
       "./src/controllers/**/*controller.ts"
-    ]
+    ],
+    "noImplicitAdditionalProperties": "silently-remove-extras"
   },
   "routes": {
     "basePath": "/api/v1",
     "entryFile": "./src/main.ts",
     "routesDir": "./src/routes",
-    "middleware": "express"
+    "middleware": "express",
+    "authenticationModule": "./src/middlewares/checkJwt.ts"
   }
 }

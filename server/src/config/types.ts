@@ -20,3 +20,17 @@ export declare enum TicketStatus {
     PendingTransfer = "Pending Transfer",
     CompletedTransfer = "Completed Transfer"
 }
+
+export declare interface LoginBody {
+    email: string
+    password: string
+}
+
+export declare interface SignUpBody extends LoginBody {
+    first_name: string
+    last_name: string
+}
+
+export declare interface ChangePassword extends LoginBody {
+    old_password: string
+}
