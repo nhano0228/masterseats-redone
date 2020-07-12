@@ -1,0 +1,1 @@
+{"ast":null,"code":"","map":{"version":3,"sources":[],"names":[],"mappings":"","sourcesContent":["\nexport declare enum ScreenSize {\n    \"xs\" = 0,\n    \"sm\" = 1,\n    \"md\" = 2,\n    \"lg\" = 3,\n    \"xl\" = 4,\n    \"xxl\" = 5\n}\n"]},"metadata":{},"sourceType":"module"}

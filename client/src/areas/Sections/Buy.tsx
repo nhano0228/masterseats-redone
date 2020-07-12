@@ -26,7 +26,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '12345',
         section: 24,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',
@@ -44,7 +44,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234567',
         section: 25,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',
@@ -62,7 +62,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234578',
         section: 26,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',
@@ -80,7 +80,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234576',
         section: 27,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',
@@ -98,7 +98,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234554',
         section: 20,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',
@@ -116,7 +116,7 @@ const DATA: Ticket[] = [
         price: 25,
         id: '1234532',
         section: 19,
-        user_id: {
+        user: {
             first_name: 'john',
             last_name: 'smith',
             email: 'john@smith.com',

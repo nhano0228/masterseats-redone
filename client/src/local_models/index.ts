@@ -1,5 +1,5 @@
 
-export declare enum ScreenSize {
+export enum ScreenSize {
     "xs" = 0,
     "sm" = 1,
     "md" = 2,

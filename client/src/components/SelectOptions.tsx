@@ -2,11 +2,14 @@ import styled from 'styled-components'
 import {Select} from 'antd'
 import React, {CSSProperties} from 'react'
 import _ from 'lodash'
-import {GAMES, FILTER_OPTIONS, MichiganFootballGame, FilterOptions} from 'masterseats-model'
+import {MichiganFootballGame, FilterOptions} from '../../api'
 
 import media from "styled-media-query";
 
 const { Option } = Select;
+
+const GAMES = Object.keys(MichiganFootballGame)
+const FILTER_OPTIONS = Object.keys(FilterOptions)
 
 export const SelectStyled = styled(Select)`
     text-align: left;
