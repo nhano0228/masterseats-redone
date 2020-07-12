@@ -25,7 +25,6 @@ export class User {
     })
     is_email_verified: boolean;
 
-
     @OneToMany(() => Ticket, (ticket: Ticket) => ticket.user)
     ticket_wallet: Ticket[]
 

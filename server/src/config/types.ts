@@ -1,4 +1,4 @@
-export declare enum MichiganFootballGame {
+export enum MichiganFootballGame {
     Ball = "Michigan vs. Ball State",
     Arkansas = "Michigan vs. Arkansas State",
     Wisconsin = "Michigan vs. Wisconsin",
@@ -7,30 +7,45 @@ export declare enum MichiganFootballGame {
     Indiana = "Michigan vs. Indiana"
 }
 
-export declare enum FilterOptions {
+export enum FilterOptions {
     LowestHighest = "Price - lowest to highest",
     HighestLowest = "Price - highest to lowest",
     LowestSection = "Lowest Section",
     HighestSection = "Highest Section"
 }
 
-export declare enum TicketStatus {
+export enum TicketStatus {
     Open = "Open",
     Removed = "Removed",
     PendingTransfer = "Pending Transfer",
     CompletedTransfer = "Completed Transfer"
 }
 
-export declare interface LoginBody {
+export enum EmailTemplates {
+    SignUpConfirmation = "signup_confirmation"
+}
+
+export interface PostTicketBody {
+    game: MichiganFootballGame,
+    price: number,
+    section: number
+}
+
+export interface SortTicketsBody {
+    game?: MichiganFootballGame, 
+    filter?: FilterOptions
+}
+
+export interface LoginBody {
     email: string
     password: string
 }
 
-export declare interface SignUpBody extends LoginBody {
+export interface SignUpBody extends LoginBody {
     first_name: string
     last_name: string
 }
 
-export declare interface ChangePassword extends LoginBody {
+export interface ChangePassword extends LoginBody {
     old_password: string
 }

@@ -1,0 +1,20 @@
+doctype html
+div(style='\
+background-color:white;\
+box-shadow: 0 0 20px rgba(164, 164, 164, 0.3);\
+border-radius: 8px;\
+padding: 10px;\
+margin: 0 auto;\
+width: 96%;\
+color: black;\
+font-size: 16px;\
+line-height: 1.6;\
+font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;\
+')
+  p  Hey #{user.first_name}, 
+  p  Thanks for signing up for MasterSeats! 
+  p
+    | Click 
+    a(href=`${link}` target='_blank')  here
+    |  to confirm your email!
+  p(style='padding-top: 20px;')  P.S. Us right now because you&apos;re signing up: 😊 😊 😊

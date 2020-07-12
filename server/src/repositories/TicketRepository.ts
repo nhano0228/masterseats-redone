@@ -2,7 +2,7 @@ import {EntityRepository, Repository} from "typeorm";
 import {Ticket} from "../entity/Ticket";
 import { MichiganFootballGame, FilterOptions } from "../config/types";
 
-@EntityRepository()
+@EntityRepository(Ticket)
 export class TicketRepository extends Repository<Ticket> {
     sortByGameAndFilter(game?: MichiganFootballGame, filter?: FilterOptions) {
         if (game === undefined && filter === undefined) {
