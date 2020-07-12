@@ -65,6 +65,7 @@ export class UserController extends Controller {
     @Security('bearer')
     @Put('verify-email')
     public async verifyEmail(@Request() request: ExRequest): Promise<string> {
+        const userRepository = getRepository(User);
         try {
             const jwt_info = await getFromJWT(request, ["id"], this)
             await getConnection()
@@ -73,10 +74,25 @@ export class UserController extends Controller {
                     .set({ is_email_verified: true })
                     .where("id = :id", { id: jwt_info.id })
                     .execute();
-            return request.headers.authorization.replace('Bearer ', '')
+            const user = await userRepository.findOneOrFail({id: jwt_info.id});
+            return this.signToken(user)
         } catch (error) {
             this.setStatus(401)
-            throw new Error('Error while retrieving tickets: ' + error)
+            throw new Error('Error while retrieving user: ' + error)
+        }
+    }
+
+    @Security('bearer')
+    @Get('is-email-verified')
+    public async isEmailVerified(@Request() request: ExRequest): Promise<boolean> {
+        const userRepository = getRepository(User);
+        try {
+            const jwt_info = await getFromJWT(request, ["id"], this)
+            const user = await userRepository.findOneOrFail({id: jwt_info.id});
+            return user.is_email_verified
+        } catch (error) {
+            this.setStatus(401)
+            throw new Error('Error while retrieving user: ' + error)
         }
     }
 
