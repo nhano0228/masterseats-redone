@@ -19,3 +19,13 @@ export const getFromJWT = async (request: Request, sections: [string], self): Pr
 
     return section_res
 }
+
+export const verifyToken = async (token, self) => {
+    try {
+        const decoded = await jwt.verify(token, jwtSecret)
+        return decoded["id"]
+    } catch (err) {
+        self.setStatus(401)
+        throw new Error('Problem with Token: ' + err)
+    }
+}

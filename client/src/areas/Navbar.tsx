@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
 import OpenPage from './OpenPage'
-import {ScreenSize} from '../local_models'
+import {ScreenSize} from '../lib'
 import {Grid} from 'antd'
 import _ from 'lodash'
 
@@ -15,7 +15,11 @@ const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
 
 const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Dashboard', onClick: () => OpenPage('/dashboard')},
-    {title: 'Log Out', onClick: () => OpenPage('/')}
+    {title: 'Log Out', onClick: () => {
+        localStorage.setItem('email', '')
+        localStorage.setItem('password', '')
+        OpenPage('/')
+    }}
 ] 
 
 const NOT_LOGGED_IN_OPTIONS: {title: string, onClick: () => void}[] = [
@@ -34,12 +38,10 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     const screens = useBreakpoint()
     const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
     
-    console.log(screenSize)
     useEffect(() => {
         Object.entries(screens)
         .filter(screen => !!screen[1])
         .map(screen => {
-            console.log(screen)
             if (screen[0] !== ScreenSize[screenSize]) {
                 setScreenSize(ScreenSize[screen[0]])
             }

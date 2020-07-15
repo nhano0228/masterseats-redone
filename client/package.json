@@ -7,8 +7,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "build-api": "openapi-generator generate -i ../server/api/dist/swagger.json -g typescript-axios -o api/",
-    "build-api:prod": "openapi-generator generate -i https://masterseats-server.herokuapp.com/swagger.json -g typescript-axios -o api/"
+    "build:api": "openapi-generator generate -i ../server/api/dist/swagger.json -g typescript-axios -o api/",
+    "build-prod:api": "openapi-generator generate -i https://masterseats-server.herokuapp.com/swagger.json -g typescript-axios -o api/"
   },
   "keywords": [],
   "author": "",

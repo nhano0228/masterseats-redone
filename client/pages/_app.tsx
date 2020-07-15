@@ -4,6 +4,7 @@ import '../assets/theme.less'
 import {createGlobalStyle} from 'styled-components'
 import { NextSeo } from 'next-seo';
 import media from 'styled-media-query'
+import UserProvider from '../src/lib/UserContext'
 
 const GlobalInjection = createGlobalStyle`
     .ant-table-cell {
@@ -134,7 +135,9 @@ export default function App({ Component, pageProps }) {
                   }}
                 />
             <GlobalInjection/>
-            <Component {...pageProps} />
+            <UserProvider>
+                <Component {...pageProps} />
+            </UserProvider>
         </>
     )
 }

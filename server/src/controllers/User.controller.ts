@@ -3,9 +3,9 @@ import {User} from '../entity/User'
 import {Ticket} from '../entity/Ticket'
 import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
-import { SignUpBody, LoginBody, ChangePassword, EmailTemplates } from '../config/types';
+import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody } from '../config/types';
 import * as jwt from "jsonwebtoken";
-import {jwtSecret, getFromJWT} from '../config'
+import {jwtSecret, getFromJWT, verifyToken} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
 
@@ -41,7 +41,16 @@ export class UserController extends Controller {
         var token: string
         try {
             createUser.hashPassword()
-            token = this.signToken(createUser)
+            token = jwt.sign({   
+                    email: createUser.email, 
+                    email_verified: createUser.is_email_verified,
+                    first_name: createUser.first_name, 
+                    last_name: createUser.last_name,
+                    id: createUser.id,
+                },
+                jwtSecret,
+                {}
+            )
             await getConnection()
                 .createQueryBuilder()
                 .insert()
@@ -62,19 +71,18 @@ export class UserController extends Controller {
         return token
     }
 
-    @Security('bearer')
     @Put('verify-email')
-    public async verifyEmail(@Request() request: ExRequest): Promise<string> {
+    public async verifyEmail(@Body() body: VerifyEmailBody): Promise<string> {
         const userRepository = getRepository(User);
         try {
-            const jwt_info = await getFromJWT(request, ["id"], this)
+            const id = await verifyToken(body.id, this)
             await getConnection()
                     .createQueryBuilder()
                     .update(User)
                     .set({ is_email_verified: true })
-                    .where("id = :id", { id: jwt_info.id })
+                    .where("id = :id", { id })
                     .execute();
-            const user = await userRepository.findOneOrFail({id: jwt_info.id});
+            const user = await userRepository.findOneOrFail(id);
             return this.signToken(user)
         } catch (error) {
             this.setStatus(401)
@@ -96,14 +104,16 @@ export class UserController extends Controller {
         }
     }
 
-    @Get('get-user-by-id/{userId}')
-    public async getUserById(userId: string): Promise<User> {
+    @Security('bearer')
+    @Get('get-user')
+    public async getUser(@Request() request: ExRequest): Promise<User> {
+        const jwt_info = await getFromJWT(request, ["id"], this)
         try {
-            const user = await getRepository(User).findOneOrFail({id: userId})
+            const user = await getRepository(User).findOneOrFail({id: jwt_info.id})
             return user
         } catch (err) {
             this.setStatus(401)
-            throw new Error('User does not exist: ' + err)
+            throw new Error('Error trying to find user: ' + err)
         }
     }
 

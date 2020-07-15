@@ -1,17 +1,20 @@
-import React, {useContext, useEffect, CSSProperties} from 'react'
+import React, {useContext } from 'react'
 import {message} from 'antd'
 import Head from 'next/head'
 import LoginCard from '../src/areas/LoginCard'
-import styled from 'styled-components'
 import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/OpenPage'
-import {DefaultApi} from '../api'
+import {UserContext} from '../src/lib/UserContext'
 
 const Login: React.FC = () => {
+    const { setToken, api } = useContext(UserContext)
     const onFinish = async ({uniq_id, password}) => {
         try {
-            const res = await new DefaultApi().login({email: uniq_id + "@umich.edu", password})
-            const token = res.data
+            const email = uniq_id + "@umich.edu"
+            const res = await api.login({email, password})
+            localStorage.setItem('email', email)
+            localStorage.setItem('password', password)
+            await setToken(res.data)
             OpenPage('/dashboard')
         } catch (error) {
             message.error("Your email and/or password were incorrect. Please try again.")

@@ -8,22 +8,22 @@ import media from "styled-media-query";
 
 const { Option } = Select;
 
-const GAMES = Object.keys(MichiganFootballGame)
-const FILTER_OPTIONS = Object.keys(FilterOptions)
+const GAMES = Object.values(MichiganFootballGame)
+const FILTER_OPTIONS = Object.values(FilterOptions)
 
 export const SelectStyled = styled(Select)`
     text-align: left;
     width: 40%;
     margin-right: 15px;
     
-    ${media.lessThan("small")`
+    ${media.lessThan("large")`
         width: 90%;
         margin-bottom: 10px;
     `}
 `
 
 const FilterSelectStyled = styled(SelectStyled)`
-    ${media.lessThan("small")`
+    ${media.lessThan("large")`
         margin-bottom: 0px;
     `}
 `
@@ -32,6 +32,7 @@ interface SelectGameProps {
     value: string
     setValue: (val: MichiganFootballGame) => void
     style?: CSSProperties
+    hasAllGames: boolean
 }
 
 interface SelectFilterProps {
@@ -40,7 +41,7 @@ interface SelectFilterProps {
 }
 
 export const GameSelect: React.FC<SelectGameProps> = (props) => {
-    const {value, setValue, style} = props
+    const {value, setValue, style, hasAllGames} = props
     return (
         <SelectStyled
             style={{...style}}
@@ -50,12 +51,12 @@ export const GameSelect: React.FC<SelectGameProps> = (props) => {
             placeholder="Select a game"
             optionFilterProp="children"
             filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.children.indexOf(input) >= 0
             }
         >
-            {_.map(GAMES, (game) => {
+            {_.map((hasAllGames ? [...GAMES, "All Games"] : GAMES), (game) => {
                 return (
-                    <Option value={game.toLowerCase()}>{game}</Option>
+                    <Option value={game}>{game}</Option>
                 )
             })}
         </SelectStyled>
@@ -73,7 +74,7 @@ export const FilterSelect: React.FC<SelectFilterProps> = (props) => {
             >
             {_.map(FILTER_OPTIONS, (filter) => {
                 return (
-                    <Option value={filter.toLowerCase()}>{filter}</Option>
+                    <Option value={filter}>{filter}</Option>
                 )
             })}
         </FilterSelectStyled>

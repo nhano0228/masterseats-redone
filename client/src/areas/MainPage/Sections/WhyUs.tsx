@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect, useState} from 'react'
 import { Typography, Layout, Space, Carousel, Divider, Grid } from 'antd';
 import {SmileOutlined, LockOutlined, ClockCircleOutlined, DollarCircleOutlined} from '@ant-design/icons'
 import styled from 'styled-components'
-import {ScreenSize} from '../../../local_models'
+import {ScreenSize} from '../../../lib'
 import {TitleYellowStyled, SubtitleYellowStyled} from './Sections.styled'
 import _ from 'lodash'
 import media from "styled-media-query";

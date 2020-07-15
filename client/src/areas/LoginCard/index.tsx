@@ -50,7 +50,10 @@ const LoginComponent: React.FC<LoginComponentProps> = (props) => {
                                         opacity: "0.5",
                                         textAlign: "right",
                                         fontSize: "12px",
-                                        padding: "0"
+                                        padding: "0",
+                                        paddingTop: 3,
+                                        marginLeft: 0,
+                                        marginRight: 0
                                     }} 
                                     onClick={() => {OpenPage('/forgotpassword')}} 
                                     type="link">                    

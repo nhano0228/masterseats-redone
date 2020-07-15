@@ -51,7 +51,7 @@ export const SelectContainer = styled.div`
     justify-content: flex-start;
     width: 100%;
 
-    ${media.lessThan("small")`
+    ${media.lessThan("large")`
         flex-direction: column !important;
     `}
 `

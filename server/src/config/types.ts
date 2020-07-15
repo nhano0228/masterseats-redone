@@ -49,3 +49,12 @@ export interface SignUpBody extends LoginBody {
 export interface ChangePassword extends LoginBody {
     old_password: string
 }
+
+export interface RemoveTicketBody {
+    id: string
+}
+
+export interface VerifyEmailBody {
+    id: string
+}
+

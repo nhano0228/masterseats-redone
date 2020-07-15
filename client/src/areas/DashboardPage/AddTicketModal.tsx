@@ -2,20 +2,21 @@ import React, {useState} from 'react'
 import {Modal, Form, Input, Row} from 'antd'
 import {GenButton} from './DashboardPage.styled'
 import {GameSelect} from '../../components/SelectOptions'
-import {MichiganFootballGame} from '../../../api'
+import {MichiganFootballGame, PostTicketBody} from '../../../api'
 
 interface AddTicketModalProps {
     visible: boolean
     onCancel: () => void
+    postTicket: (ticketBody: PostTicketBody) => void
 }
 
 const AddTicketModal: React.FC<AddTicketModalProps> = (props) => {
-    const {visible, onCancel} = props
+    const {visible, onCancel, postTicket} = props
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [form] = Form.useForm()
 
-    const onFinish = (user_info) => {
-        console.table(user_info)
+    const onFinish = async (user_info) => {
+        await postTicket(user_info)
         onCancel()
         form.setFieldsValue({
             game: undefined,
@@ -43,7 +44,10 @@ const AddTicketModal: React.FC<AddTicketModalProps> = (props) => {
                             name="game"
                             rules={[{ required: true, message: 'The game is required' }]}
                         >
-                            <GameSelect value={gameValue} setValue={(e) => {
+                            <GameSelect 
+                                hasAllGames={false}
+                                value={gameValue} 
+                                setValue={(e) => {
                                 form.setFieldsValue({game: e})
                                 setGameValue(e)
                             }}/>

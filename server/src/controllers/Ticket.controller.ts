@@ -9,7 +9,8 @@ import {
     MichiganFootballGame, 
     TicketStatus, 
     SortTicketsBody, 
-    PostTicketBody 
+    PostTicketBody,
+    RemoveTicketBody
     } from '../config/types';
 import { TicketRepository } from '../repositories/TicketRepository';
 import jwt from 'jsonwebtoken'
@@ -52,4 +53,22 @@ export class TicketController extends Controller {
           }
     }
 
+    @Security('bearer')
+    @Post('remove-ticket')
+    public async removeTicket(@Body() body: RemoveTicketBody) {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .delete()
+                .from(Ticket)
+                .where("id = :id", { id: body.id })
+                .execute()
+            return {
+                message: "Successfully removed ticket."
+            }
+          } catch (err) {
+            this.setStatus(401)
+            throw new Error('Error while deleting ticket: ' + err)
+          }
+    }
 }
