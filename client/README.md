@@ -32,5 +32,6 @@ $ vercel
 To upload to production version:
 ```bash
 $ npm run build-prod:api
+$ vercel
 $ vercel --prod
 ```
