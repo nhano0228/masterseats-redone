@@ -9,7 +9,7 @@ export const stripe = new Stripe('sk_test_51H8nrPLchQMoIhQGH16PhZyAnDFo7JI3LGUTz
 export const jwtSecret = "BIG DICKSSS"
 
 export const getFromJWT = async (request: Request, sections: [string], self): Promise<{[key: string]: string}> => {
-    const token = request.headers.authorization.replace('Bearer ', '')
+    const token = request.headers.authorization.replace('Bearer ', '') as string
     var section_res: {[key: string]: string} = {}
     try {
         const decoded = await jwt.verify(token, jwtSecret)

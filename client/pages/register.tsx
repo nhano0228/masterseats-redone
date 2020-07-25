@@ -20,6 +20,7 @@ const Register: React.FC = () => {
                 token = body.data
             } catch (err) {
                 message.error("There was a problem making your account. If you had already created an account, please login. If you have not, please contact us for support.")
+                return
             }
             localStorage.setItem('email', uniq_id + "@umich.edu")
             localStorage.setItem('password', password)

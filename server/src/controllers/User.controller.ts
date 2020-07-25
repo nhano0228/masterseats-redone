@@ -42,7 +42,7 @@ export class UserController extends Controller {
         var token: string
         try {
             const account = await stripe.accounts.create({
-                type: 'standard',
+                type: 'custom',
                 email: request.email,
                 business_type: 'individual',
                 requested_capabilities: [
@@ -134,6 +134,7 @@ export class UserController extends Controller {
                     first_name: user.first_name, 
                     last_name: user.last_name,
                     id: user.id,
+                    stripe_id: user.stripe_id,
                 },
                 jwtSecret,
                 {}
@@ -212,6 +213,7 @@ export class UserController extends Controller {
             first_name: user.first_name, 
             last_name: user.last_name,
             id: user.id,
+            stripe_id: user.stripe_id
         },
         jwtSecret,
         { expiresIn: "1h" }

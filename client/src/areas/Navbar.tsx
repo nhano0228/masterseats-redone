@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
 import OpenPage from './OpenPage'
 import {ScreenSize} from '../lib'
 import {Grid} from 'antd'
 import _ from 'lodash'
+import {UserContext} from '../lib/UserContext'
 
 const {useBreakpoint} = Grid
 
@@ -12,11 +13,6 @@ const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Login', onClick: () => OpenPage('/login')},
     {title: 'Sign Up', onClick: () => OpenPage('/register')},
 ]
-
-const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
-    {title: 'Dashboard', onClick: () => OpenPage('/dashboard')},
-    {title: 'Profile', onClick: () => OpenPage('/profile')}
-] 
 
 const NOT_LOGGED_IN_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Log In', onClick: () => OpenPage('/login')}
@@ -29,11 +25,17 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
+    const {currentUser} = useContext(UserContext)
     const {selected, isDashboard, isLoggedIn} = props
     const [isAtTop, setIsAtTop] = useState(true);
     const screens = useBreakpoint()
     const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
     
+    const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
+        {title: 'Dashboard', onClick: () => OpenPage('/dashboard')},
+        {title: currentUser !== null ? `Welcome, ${currentUser.first_name}` : 'Profile', onClick: () => OpenPage('/profile')}
+    ] 
+
     useEffect(() => {
         Object.entries(screens)
         .filter(screen => !!screen[1])

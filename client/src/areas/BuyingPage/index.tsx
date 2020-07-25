@@ -14,7 +14,12 @@ const BuyingPage: React.FC = () => {
             sortFields = {filter: sortTicketBody.filter}
         }
 
-        const body = await api.sortTickets(sortFields)
+        var body
+        if (currentUser === null) {
+            body = await api.sortTickets(sortFields)
+        } else {
+            body = await api.sortTicketsSecure(sortFields)
+        }
         setTickets(body.data)
     }
 

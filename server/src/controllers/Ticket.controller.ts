@@ -23,12 +23,21 @@ import {MailService} from '../mail'
 export class TicketController extends Controller {
 
     @Post('sort-tickets')
-    public async sortTickets(@Body() request: SortTicketsBody): Promise<Ticket[]> {
-        const {game, filter} = request
-        const ticket_arr = await getCustomRepository(TicketRepository).sortByGameAndFilter(game, filter)
-
+    public async sortTickets(@Body() body: SortTicketsBody, @Request() req: ExRequest): Promise<Ticket[]> {
+        const {game, filter} = body
+        var ticket_arr = await getCustomRepository(TicketRepository).sortByGameAndFilter(game, filter)
         return ticket_arr
     }
+
+    @Security('bearer')
+    @Post('sort-tickets-secure')
+    public async sortTicketsSecure(@Body() body: SortTicketsBody, @Request() req: ExRequest): Promise<Ticket[]> {
+        const {game, filter} = body
+        const jwt_info = await getFromJWT(req, ['id'], this)
+        const ticket_arr = await getCustomRepository(TicketRepository).sortByGameAndFilterAndToken(jwt_info["id"], game, filter)
+        return ticket_arr
+    }
+
 
     @Security('bearer')
     @Post('post-ticket')

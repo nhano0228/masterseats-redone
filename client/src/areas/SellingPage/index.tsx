@@ -8,6 +8,12 @@ const SellingPage: React.FC = () => {
     const {api, currentUser} = useContext(UserContext)
     const [ticketWallet, setTicketWallet] = useState<Ticket[]>([])
 
+    useEffect(() => {
+        if (currentUser !== null) {
+            getTicketWallet()
+        }
+    }, [])
+
     const getTicketWallet = async () => {
         const body = await api.getTicketWallet()
         setTicketWallet(body.data)
