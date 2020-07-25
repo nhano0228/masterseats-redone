@@ -42,7 +42,13 @@ const ButtonContainer = styled.div`
     flex-direction: row;
 `
 
-const Greetings: React.FC = () => {
+interface GreetingsProps {
+    title: string
+    subtitle: string
+}
+
+const Greetings: React.FC<GreetingsProps> = props => {
+    const {title, subtitle} = props
     const sellingOnClick = () => {
         OpenPage('/selling')
     }
@@ -53,8 +59,8 @@ const Greetings: React.FC = () => {
 
     return (
         <Container size="middle" direction="vertical">
-            <TitleStyled>The Sports Ticket Marketplace of the Future</TitleStyled>
-            <SubtitleStyled level={4}>We make it both easier and safer to buy and sell Football tickets!</SubtitleStyled>
+            <TitleStyled>{title}</TitleStyled>
+            <SubtitleStyled level={4}>{subtitle}</SubtitleStyled>
             <ButtonContainer>
                 <GetStartedButton onClick={buyingOnClick}>I'm Buying</GetStartedButton>
                 <GetStartedButton style={{marginLeft: 25}} onClick={sellingOnClick}>I'm Selling</GetStartedButton>

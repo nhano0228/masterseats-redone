@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react'
-import {Table, Modal, Grid} from 'antd'
+import React, {useState, useEffect, useContext} from 'react'
+import {Table, Modal, Grid, message} from 'antd'
 import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline} from '../DashboardPage/DashboardPage.styled'
 import {MichiganFootballGame, Ticket, TicketStatus, PostTicketBody} from '../../../api'
 import {ScreenSize} from '../../lib'
 import AddTicketModal from '../DashboardPage/AddTicketModal'
+import {UserContext} from '../../lib/UserContext'
+import OpenPage from '../OpenPage'
 
 const {useBreakpoint} = Grid
 
@@ -14,6 +16,7 @@ interface SellProps {
 }
 
 const Sell: React.FC<SellProps> = props => {
+    const {currentUser} = useContext(UserContext)
     const {tickets, postTicket, removeTicket} = props
     const [visible, setVisibility] = useState(false)
 
@@ -30,13 +33,27 @@ const Sell: React.FC<SellProps> = props => {
         })
     }, [screens])
 
+
+    const clickAddTicket = () => {
+        if (currentUser === null) {
+            message.info("Please create an account to start selling tickets.")
+            OpenPage('/login')
+            return
+        }
+        if (!currentUser.is_email_verified) {
+            message.error("Please verify your email before trying to sell a ticket.")
+            return
+        }
+        setVisibility(true)
+    }
+
     return (
         <Container>
             <AddTicketModal postTicket={postTicket}
                             visible={visible} 
                             onCancel={() => setVisibility(false)}/>
             <AddTicketContainer>
-                <GenButton onClick={() => {setVisibility(true)}} icon={<PlusCircleAdjustedOutline />}>
+                <GenButton onClick={clickAddTicket} icon={<PlusCircleAdjustedOutline />}>
                     {screenSize >= 1 ? "Add Ticket" : null}
                 </GenButton>
             </AddTicketContainer>

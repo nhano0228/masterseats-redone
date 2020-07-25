@@ -3,9 +3,9 @@ import {User} from '../entity/User'
 import {Ticket} from '../entity/Ticket'
 import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
-import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody } from '../config/types';
+import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody } from '../config/types';
 import * as jwt from "jsonwebtoken";
-import {jwtSecret, getFromJWT, verifyToken} from '../config'
+import {jwtSecret, getFromJWT, verifyToken, stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
 
@@ -38,8 +38,21 @@ export class UserController extends Controller {
         createUser.first_name = request.first_name
         createUser.last_name = request.last_name
 
+
         var token: string
         try {
+            const account = await stripe.accounts.create({
+                type: 'standard',
+                email: request.email,
+                business_type: 'individual',
+                requested_capabilities: [
+                    'card_payments',
+                    'transfers',
+                ]
+            })
+
+            createUser.stripe_id = account.id
+
             createUser.hashPassword()
             token = jwt.sign({   
                     email: createUser.email, 
@@ -75,14 +88,9 @@ export class UserController extends Controller {
     public async verifyEmail(@Body() body: VerifyEmailBody): Promise<string> {
         const userRepository = getRepository(User);
         try {
-            const id = await verifyToken(body.id, this)
-            await getConnection()
-                    .createQueryBuilder()
-                    .update(User)
-                    .set({ is_email_verified: true })
-                    .where("id = :id", { id })
-                    .execute();
-            const user = await userRepository.findOneOrFail(id);
+            const email = await verifyToken(body.id, this)
+            await getRepository(User).update({email}, {is_email_verified: true})
+            const user = await userRepository.findOneOrFail({email});
             return this.signToken(user)
         } catch (error) {
             this.setStatus(401)
@@ -117,29 +125,69 @@ export class UserController extends Controller {
         }
     }
 
-    @Security('bearer')
+    @Post('forgot-password-email')
+    public async forgotPasswordEmail(@Body() body: ForgotPasswordBody) {
+        try {
+            const user = await getRepository(User).findOneOrFail({email: body.email})
+            const token = jwt.sign({   
+                    email: user.email, 
+                    email_verified: user.is_email_verified,
+                    first_name: user.first_name, 
+                    last_name: user.last_name,
+                    id: user.id,
+                },
+                jwtSecret,
+                {}
+            )
+            const mail = new MailService()
+            mail.sendMail(user, EmailTemplates.PasswordReset, {
+                email: body.email,
+                link: "https://masterseats-client.vercel.app/resetpassword?token=" + token
+            })
+        } catch (err) {
+            this.setStatus(401)
+            throw new Error('Error trying to find user: ' + err)
+        }
+
+    }
+
     @Post('change-password')
-    public async changePassword(@Body() req: ChangePassword): Promise<string> {
-        const { old_password, password, email } = req;
+    public async changePassword(@Body() body: ChangePassword): Promise<string> {
+        const { token, new_password } = body;
         const userRepository = getRepository(User);
         var user: User;
         try {
-            user = await userRepository.findOneOrFail({email: email});
+            const email = await verifyToken(token, this)
+            user = await userRepository.findOneOrFail({email});
         } catch (err) {
             this.setStatus(401)
             throw new Error('User does not exist: ' + err)
         }
 
-        if (!user.checkIfUnencryptedPasswordIsValid(old_password)) {
-            this.setStatus(401)
-            throw new Error('Old password is not correct.')
-        }
-
-        user.password = password;        
+        user.password = new_password;        
         user.hashPassword();
         userRepository.save(user);
 
         return this.signToken(user)
+    }
+
+    @Security('bearer')
+    @Post('change-password-profile')
+    public async changePasswordFromProfile(@Request() request: ExRequest) {
+        const { new_password } = request.body;
+        const userRepository = getRepository(User);
+        var user: User;
+        try {
+            const jwt_info = await getFromJWT(request, ["id"], this)
+            user = await userRepository.findOneOrFail(jwt_info["id"]);
+        } catch (err) {
+            this.setStatus(401)
+            throw new Error('User does not exist: ' + err)
+        }
+
+        user.password = new_password;        
+        user.hashPassword();
+        userRepository.save(user);
     }
 
     @Security('bearer')

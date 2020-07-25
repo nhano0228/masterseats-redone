@@ -22,11 +22,11 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/dashboard": [
+    "/profile": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/verification": [
+    "/selling": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

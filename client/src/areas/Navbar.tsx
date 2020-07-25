@@ -15,11 +15,7 @@ const NAV_OPTIONS: {title: string, onClick: () => void}[] = [
 
 const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
     {title: 'Dashboard', onClick: () => OpenPage('/dashboard')},
-    {title: 'Log Out', onClick: () => {
-        localStorage.setItem('email', '')
-        localStorage.setItem('password', '')
-        OpenPage('/')
-    }}
+    {title: 'Profile', onClick: () => OpenPage('/profile')}
 ] 
 
 const NOT_LOGGED_IN_OPTIONS: {title: string, onClick: () => void}[] = [

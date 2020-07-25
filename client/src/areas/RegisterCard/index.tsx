@@ -15,7 +15,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
 
     return (
         <OuterContainer>
-            <Navbar isLoggedIn={false} selected={1}/>
+            <Navbar isLoggedIn={false} selected={2}/>
             <CardContainer>
                 <MasterSeatsCard style={{maxWidth: 450}} withLink={true}>
                     <Form
@@ -54,7 +54,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                             name="password"
                             rules={[{ required: true, message: 'Password is required' }]}
                         >
-                            <Input placeholder="password1234"/>
+                            <Input type="password" placeholder="password1234"/>
                         </Form.Item>
 
                         <Form.Item
@@ -63,7 +63,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                             name="rep_password"
                             rules={[{ required: true, message: 'Password is required' }]}
                         >
-                            <Input placeholder="password1234"/>
+                            <Input type="password" placeholder="password1234"/>
                         </Form.Item>
 
                         <Form.Item>

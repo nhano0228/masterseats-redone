@@ -22,7 +22,6 @@ class UserProvider extends Component {
             return
         }
         try {
-            console.log(token)
             const api = new DefaultApi({accessToken: token})
             const body = await api.getUser()
             this.setState({api, currentUser: body.data})

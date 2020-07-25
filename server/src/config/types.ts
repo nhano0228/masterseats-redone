@@ -22,7 +22,8 @@ export enum TicketStatus {
 }
 
 export enum EmailTemplates {
-    SignUpConfirmation = "signup_confirmation"
+    SignUpConfirmation = "signup_confirmation",
+    PasswordReset = "password_reset"
 }
 
 export interface PostTicketBody {
@@ -46,8 +47,9 @@ export interface SignUpBody extends LoginBody {
     last_name: string
 }
 
-export interface ChangePassword extends LoginBody {
-    old_password: string
+export interface ChangePassword {
+    token: string
+    new_password: string
 }
 
 export interface RemoveTicketBody {
@@ -58,3 +60,6 @@ export interface VerifyEmailBody {
     id: string
 }
 
+export interface ForgotPasswordBody {
+    email: string
+}

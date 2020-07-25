@@ -14,12 +14,16 @@ const Register: React.FC = () => {
             message.error("Your new password is not the same as your repeated password.")
             return
         } else {
+            var token: string
             try {
                 const body = await api.register({email: uniq_id + "@umich.edu", password, first_name, last_name})
-                await setToken(body.data)
+                token = body.data
             } catch (err) {
                 message.error("There was a problem making your account. If you had already created an account, please login. If you have not, please contact us for support.")
             }
+            localStorage.setItem('email', uniq_id + "@umich.edu")
+            localStorage.setItem('password', password)
+            await setToken(token)
             message.success("Please verify your email address before attempting to purchase or sell tickets.")
             OpenPage('/dashboard')
         }

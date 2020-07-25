@@ -5,7 +5,7 @@ import {UserContext} from '../../lib/UserContext'
 import {Ticket} from '../../../api'
 
 const BuyingPage: React.FC = () => {
-    const {api} = useContext(UserContext)
+    const {api, currentUser} = useContext(UserContext)
     const [tickets, setTickets] = useState<Ticket[]>([])
 
     const getTickets = async (sortTicketBody) => {
@@ -15,7 +15,6 @@ const BuyingPage: React.FC = () => {
         }
 
         const body = await api.sortTickets(sortFields)
-        console.log(body.data)
         setTickets(body.data)
     }
 
@@ -24,7 +23,7 @@ const BuyingPage: React.FC = () => {
     }, [])
 
     return (
-        <PageDashboard isLoggedIn={false}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true}>
             <BuySection tickets={tickets} getTickets={getTickets}/>
         </PageDashboard>
     )

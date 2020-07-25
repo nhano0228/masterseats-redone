@@ -5,17 +5,13 @@ import {UserContext} from '../../lib/UserContext'
 import {Ticket, PostTicketBody} from '../../../api'
 
 const SellingPage: React.FC = () => {
-    const {api} = useContext(UserContext)
+    const {api, currentUser} = useContext(UserContext)
     const [ticketWallet, setTicketWallet] = useState<Ticket[]>([])
 
     const getTicketWallet = async () => {
         const body = await api.getTicketWallet()
         setTicketWallet(body.data)
     }
-
-    useEffect(() => {
-        getTicketWallet()
-    }, [])
 
     const postTicket = async (ticketBody: PostTicketBody) => {
         await api.postTicket(ticketBody)
@@ -27,7 +23,7 @@ const SellingPage: React.FC = () => {
         await getTicketWallet()
     }
     return (
-        <PageDashboard isLoggedIn={false}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true}>
             <SellSection tickets={ticketWallet} postTicket={postTicket} removeTicket={removeTicket}/>
         </PageDashboard>
     )

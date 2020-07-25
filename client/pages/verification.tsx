@@ -13,11 +13,13 @@ const Verification: React.FC = props => {
 
     useEffect(() => {
         const verifyEmailFetch = async () => {
+            if (router.query.token === undefined) return
+
             try {
                 const body = await api.verifyEmail({id: router.query.token as string})
                 setToken(body.data)
             } catch (err) {
-                message.error("There was a problem verifying your account. Please contafct us.")
+                message.error("There was a problem verifying your account. Please contact us.")
             }
             OpenPage('/dashboard')
         }

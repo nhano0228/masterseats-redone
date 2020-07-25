@@ -5,16 +5,7 @@ import MasterSeatsCard from '../../components/MasterSeatsCard'
 import OpenPage from '../OpenPage'
 import Navbar from '../Navbar'
 import {OuterContainer, CardButton, CardContainer} from '../Card.styled'
-
-const TextContainer = styled(Typography.Text)`
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding-bottom: 56px;
-    font-family: 'Mark Pro';
-    padding-right: 25px;
-    padding-left: 25px;
-`
+import {TextContainer} from './'
 
 interface LoginComponentProps {
     onFinish: (values) => void
@@ -22,10 +13,6 @@ interface LoginComponentProps {
 
 const ForgotPasswordComponent: React.FC<LoginComponentProps> = (props) => {
     const {onFinish} = props
-
-    const onClick = () => {
-        OpenPage('/signup')
-    }
 
     return (
         <OuterContainer>

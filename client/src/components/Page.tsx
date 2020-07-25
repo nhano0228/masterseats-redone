@@ -13,7 +13,7 @@ const RowStyled = styled(Row)`
 `
 
 interface PageProps {
-    style: CSSProperties
+    style?: CSSProperties
     children?: ReactNode
 }
 

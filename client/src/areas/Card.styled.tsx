@@ -39,5 +39,5 @@ export const ButtonLink = styled(Button)`
 
 export const CardButton = styled(Button)`
     width: 60%;
-    margin-top: 60px;
+    margin-top: 20px;
 `

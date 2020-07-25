@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Select, Button, Table, Typography, Grid } from 'antd';
+import React, { useState, useEffect, useContext } from 'react'
+import { Select, Button, Table, Typography, Grid, message } from 'antd';
 import styled from 'styled-components'
 import _ from 'lodash'
 import {MichiganFootballGame, FilterOptions, Ticket, TicketStatus, SortTicketsBody} from '../../../api'
@@ -16,6 +16,8 @@ import {
     } from '../DashboardPage/DashboardPage.styled'
 import {SearchOutlined} from '@ant-design/icons'
 import {GameSelect, FilterSelect} from '../../components/SelectOptions'
+import {UserContext} from '../../lib/UserContext'
+import OpenPage from '../OpenPage'
 
 const {useBreakpoint} = Grid
 
@@ -25,6 +27,7 @@ interface BuyProps {
 }
 
 const Buy: React.FC<BuyProps> = props => {
+    const {currentUser}  = useContext(UserContext)
     const {tickets, getTickets} = props
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [filterValue, setFilterValue] = useState<FilterOptions>(undefined)
@@ -41,6 +44,20 @@ const Buy: React.FC<BuyProps> = props => {
             }
         })
     }, [screens])
+
+    const clickPurchase = () => {
+        if (currentUser === null) {
+            message.info("Please create an account to start purchasing tickets.")
+            OpenPage('/login')
+            return
+        }
+        if (!currentUser.is_email_verified) {
+            message.error("Please verify your email before trying to purchase a ticket.")
+            return
+        }
+
+        
+    }
 
     return (
         <Container>
@@ -76,7 +93,7 @@ const Buy: React.FC<BuyProps> = props => {
                         dataIndex: 'ticketId',
                         render: (text, data) => (
                             <PurchaseContainer>
-                                <GenIconButton icon={<DollarAdjustedOutline/>} onClick={() => {}}>
+                                <GenIconButton icon={<DollarAdjustedOutline/>} onClick={clickPurchase}>
                                     {screenSize !== 0 ? "Purchase" : null}
                                 </GenIconButton>
                             </PurchaseContainer>

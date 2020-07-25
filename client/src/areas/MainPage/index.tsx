@@ -16,7 +16,10 @@ const MainPage: React.FC = () => {
             <Navbar selected={0} isLoggedIn={false}/>
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
-                <Greetings/>
+                <Greetings 
+                    title={"The Sports Ticket Marketplace of the Future"}
+                    subtitle={"We make it both easier and safer to buy and sell Football tickets!"}
+                    />
             </Page>
             <Page style={FULL_SCREEN}>
                 <HowItWorks/>

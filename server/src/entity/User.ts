@@ -20,6 +20,9 @@ export class User {
     @Column()
     last_name: string;
 
+    @Column()
+    stripe_id: string;
+
     @Column({
         default: false
     })

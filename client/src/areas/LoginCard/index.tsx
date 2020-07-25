@@ -14,6 +14,16 @@ interface LoginComponentProps {
     title: string
 }
 
+export const TextContainer = styled(Typography.Text)`
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 56px;
+    font-family: 'Mark Pro';
+    padding-right: 25px;
+    padding-left: 25px;
+`
+
 const LoginComponent: React.FC<LoginComponentProps> = (props) => {
     const {onFinish, title} = props
 

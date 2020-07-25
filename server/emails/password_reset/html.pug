@@ -1,0 +1,11 @@
+doctype html
+head
+  title  
+h2  Reset Password 
+p
+| A password reset was requested for #{email}. If you did not authorize this, simply ignore this email
+p
+| To reset yout password, click the button below. This link will expire in 48 hours.
+a(href=`${link}` target='_blank')
+    div
+    | Reset password
