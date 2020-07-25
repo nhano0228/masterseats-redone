@@ -37,7 +37,7 @@ export class UserController extends Controller {
         createUser.password = request.password
         createUser.first_name = request.first_name
         createUser.last_name = request.last_name
-
+        createUser.hashPassword()
 
         var token: string
         try {
@@ -52,14 +52,13 @@ export class UserController extends Controller {
             })
 
             createUser.stripe_id = account.id
-
-            createUser.hashPassword()
             token = jwt.sign({   
                     email: createUser.email, 
                     email_verified: createUser.is_email_verified,
                     first_name: createUser.first_name, 
                     last_name: createUser.last_name,
                     id: createUser.id,
+                    stripe_id: createUser.stripe_id,
                 },
                 jwtSecret,
                 {}
@@ -218,4 +217,5 @@ export class UserController extends Controller {
         { expiresIn: "1h" }
     )
     }
+
 }

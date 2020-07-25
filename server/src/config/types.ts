@@ -23,7 +23,10 @@ export enum TicketStatus {
 
 export enum EmailTemplates {
     SignUpConfirmation = "signup_confirmation",
-    PasswordReset = "password_reset"
+    PasswordReset = "password_reset",
+    OrderConfirmation = 'order_confirmation',
+    SellerTransfer = 'seller_transfer',
+    TransferConfirmation = 'transfer_confirmation'
 }
 
 export interface PostTicketBody {
@@ -62,4 +65,8 @@ export interface VerifyEmailBody {
 
 export interface ForgotPasswordBody {
     email: string
+}
+
+export interface CheckoutTicket {
+    ticket_id: string
 }

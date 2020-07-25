@@ -30,6 +30,9 @@ export class Ticket {
     @ManyToOne(() => User, (user: User) => user.ticket_wallet)
     user: User;
 
+    @ManyToOne(() => User, (user: User) => user.ticket_wallet)
+    buyer?: User;
+
     @Column({
         type: "boolean",
         default: false

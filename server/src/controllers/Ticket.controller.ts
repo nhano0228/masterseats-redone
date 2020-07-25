@@ -10,10 +10,14 @@ import {
     TicketStatus, 
     SortTicketsBody, 
     PostTicketBody,
-    RemoveTicketBody
+    RemoveTicketBody,
+    CheckoutTicket,
+    EmailTemplates
     } from '../config/types';
+import {stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository';
 import jwt from 'jsonwebtoken'
+import {MailService} from '../mail'
 
 @Route('ticket/')
 export class TicketController extends Controller {
@@ -70,5 +74,99 @@ export class TicketController extends Controller {
             this.setStatus(401)
             throw new Error('Error while deleting ticket: ' + err)
           }
+    }
+
+    @Security('bearer')
+    @Post('checkout-ticket')
+    public async checkoutTicket(@Body() body: CheckoutTicket) {
+        try {
+            const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
+            const user = ticket.user
+            const price = Math.trunc(ticket.price*100)
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [{
+                    name: ticket.id,
+                    amount: price,
+                    currency: 'usd',
+                    quantity: 1,
+                }],
+                success_url: 'success url',
+                cancel_url: 'failure url',
+            });
+            return session.id
+        } catch (error) {
+            this.setStatus(401)
+            throw new Error('Error while making this transaction:' + error)
+        }
+    }
+
+    @Security('bearer')
+    @Post('order-confirmation')
+    public async orderConfirmation(@Body() body: CheckoutTicket, @Request() request: ExRequest) {
+        const jwt_info = await getFromJWT(request, ['id'], this)
+        try {
+            const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
+            const seller = ticket.user
+            const buyer = await getRepository(User).findOneOrFail(jwt_info['id'])
+            await getRepository(Ticket).update({id: body.ticket_id}, {buyer})
+            
+            const mail = new MailService()
+            mail.sendMail(seller, EmailTemplates.SellerTransfer, {
+                user: seller,
+                ticket,
+                link: "Something?"
+            })
+
+            mail.sendMail(buyer, EmailTemplates.OrderConfirmation, {
+                user: buyer,
+                ticket,
+                link: "Something?"
+            })
+        } catch (error) {
+            this.setStatus(401)
+            throw new Error('Error while confirming an order:' + error)
+        }
+    }
+
+    @Security('bearer')
+    @Post('transferred-ticket-seller-confirmation')
+    public async transferredTicketSellerConfirmation(@Body() body: CheckoutTicket) {
+        try {
+            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true})
+            const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
+
+            const mail = new MailService()
+
+            mail.sendMail(ticket.buyer, EmailTemplates.OrderConfirmation, {
+                user: ticket.buyer,
+                ticket,
+                link: "Something?"
+            })
+        } catch (error) {
+            this.setStatus(401)
+            throw new Error('Error while confirming transfer by seller:' + error)
+        }
+    }
+
+    @Security('bearer')
+    @Post('transferred-ticket-buyer-confirmation')
+    public async transferredTicketBuyerConfirmation(@Body() body: CheckoutTicket) {
+        try {
+            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true})
+            const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
+            const price = Math.trunc(ticket.price*100)
+
+            // Transfer Money
+            const transfer = await stripe.transfers.create({
+                amount: price,
+                currency: "usd",
+                destination: ticket.user.stripe_id,
+              });
+            return transfer
+        } catch (error) {
+            this.setStatus(401)
+            throw new Error('Error while confirming transfer by buyer:' + error)
+        }
     }
 }
