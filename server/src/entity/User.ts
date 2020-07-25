@@ -28,8 +28,11 @@ export class User {
     })
     is_email_verified: boolean;
 
-    @OneToMany(() => Ticket, (ticket: Ticket) => ticket.user)
+    @OneToMany(() => Ticket, (ticket: Ticket) => ticket.seller)
     ticket_wallet: Ticket[]
+
+    @OneToMany(() => Ticket, (ticket: Ticket) => ticket.buyer)
+    ticket_purchases: Ticket[]
 
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 8);

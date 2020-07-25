@@ -41,7 +41,7 @@ export class TicketController extends Controller {
         createTicket.section = body.section
 
         try {
-            createTicket.user = await getRepository(User).findOneOrFail(jwt_info['id'])
+            createTicket.seller = await getRepository(User).findOneOrFail(jwt_info['id'])
             await getConnection()
                 .createQueryBuilder()
                 .insert()
@@ -81,7 +81,7 @@ export class TicketController extends Controller {
     public async checkoutTicket(@Body() body: CheckoutTicket) {
         try {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
-            const user = ticket.user
+            const user = ticket.seller
             const price = Math.trunc(ticket.price*100)
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
@@ -107,9 +107,9 @@ export class TicketController extends Controller {
         const jwt_info = await getFromJWT(request, ['id'], this)
         try {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
-            const seller = ticket.user
+            const seller = ticket.seller
             const buyer = await getRepository(User).findOneOrFail(jwt_info['id'])
-            await getRepository(Ticket).update({id: body.ticket_id}, {buyer})
+            await getRepository(Ticket).update({id: body.ticket_id}, {buyer, status: TicketStatus.PendingTransfer})
             
             const mail = new MailService()
             mail.sendMail(seller, EmailTemplates.SellerTransfer, {
@@ -153,17 +153,15 @@ export class TicketController extends Controller {
     @Post('transferred-ticket-buyer-confirmation')
     public async transferredTicketBuyerConfirmation(@Body() body: CheckoutTicket) {
         try {
-            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true})
+            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true, status: TicketStatus.CompletedTransfer})
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
             const price = Math.trunc(ticket.price*100)
 
-            // Transfer Money
             const transfer = await stripe.transfers.create({
                 amount: price,
                 currency: "usd",
-                destination: ticket.user.stripe_id,
+                destination: ticket.seller.stripe_id,
               });
-            return transfer
         } catch (error) {
             this.setStatus(401)
             throw new Error('Error while confirming transfer by buyer:' + error)

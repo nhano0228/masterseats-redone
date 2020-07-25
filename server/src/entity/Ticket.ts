@@ -28,9 +28,9 @@ export class Ticket {
     confirmed_seller_transfer: boolean;
 
     @ManyToOne(() => User, (user: User) => user.ticket_wallet)
-    user: User;
+    seller: User;
 
-    @ManyToOne(() => User, (user: User) => user.ticket_wallet)
+    @ManyToOne(() => User, (user: User) => user.ticket_purchases)
     buyer?: User;
 
     @Column({
