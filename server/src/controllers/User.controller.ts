@@ -8,6 +8,7 @@ import * as jwt from "jsonwebtoken";
 import {jwtSecret, getFromJWT, verifyToken, stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
+import { ApiError } from 'config/ApiError';
 
 @Route('user/')
 export class UserController extends Controller {
@@ -18,18 +19,15 @@ export class UserController extends Controller {
         try {
             findUser = await getRepository(User).findOneOrFail({email: request.email})
         } catch (err) {
-            this.setStatus(401)
-            throw new Error('User does not exist: ' + err)
+            throw new ApiError('User does not exist', 401, err.message)
         }
 
         if (!findUser.checkIfUnencryptedPasswordIsValid(request.password)) {
-            this.setStatus(401)
-            throw new Error('Incorrect Password')
+            throw new ApiError('Incorrect Password', 401)
         }
         
         if (!findUser.is_email_verified) {
-            this.setStatus(410)
-            throw new Error('Please verify your email before trying to login.')
+            throw new ApiError('Email is not verified', 410)
         }
 
         return this.signToken(findUser)
@@ -75,8 +73,7 @@ export class UserController extends Controller {
                 .values(createUser)
                 .execute()
           } catch (err) {
-            this.setStatus(401)
-            throw new Error('Error while signing up: ' + err)
+            throw new ApiError('Error while signing up', 401, err)
           }
         
         const mail = new MailService()
@@ -95,8 +92,7 @@ export class UserController extends Controller {
             const user = await userRepository.findOneOrFail({email});
             return this.signToken(user)
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while retrieving user: ' + error)
+            throw new ApiError('Error while retrieving user', 401, error)
         }
     }
 
@@ -109,8 +105,7 @@ export class UserController extends Controller {
             const user = await userRepository.findOneOrFail({id: jwt_info.id});
             return user.is_email_verified
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while retrieving user: ' + error)
+            throw new ApiError('Error while retrieving user', 401, error)
         }
     }
 
@@ -122,8 +117,7 @@ export class UserController extends Controller {
             const user = await getRepository(User).findOneOrFail({id: jwt_info.id})
             return user
         } catch (err) {
-            this.setStatus(401)
-            throw new Error('Error trying to find user: ' + err)
+            throw new ApiError('Error while trying to find user', 401, err)
         }
     }
 
@@ -148,8 +142,7 @@ export class UserController extends Controller {
                 link: "https://masterseats-client.vercel.app/resetpassword?token=" + token
             })
         } catch (err) {
-            this.setStatus(401)
-            throw new Error('Error trying to find user: ' + err)
+            throw new ApiError('Error while trying to find user', 401, err)
         }
 
     }
@@ -163,8 +156,7 @@ export class UserController extends Controller {
             const email = await verifyToken(token, this)
             user = await userRepository.findOneOrFail({email});
         } catch (err) {
-            this.setStatus(401)
-            throw new Error('User does not exist: ' + err)
+            throw new ApiError('User does not exist', 401, err)
         }
 
         user.password = new_password;        
@@ -184,8 +176,7 @@ export class UserController extends Controller {
             const jwt_info = await getFromJWT(request, ["id"], this)
             user = await userRepository.findOneOrFail(jwt_info["id"]);
         } catch (err) {
-            this.setStatus(401)
-            throw new Error('User does not exist: ' + err)
+            throw new ApiError('User does not exist', 401, err)
         }
 
         user.password = new_password;        
@@ -204,8 +195,7 @@ export class UserController extends Controller {
               })
             return tickets
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while retrieving tickets: ' + error)
+            throw new ApiError('Error while trying to retrieve ticket', 401, error)
         }
     }
 

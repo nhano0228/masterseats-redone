@@ -18,6 +18,7 @@ import {stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository';
 import jwt from 'jsonwebtoken'
 import {MailService} from '../mail'
+import {ApiError} from '../config/ApiError'
 
 @Route('ticket/')
 export class TicketController extends Controller {
@@ -58,8 +59,7 @@ export class TicketController extends Controller {
                 .values(createTicket)
                 .execute()
           } catch (err) {
-            this.setStatus(401)
-            throw new Error('Error while posting ticket: ' + err)
+            throw new ApiError('Error while posting ticket', 401, err)
           }
     }
 
@@ -74,8 +74,7 @@ export class TicketController extends Controller {
                 .where("id = :id", { id: body.id })
                 .execute()
           } catch (err) {
-            this.setStatus(401)
-            throw new Error('Error while deleting ticket: ' + err)
+            throw new ApiError('Error while deleting ticket', 401, err)
           }
     }
 
@@ -97,8 +96,7 @@ export class TicketController extends Controller {
               });
             return paymentIntent.client_secret
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while making this transaction:' + error)
+            throw new ApiError('Error while making this transaction', 401, error)
         }
     }
 
@@ -125,8 +123,7 @@ export class TicketController extends Controller {
                 link: "Something?"
             })
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while confirming an order:' + error)
+            throw new ApiError('Error while confirming an order', 401, error)
         }
     }
 
@@ -145,8 +142,7 @@ export class TicketController extends Controller {
                 link: "Something?"
             })
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while confirming transfer by seller:' + error)
+            throw new ApiError('Error while confirming transfer by seller', 401, error)
         }
     }
 
@@ -164,8 +160,7 @@ export class TicketController extends Controller {
                 destination: ticket.seller.stripe_id,
               });
         } catch (error) {
-            this.setStatus(401)
-            throw new Error('Error while confirming transfer by buyer:' + error)
+            throw new ApiError('Error while confirming transfer by buyer', 401, error)
         }
     }
 }
