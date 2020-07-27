@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {PageDashboard} from '../PageUniversal'
+import {PageDashboard} from '../Universal/PageUniversal'
 import BuySection from '../Sections/Buy'
 import {UserContext} from '../../lib/UserContext'
 import {Ticket} from '../../../api'
@@ -28,7 +28,7 @@ const BuyingPage: React.FC = () => {
     }, [])
 
     return (
-        <PageDashboard isLoggedIn={currentUser === null ? false : true}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1}>
             <BuySection tickets={tickets} getTickets={getTickets}/>
         </PageDashboard>
     )

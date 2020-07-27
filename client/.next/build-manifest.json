@@ -22,11 +22,11 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/buying": [
+    "/login": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/verification": [
+    "/verify-your-email": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

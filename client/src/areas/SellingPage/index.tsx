@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from 'react'
-import {PageDashboard} from '../PageUniversal'
+import {PageDashboard} from '../Universal/PageUniversal'
 import SellSection from '../Sections/Sell'
 import {UserContext} from '../../lib/UserContext'
 import {Ticket, PostTicketBody} from '../../../api'
@@ -29,7 +29,7 @@ const SellingPage: React.FC = () => {
         await getTicketWallet()
     }
     return (
-        <PageDashboard isLoggedIn={currentUser === null ? false : true}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1}>
             <SellSection tickets={ticketWallet} postTicket={postTicket} removeTicket={removeTicket}/>
         </PageDashboard>
     )

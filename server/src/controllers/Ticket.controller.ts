@@ -41,7 +41,7 @@ export class TicketController extends Controller {
 
     @Security('bearer')
     @Post('post-ticket')
-    public async postTicket(@Body() body: PostTicketBody, @Request() request: ExRequest) {
+    public async postTicket(@Body() body: PostTicketBody, @Request() request: ExRequest): Promise<void> {
         const jwt_info = await getFromJWT(request, ['id'], this)
 
         const createTicket = new Ticket()
@@ -57,9 +57,6 @@ export class TicketController extends Controller {
                 .into(Ticket)
                 .values(createTicket)
                 .execute()
-            return {
-                message: "Successfully posted ticket."
-            }
           } catch (err) {
             this.setStatus(401)
             throw new Error('Error while posting ticket: ' + err)
@@ -68,7 +65,7 @@ export class TicketController extends Controller {
 
     @Security('bearer')
     @Post('remove-ticket')
-    public async removeTicket(@Body() body: RemoveTicketBody) {
+    public async removeTicket(@Body() body: RemoveTicketBody): Promise<void> {
         try {
             await getConnection()
                 .createQueryBuilder()
@@ -76,9 +73,6 @@ export class TicketController extends Controller {
                 .from(Ticket)
                 .where("id = :id", { id: body.id })
                 .execute()
-            return {
-                message: "Successfully removed ticket."
-            }
           } catch (err) {
             this.setStatus(401)
             throw new Error('Error while deleting ticket: ' + err)
@@ -87,23 +81,21 @@ export class TicketController extends Controller {
 
     @Security('bearer')
     @Post('checkout-ticket')
-    public async checkoutTicket(@Body() body: CheckoutTicket) {
+    public async checkoutTicket(@Body() body: CheckoutTicket): Promise<string> {
         try {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
-            const user = ticket.seller
             const price = Math.trunc(ticket.price*100)
-            const session = await stripe.checkout.sessions.create({
+
+            const paymentIntent = await stripe.paymentIntents.create({
                 payment_method_types: ['card'],
-                line_items: [{
-                    name: ticket.id,
-                    amount: price,
-                    currency: 'usd',
-                    quantity: 1,
-                }],
-                success_url: 'success url',
-                cancel_url: 'failure url',
-            });
-            return session.id
+                amount: price,
+                currency: 'usd',
+                application_fee_amount: Math.trunc(price*0.05),
+                transfer_data: {
+                  destination: ticket.seller.stripe_id,
+                },
+              });
+            return paymentIntent.client_secret
         } catch (error) {
             this.setStatus(401)
             throw new Error('Error while making this transaction:' + error)
@@ -112,7 +104,7 @@ export class TicketController extends Controller {
 
     @Security('bearer')
     @Post('order-confirmation')
-    public async orderConfirmation(@Body() body: CheckoutTicket, @Request() request: ExRequest) {
+    public async orderConfirmation(@Body() body: CheckoutTicket, @Request() request: ExRequest): Promise<void> {
         const jwt_info = await getFromJWT(request, ['id'], this)
         try {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})

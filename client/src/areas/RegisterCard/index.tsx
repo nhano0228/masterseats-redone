@@ -1,9 +1,9 @@
 import {Card, Form, Input, Button, Row, Typography, Col } from 'antd'
 import React, {useState, useContext} from 'react'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
-import Navbar from '../Navbar'
-import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Card.styled'
-import Footer from '../Footer'
+import Navbar from '../Universal/Navbar'
+import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Universal/Card.styled'
+import Footer from '../Universal/Footer'
 
 interface RegisterComponentProps {
     onFinish: (values) => void

@@ -4,10 +4,10 @@ import React, {useState, useContext} from 'react'
 import Router from 'next/router'
 import styled from 'styled-components'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
-import OpenPage from '../OpenPage'
-import Navbar from '../Navbar'
-import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Card.styled'
-import Footer from '../Footer'
+import OpenPage from '../Universal/OpenPage'
+import Navbar from '../Universal/Navbar'
+import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Universal/Card.styled'
+import Footer from '../Universal/Footer'
 
 interface LoginComponentProps {
     onFinish: (values) => void

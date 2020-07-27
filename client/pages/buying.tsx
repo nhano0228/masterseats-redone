@@ -21,6 +21,7 @@ const Buying: React.FC = () => {
         <>
             <Head>
                 <title>MasterSeats • Buying</title>
+                <script src="https://js.stripe.com/v3/"></script>
             </Head>
             {isLoading ? <Loading/> : <BuyingPage />}
             

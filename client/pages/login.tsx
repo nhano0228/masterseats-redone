@@ -3,7 +3,7 @@ import {message} from 'antd'
 import Head from 'next/head'
 import LoginCard from '../src/areas/LoginCard'
 import LoginBackground from '../src/components/LoginBackground'
-import OpenPage from '../src/areas/OpenPage'
+import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
 
 const Login: React.FC = () => {
@@ -17,7 +17,11 @@ const Login: React.FC = () => {
             await setToken(res.data)
             OpenPage('/dashboard')
         } catch (error) {
-            message.error("Your email and/or password were incorrect. Please try again.")
+            if (error.status === 410) {
+                message.info("Please remember to verify your email before trying to login.")
+            } else {
+                message.error("Your email and/or password were incorrect. Please try again.")
+            }
         }
     }
 

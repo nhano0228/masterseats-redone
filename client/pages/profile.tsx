@@ -4,7 +4,7 @@ import Head from 'next/head'
 import LoginBackground from '../src/components/LoginBackground'
 import ResetPasswordComponent from '../src/areas/LoginCard/ResetPasswordComponent'
 import ProfileComponent from '../src/areas/Profile'
-import OpenPage from '../src/areas/OpenPage'
+import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
 import { seeIfLogin } from '../src/lib'
 

@@ -26,12 +26,17 @@ export class UserController extends Controller {
             this.setStatus(401)
             throw new Error('Incorrect Password')
         }
+        
+        if (!findUser.is_email_verified) {
+            this.setStatus(410)
+            throw new Error('Please verify your email before trying to login.')
+        }
 
         return this.signToken(findUser)
     }
 
     @Post('register')
-    public async register(@Body() request: SignUpBody): Promise<string> {
+    public async register(@Body() request: SignUpBody): Promise<void> {
         const createUser = new User()
         createUser.email = request.email
         createUser.password = request.password
@@ -79,8 +84,6 @@ export class UserController extends Controller {
             user: createUser,
             link: "https://masterseats-client.vercel.app/verification?token=" + token
         })
-
-        return token
     }
 
     @Put('verify-email')
@@ -125,7 +128,7 @@ export class UserController extends Controller {
     }
 
     @Post('forgot-password-email')
-    public async forgotPasswordEmail(@Body() body: ForgotPasswordBody) {
+    public async forgotPasswordEmail(@Body() body: ForgotPasswordBody): Promise<void> {
         try {
             const user = await getRepository(User).findOneOrFail({email: body.email})
             const token = jwt.sign({   
@@ -173,7 +176,7 @@ export class UserController extends Controller {
 
     @Security('bearer')
     @Post('change-password-profile')
-    public async changePasswordFromProfile(@Request() request: ExRequest) {
+    public async changePasswordFromProfile(@Request() request: ExRequest): Promise<void> {
         const { new_password } = request.body;
         const userRepository = getRepository(User);
         var user: User;
@@ -196,8 +199,8 @@ export class UserController extends Controller {
         try {
             const jwt_info = await getFromJWT(request, ["id"], this)
             const tickets = await getCustomRepository(TicketRepository).find({
-                relations: ['user'],
-                where: { user: { id: jwt_info["id"] } },
+                relations: ['seller'],
+                where: { seller: { id: jwt_info["id"] } },
               })
             return tickets
         } catch (error) {

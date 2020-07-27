@@ -17,7 +17,8 @@ import {
 import {SearchOutlined} from '@ant-design/icons'
 import {GameSelect, FilterSelect} from '../../components/SelectOptions'
 import {UserContext} from '../../lib/UserContext'
-import OpenPage from '../OpenPage'
+import OpenPage from '../Universal/OpenPage'
+import StripeCardModal from '../SellingPage/StripeCardModal'
 
 const {useBreakpoint} = Grid
 
@@ -27,10 +28,13 @@ interface BuyProps {
 }
 
 const Buy: React.FC<BuyProps> = props => {
-    const {currentUser}  = useContext(UserContext)
+    const {currentUser, api}  = useContext(UserContext)
     const {tickets, getTickets} = props
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [filterValue, setFilterValue] = useState<FilterOptions>(undefined)
+    const [visible, setVisibility] = useState(false)
+    const [payment_secret, setPaymentSecret] = useState('')
+    const [ticket_id, setTicketId] = useState('')
     
     const screens = useBreakpoint()
     const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
@@ -45,7 +49,7 @@ const Buy: React.FC<BuyProps> = props => {
         })
     }, [screens])
 
-    const clickPurchase = () => {
+    const clickPurchase = async (ticket_id: string) => {
         if (currentUser === null) {
             message.info("Please create an account to start purchasing tickets.")
             OpenPage('/login')
@@ -56,11 +60,29 @@ const Buy: React.FC<BuyProps> = props => {
             return
         }
 
-        
+        const paymentIntent = await api.checkoutTicket({ticket_id})
+        setVisibility(true)
+        setPaymentSecret(paymentIntent.data)
+        setTicketId(ticket_id)
     }
 
     return (
         <Container>
+            <StripeCardModal 
+                visible={visible}
+                payment_intent={payment_secret}
+                onCancel={() => {
+                    setVisibility(false)
+                    setPaymentSecret('')
+                    setTicketId('')
+                }}
+                onComplete={async () => {
+                    await api.orderConfirmation({ticket_id})
+                    setVisibility(false)
+                    setPaymentSecret('')
+                    setTicketId('')
+                }}
+            />
             <FilterContainer>
                 <SelectContainer>
                     <GameSelect hasAllGames={true} value={gameValue} setValue={(e) => setGameValue(e)}/>
@@ -93,7 +115,7 @@ const Buy: React.FC<BuyProps> = props => {
                         dataIndex: 'ticketId',
                         render: (text, data) => (
                             <PurchaseContainer>
-                                <GenIconButton icon={<DollarAdjustedOutline/>} onClick={clickPurchase}>
+                                <GenIconButton icon={<DollarAdjustedOutline/>} onClick={async () => await clickPurchase(data.id)}>
                                     {screenSize !== 0 ? "Purchase" : null}
                                 </GenIconButton>
                             </PurchaseContainer>

@@ -1,10 +1,10 @@
 import React from 'react'
-import {PageDashboard} from '../PageUniversal'
-import Navbar from '../../areas/Navbar'
+import {PageDashboard} from '../Universal/PageUniversal'
+import Navbar from '../../areas/Universal/Navbar'
 import BackgroundPolygons from '../../components/BackgroundPolygons'
 import Page from '../../components/Page'
-import {LayoutNoBG, FULL_SCREEN, FULL_SCREEN_WITH_BAR} from '../PageUniversal'
-import Greetings from '../MainPage/Sections/Greetings'
+import {LayoutNoBG, FULL_SCREEN, FULL_SCREEN_WITH_BAR} from '../Universal/PageUniversal'
+import Greetings from '../Home/Sections/Greetings'
 
 const DashboardPage: React.FC = () => {
     return (
