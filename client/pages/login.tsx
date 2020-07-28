@@ -17,7 +17,7 @@ const Login: React.FC = () => {
             await setToken(res.data)
             OpenPage('/dashboard')
         } catch (error) {
-            if (error.status === 410) {
+            if (error.response.status === 410) {
                 message.info("Please remember to verify your email before trying to login.")
             } else {
                 message.error("Your email and/or password were incorrect. Please try again.")

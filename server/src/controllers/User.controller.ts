@@ -8,7 +8,7 @@ import * as jwt from "jsonwebtoken";
 import {jwtSecret, getFromJWT, verifyToken, stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
-import { ApiError } from 'config/ApiError';
+import { ApiError } from '../config/ApiError';
 
 @Route('user/')
 export class UserController extends Controller {
@@ -73,7 +73,7 @@ export class UserController extends Controller {
                 .values(createUser)
                 .execute()
           } catch (err) {
-            throw new ApiError('Error while signing up', 401, err)
+            throw new ApiError('Error while signing up', 401, err.message)
           }
         
         const mail = new MailService()
@@ -92,7 +92,7 @@ export class UserController extends Controller {
             const user = await userRepository.findOneOrFail({email});
             return this.signToken(user)
         } catch (error) {
-            throw new ApiError('Error while retrieving user', 401, error)
+            throw new ApiError('Error while retrieving user', 401, error.message)
         }
     }
 
@@ -105,7 +105,7 @@ export class UserController extends Controller {
             const user = await userRepository.findOneOrFail({id: jwt_info.id});
             return user.is_email_verified
         } catch (error) {
-            throw new ApiError('Error while retrieving user', 401, error)
+            throw new ApiError('Error while retrieving user', 401, error.message)
         }
     }
 
@@ -117,7 +117,7 @@ export class UserController extends Controller {
             const user = await getRepository(User).findOneOrFail({id: jwt_info.id})
             return user
         } catch (err) {
-            throw new ApiError('Error while trying to find user', 401, err)
+            throw new ApiError('Error while trying to find user', 401, err.message)
         }
     }
 
@@ -142,7 +142,7 @@ export class UserController extends Controller {
                 link: "https://masterseats-client.vercel.app/resetpassword?token=" + token
             })
         } catch (err) {
-            throw new ApiError('Error while trying to find user', 401, err)
+            throw new ApiError('Error while trying to find user', 401, err.message)
         }
 
     }
@@ -156,7 +156,7 @@ export class UserController extends Controller {
             const email = await verifyToken(token, this)
             user = await userRepository.findOneOrFail({email});
         } catch (err) {
-            throw new ApiError('User does not exist', 401, err)
+            throw new ApiError('User does not exist', 401, err.message)
         }
 
         user.password = new_password;        
@@ -176,7 +176,7 @@ export class UserController extends Controller {
             const jwt_info = await getFromJWT(request, ["id"], this)
             user = await userRepository.findOneOrFail(jwt_info["id"]);
         } catch (err) {
-            throw new ApiError('User does not exist', 401, err)
+            throw new ApiError('User does not exist', 401, err.message)
         }
 
         user.password = new_password;        
@@ -195,7 +195,7 @@ export class UserController extends Controller {
               })
             return tickets
         } catch (error) {
-            throw new ApiError('Error while trying to retrieve ticket', 401, error)
+            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
         }
     }
 

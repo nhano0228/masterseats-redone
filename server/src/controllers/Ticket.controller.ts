@@ -59,7 +59,7 @@ export class TicketController extends Controller {
                 .values(createTicket)
                 .execute()
           } catch (err) {
-            throw new ApiError('Error while posting ticket', 401, err)
+            throw new ApiError('Error while posting ticket', 401, err.message)
           }
     }
 
@@ -74,7 +74,7 @@ export class TicketController extends Controller {
                 .where("id = :id", { id: body.id })
                 .execute()
           } catch (err) {
-            throw new ApiError('Error while deleting ticket', 401, err)
+            throw new ApiError('Error while deleting ticket', 401, err.message)
           }
     }
 
@@ -96,7 +96,7 @@ export class TicketController extends Controller {
               });
             return paymentIntent.client_secret
         } catch (error) {
-            throw new ApiError('Error while making this transaction', 401, error)
+            throw new ApiError('Error while making this transaction', 401, error.message)
         }
     }
 
@@ -123,7 +123,7 @@ export class TicketController extends Controller {
                 link: "Something?"
             })
         } catch (error) {
-            throw new ApiError('Error while confirming an order', 401, error)
+            throw new ApiError('Error while confirming an order', 401, error.message)
         }
     }
 
@@ -142,7 +142,7 @@ export class TicketController extends Controller {
                 link: "Something?"
             })
         } catch (error) {
-            throw new ApiError('Error while confirming transfer by seller', 401, error)
+            throw new ApiError('Error while confirming transfer by seller', 401, error.message)
         }
     }
 
@@ -160,7 +160,7 @@ export class TicketController extends Controller {
                 destination: ticket.seller.stripe_id,
               });
         } catch (error) {
-            throw new ApiError('Error while confirming transfer by buyer', 401, error)
+            throw new ApiError('Error while confirming transfer by buyer', 401, error.message)
         }
     }
 }
