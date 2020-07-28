@@ -4,7 +4,7 @@ import BuyingPage from '../src/areas/BuyingPage'
 import {Ticket} from '../api'
 import { UserContext } from '../src/lib/UserContext';
 import {seeIfLogin} from '../src/lib'
-import OpenPage from '../src/areas/OpenPage'
+import OpenPage from '../src/areas/Universal/OpenPage'
 import Loading from '../src/components/Loading'
 
 const Buying: React.FC = () => {

@@ -5,7 +5,7 @@ import LoginBackground from '../src/components/LoginBackground'
 import ForgotPasswordComponent from '../src/areas/LoginCard/ForgotPasswordComponent'
 import { UserContext } from '../src/lib/UserContext'
 import { useRouter } from 'next/router'
-import OpenPage from '../src/areas/OpenPage'
+import OpenPage from '../src/areas/Universal/OpenPage'
 
 const Verification: React.FC = props => {
     const {api, setToken} = useContext(UserContext)

@@ -4,7 +4,7 @@ import Head from 'next/head'
 import SellingPage from '../src/areas/SellingPage'
 import { UserContext } from '../src/lib/UserContext';
 import {seeIfLogin} from '../src/lib'
-import OpenPage from '../src/areas/OpenPage'
+import OpenPage from '../src/areas/Universal/OpenPage'
 import styled from 'styled-components'
 import Loading from '../src/components/Loading';
 
