@@ -26,11 +26,27 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
+    "/buying": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/dashboard": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
     "/index": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/login": [
+    "/next/dist/pages/_error": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/profile": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/selling": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

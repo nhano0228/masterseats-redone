@@ -1,10 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react'
-import {StyledHeader, MenuLogoContainer, LogoBackground, MenuStyled, NavBarItemMain, NavBarItem} from './Navbar.styled'
+import {
+    StyledHeader, 
+    MenuLogoContainer, 
+    LogoBackground, 
+    MenuStyled, 
+    NavBarItemMain, 
+    NavBarItem,
+    NavButtonStyled,
+    NavDropdownContainer,
+    NavButtonStyledTitle
+} from './Navbar.styled'
 import OpenPage from './OpenPage'
 import {ScreenSize} from '../../lib'
-import {Grid} from 'antd'
+import {Grid, Dropdown, Menu} from 'antd'
 import _ from 'lodash'
 import {UserContext} from '../../lib/UserContext'
+import {ButtonLink} from '../Universal/Card.styled'
 
 const {useBreakpoint} = Grid
 
@@ -25,16 +36,40 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
-    const {currentUser} = useContext(UserContext)
+    const {currentUser, setToken} = useContext(UserContext)
     const {selected, isDashboard, isLoggedIn} = props
     const [isAtTop, setIsAtTop] = useState(true);
     const screens = useBreakpoint()
     const [screenSize, setScreenSize] = useState<ScreenSize>(undefined)
     
-    const DASHBOARD_NAV_OPTIONS: {title: string, onClick: () => void}[] = [
+    const DASHBOARD_NAV_OPTIONS: {title: string, onClick?: () => void, isDropdown?: boolean}[] = [
         {title: 'Home', onClick: () => OpenPage('/dashboard')},
-        {title: currentUser !== null ? `Welcome, ${currentUser.first_name}` : 'Profile', onClick: () => OpenPage('/profile')}
+        {isDropdown: true, title: currentUser !== null ? `Welcome, ${currentUser.first_name}` : 'Welcome'}
     ] 
+
+    const menu = (
+        <Menu>
+            <Menu.Item>
+                <NavButtonStyled onClick={() => OpenPage('/profile')}>
+                    Profile
+                </NavButtonStyled>
+                <NavButtonStyled onClick={() => OpenPage('/selling')}>
+                    Ticket Wallet
+                </NavButtonStyled>
+                <NavButtonStyled onClick={() => OpenPage('/buying')}>
+                    Buy A Ticket
+                </NavButtonStyled>
+                <NavButtonStyled onClick={async () => {
+                    localStorage.setItem('email', '')
+                    localStorage.setItem('password', '')
+                    await setToken(null)
+                    OpenPage('/')
+                }}>
+                    Log Out
+                </NavButtonStyled>
+            </Menu.Item>
+        </Menu>
+    );
 
     useEffect(() => {
         Object.entries(screens)
@@ -81,20 +116,32 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                         <img height={42} src={require('../../../assets/images/logo/logo.png')} alt={"MasterSeats Logo"}/>
                     </LogoBackground>
                 : null}
-                
                 <MenuStyled>
-                    {_.map(options, ({title, onClick}, index) => {
+                    {_.map(options, ({title, onClick, isDropdown}, index) => {
+                        if (isDropdown !== undefined) {
+                            return (
+                            <Dropdown overlay={menu} trigger={['click']}>
+                                <NavDropdownContainer>
+                                    <NavButtonStyledTitle>
+                                        {title}
+                                    </NavButtonStyledTitle>
+                                    <img height="22" width="22" src={require('../../../assets/images/profile_big.png')}/>
+                                </NavDropdownContainer>
+                            </Dropdown>
+                            )
+                        }
+
                         if (index === selected) {
                             return (
-                                    <NavBarItemMain onClick={onClick}>
-                                        {title}
-                                    </NavBarItemMain>
+                                <NavBarItemMain onClick={onClick}>
+                                    {title}
+                                </NavBarItemMain>
                             )
                         } else {
                             return (
-                                    <NavBarItem onClick={onClick}>
-                                        {title}
-                                    </NavBarItem>
+                                <NavBarItem onClick={onClick}>
+                                    {title}
+                                </NavBarItem>
                             )
                         }
                     })}

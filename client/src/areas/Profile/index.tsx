@@ -35,12 +35,6 @@ const Profile: React.FC = () => {
                 <Card bodyStyle={{marginBottom: 50, padding: 60, flexDirection: 'column', display: 'flex', alignItems: 'center'}}>
                     <Typography.Title style={{marginBottom: 45}}>Profile</Typography.Title>
                     <ResetForm onFinish={resetPassword}/>
-                    <Button onClick={async () => {
-                        localStorage.setItem('email', '')
-                        localStorage.setItem('password', '')
-                        await setToken(null)
-                        OpenPage('/')
-                    }}>Log out</Button>
                 </Card>
             </Page>
         </OuterContainer>

@@ -5,7 +5,7 @@ import {MichiganFootballGame, Ticket, TicketStatus, PostTicketBody} from '../../
 import {ScreenSize} from '../../lib'
 import AddTicketModal from '../DashboardPage/AddTicketModal'
 import {UserContext} from '../../lib/UserContext'
-import OpenPage from '../OpenPage'
+import OpenPage from '../Universal/OpenPage'
 
 const {useBreakpoint} = Grid
 

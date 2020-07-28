@@ -118,6 +118,10 @@ const GlobalInjection = createGlobalStyle`
         font-size: 20px;
     }
 
+    .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+        background-color: #fff;
+    }
+
 `
 
 const stripePromise = loadStripe("pk_test_51H8nrPLchQMoIhQGl3UZDJ34JcDjbE9TSb2Xe87daScoVjHH2H57ufdzjEp43P3vDqvpQeUcwoRo4YKcxvVZ78DD003iIXOWN1");

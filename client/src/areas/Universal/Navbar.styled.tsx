@@ -50,6 +50,39 @@ export const NavBarItemMain = styled(Menu.Item)`
     }
 `
 
+export const NavButtonStyled = styled.div`
+    font-family: 'Mark Pro Medium';
+    border-radius: 15px;
+    transition: 0.3s;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    &:hover {
+        opacity: 0.7;
+    }
+`
+
+export const NavButtonStyledTitle = styled.div`
+    font-family: 'Mark Pro Medium';
+    border-radius: 15px;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 8px;
+`
+
+export const NavDropdownContainer = styled.div`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-right: 10px;
+    &:hover {
+        opacity: 0.7;
+    }
+`
+
 export const NavBarItem = styled(NavBarItemMain)`
     background-color: rgba(0,0,0,0) !important;
     color: #00274c !important;
