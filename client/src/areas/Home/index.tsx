@@ -17,6 +17,7 @@ const MainPage: React.FC = () => {
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
                 <Greetings 
+                    isDashboard={false}
                     title={"The Sports Ticket Marketplace of the Future"}
                     subtitle={"We make it both easier and safer to buy and sell Football tickets!"}
                     />

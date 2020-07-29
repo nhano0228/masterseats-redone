@@ -16,7 +16,6 @@ interface SellProps {
 }
 
 const Sell: React.FC<SellProps> = props => {
-    const {currentUser} = useContext(UserContext)
     const {tickets, postTicket, removeTicket} = props
     const [visible, setVisibility] = useState(false)
 
@@ -35,15 +34,6 @@ const Sell: React.FC<SellProps> = props => {
 
 
     const clickAddTicket = () => {
-        if (currentUser === null) {
-            message.info("Please create an account to start selling tickets.")
-            OpenPage('/login')
-            return
-        }
-        if (!currentUser.is_email_verified) {
-            message.error("Please verify your email before trying to sell a ticket.")
-            return
-        }
         setVisibility(true)
     }
 

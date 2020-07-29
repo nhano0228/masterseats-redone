@@ -45,12 +45,17 @@ const ButtonContainer = styled.div`
 interface GreetingsProps {
     title: string
     subtitle: string
+    isDashboard: boolean
 }
 
 const Greetings: React.FC<GreetingsProps> = props => {
-    const {title, subtitle} = props
+    const {title, subtitle, isDashboard} = props
     const sellingOnClick = () => {
-        OpenPage('/selling')
+        if (isDashboard) {
+            OpenPage('/ticketwallet')
+        } else {
+            OpenPage('/sellingform')
+        }
     }
 
     const buyingOnClick = () => {

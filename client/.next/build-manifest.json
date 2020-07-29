@@ -9,10 +9,6 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/_app": [
       "static/runtime/webpack.js",
       "static/css/styles.chunk.css",
@@ -26,27 +22,11 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/buying": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/dashboard": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/index": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/next/dist/pages/_error": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/profile": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/selling": [
+    "/ticketwallet": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

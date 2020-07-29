@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                 <NavButtonStyled onClick={() => OpenPage('/profile')}>
                     Profile
                 </NavButtonStyled>
-                <NavButtonStyled onClick={() => OpenPage('/selling')}>
+                <NavButtonStyled onClick={() => OpenPage('/ticketwallet')}>
                     Ticket Wallet
                 </NavButtonStyled>
                 <NavButtonStyled onClick={() => OpenPage('/buying')}>

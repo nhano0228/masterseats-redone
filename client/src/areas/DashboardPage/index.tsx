@@ -13,6 +13,7 @@ const DashboardPage: React.FC = () => {
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
                 <Greetings 
+                    isDashboard={true}
                     title={"Welcome to MasterSeats!"}
                     subtitle={"Start buying or selling football tickets right now by clicking below!"}
                     />

@@ -21,6 +21,9 @@ const SellingPage: React.FC = () => {
 
     const postTicket = async (ticketBody: PostTicketBody) => {
         await api.postTicket(ticketBody)
+        localStorage.setItem('game', undefined)
+        localStorage.setItem('section', undefined)
+        localStorage.setItem('price', undefined)
         await getTicketWallet()
     }
 
