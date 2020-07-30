@@ -108,9 +108,10 @@ export class TicketController extends Controller {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
             const seller = ticket.seller
             const buyer = await getRepository(User).findOneOrFail(jwt_info['id'])
+            const price = ticket.price * 1.05
 
             gateway.transaction.sale({
-                amount: ticket.price + "",
+                amount: price + "",
                 paymentMethodNonce: body.nonce,
                 options: {
                   submitForSettlement: true
