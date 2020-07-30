@@ -4,6 +4,7 @@ import MasterSeatsCard from '../../components/MasterSeatsCard'
 import Navbar from '../Universal/Navbar'
 import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Universal/Card.styled'
 import Footer from '../Universal/Footer'
+import DropIn from "braintree-web-drop-in-react";
 
 interface RegisterComponentProps {
     onFinish: (values) => void
@@ -65,7 +66,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                         >
                             <Input type="password" placeholder="password1234"/>
                         </Form.Item>
-
+                        
                         <Form.Item>
                             <Row justify="center">
                                 <CardButton type="primary" htmlType="submit">

@@ -5,7 +5,7 @@ import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
 import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody } from '../config/types';
 import * as jwt from "jsonwebtoken";
-import {jwtSecret, getFromJWT, verifyToken, stripe} from '../config'
+import {jwtSecret, getFromJWT, verifyToken, stripe, gateway} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
 import { ApiError } from '../config/ApiError';
@@ -34,7 +34,7 @@ export class UserController extends Controller {
     }
 
     @Post('register')
-    public async register(@Body() request: SignUpBody): Promise<void> {
+    public async register(@Body() request: SignUpBody, @Request() req: ExRequest): Promise<void> {
         const createUser = new User()
         createUser.email = request.email
         createUser.password = request.password
@@ -44,24 +44,23 @@ export class UserController extends Controller {
 
         var token: string
         try {
-            const account = await stripe.accounts.create({
-                type: 'custom',
-                email: request.email,
-                business_type: 'individual',
-                requested_capabilities: [
-                    'card_payments',
-                    'transfers',
-                ]
-            })
+            const account = await gateway.customer.create({
+                firstName: createUser.first_name,
+                lastName: createUser.last_name,
+                email: createUser.email
+              })
 
-            createUser.stripe_id = account.id
+            console.log(account)
+
+            createUser.payment_id = account.customer.id
+
             token = jwt.sign({   
                     email: createUser.email, 
                     email_verified: createUser.is_email_verified,
                     first_name: createUser.first_name, 
                     last_name: createUser.last_name,
                     id: createUser.id,
-                    stripe_id: createUser.stripe_id,
+                    payment_id: createUser.payment_id,
                 },
                 jwtSecret,
                 {}
@@ -73,6 +72,7 @@ export class UserController extends Controller {
                 .values(createUser)
                 .execute()
           } catch (err) {
+            console.log(err)
             throw new ApiError('Error while signing up', 401, err.message)
           }
         
@@ -81,6 +81,14 @@ export class UserController extends Controller {
             user: createUser,
             link: "https://masterseats-client.vercel.app/verification?token=" + token
         })
+    }
+
+    @Security('bearer')
+    @Get('client-token')
+    public async getClientToken(@Request() request: ExRequest): Promise<string> {
+        const jwt_info = await getFromJWT(request, ["payment_id"], this)
+        const token = await gateway.clientToken.generate({customerId: jwt_info["payment_id"]})
+        return token.clientToken
     }
 
     @Put('verify-email')
@@ -131,7 +139,7 @@ export class UserController extends Controller {
                     first_name: user.first_name, 
                     last_name: user.last_name,
                     id: user.id,
-                    stripe_id: user.stripe_id,
+                    payment_id: user.payment_id,
                 },
                 jwtSecret,
                 {}
@@ -206,7 +214,7 @@ export class UserController extends Controller {
             first_name: user.first_name, 
             last_name: user.last_name,
             id: user.id,
-            stripe_id: user.stripe_id
+            payment_id: user.payment_id
         },
         jwtSecret,
         { expiresIn: "1h" }

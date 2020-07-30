@@ -16,11 +16,17 @@ const SellingForm: React.FC<SellingFormProps> = props => {
     const [form] = Form.useForm()
 
     useEffect(() => {
-        if (localStorage.getItem('game') !== undefined) {
+        if (localStorage.getItem('game') !== undefined || localStorage.getItem('game') !== '') {
             form.setFieldsValue({
                 game: localStorage.getItem('game'),
                 section: parseInt(localStorage.getItem('section')),
                 price: parseFloat(localStorage.getItem('price'))
+            })
+        } else {
+            form.setFieldsValue({
+                game: undefined,
+                section: undefined,
+                price: undefined
             })
         }
     }, [])

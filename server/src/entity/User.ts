@@ -21,7 +21,7 @@ export class User {
     last_name: string;
 
     @Column()
-    stripe_id: string;
+    payment_id: string;
 
     @Column({
         default: false

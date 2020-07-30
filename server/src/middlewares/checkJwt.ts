@@ -16,7 +16,7 @@ export const expressAuthentication = (req: Request, securityName: string, scopes
           if (err) {
             reject(err);
           } else {
-            const scopes = ["email", "email_verified", "first_name", "last_name", "id", "stripe_id"]
+            const scopes = ["email", "email_verified", "first_name", "last_name", "id", "payment_id"]
             for (const scope_int in scopes) {
               if (!(scopes[scope_int] in decoded)) {
                 reject(new Error("JWT does not contain required scope."));

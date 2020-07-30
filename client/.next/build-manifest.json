@@ -22,7 +22,7 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/dashboard": [
+    "/buying": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],

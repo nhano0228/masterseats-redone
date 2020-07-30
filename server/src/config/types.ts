@@ -69,4 +69,5 @@ export interface ForgotPasswordBody {
 
 export interface CheckoutTicket {
     ticket_id: string
+    nonce: string
 }

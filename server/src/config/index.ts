@@ -1,10 +1,18 @@
 import {Request } from 'express'
 import jwt from 'jsonwebtoken'
 import Stripe from 'stripe'
+import braintree from 'braintree'
 
 export const stripe = new Stripe('sk_test_51H8nrPLchQMoIhQGH16PhZyAnDFo7JI3LGUTzYVz57IkPpnKXLIcL5rPQopDMH7v3JaDlsJuczHfmJQHknNFcqfS00IJi0L9z5', {
     apiVersion: '2020-03-02'
 })
+
+export const gateway = braintree.connect({
+    environment: braintree.Environment.Sandbox,
+    merchantId: "yxqkzqjdj2t8kgy3",
+    publicKey: "sg72qtrbqnj3374k",
+    privateKey: "4dcec03ec3aa011acc61196dc75319f3"
+  });
 
 export const jwtSecret = "BIG DICKSSS"
 

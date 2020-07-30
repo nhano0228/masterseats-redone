@@ -33,7 +33,7 @@ const Buy: React.FC<BuyProps> = props => {
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [filterValue, setFilterValue] = useState<FilterOptions>(undefined)
     const [visible, setVisibility] = useState(false)
-    const [payment_secret, setPaymentSecret] = useState('')
+    const [token, setToken] = useState('')
     const [ticket_id, setTicketId] = useState('')
     
     const screens = useBreakpoint()
@@ -60,26 +60,27 @@ const Buy: React.FC<BuyProps> = props => {
             return
         }
 
-        const paymentIntent = await api.checkoutTicket({ticket_id})
-        setVisibility(true)
-        setPaymentSecret(paymentIntent.data)
-        setTicketId(ticket_id)
+        api.getClientToken().then((token) => {
+            setVisibility(true)
+            setToken(token.data)
+            setTicketId(ticket_id)
+        })
     }
 
     return (
         <Container>
             <StripeCardModal 
                 visible={visible}
-                payment_intent={payment_secret}
+                token={token}
                 onCancel={() => {
                     setVisibility(false)
-                    setPaymentSecret('')
+                    setToken('')
                     setTicketId('')
                 }}
-                onComplete={async () => {
-                    await api.orderConfirmation({ticket_id})
+                onComplete={async (nonce) => {
+                    await api.orderConfirmation({ticket_id, nonce})
                     setVisibility(false)
-                    setPaymentSecret('')
+                    setToken('')
                     setTicketId('')
                 }}
             />

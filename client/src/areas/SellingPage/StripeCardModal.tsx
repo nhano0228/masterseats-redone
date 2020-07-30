@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import {Modal, Button, message} from 'antd'
 import { UserContext } from '../../lib/UserContext';
+import DropIn from 'braintree-web-drop-in-react';
+import Loading from '../../components/Loading';
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -23,54 +25,35 @@ const CARD_ELEMENT_OPTIONS = {
 
 interface StripeCardProps {
     visible: boolean
-    payment_intent: string
+    token: string
     onCancel: () => void
-    onComplete: () => void
+    onComplete: (nonce: string) => void
 }
 
 const StripeCardModal: React.FC<StripeCardProps> = props => {
-    const {currentUser} = useContext(UserContext)
-    const {visible, payment_intent, onCancel, onComplete} = props
-    const stripe = useStripe();
-    const elements = useElements();
-
+    const {currentUser, api} = useContext(UserContext)
+    var instance_drop;
+    const {visible, token, onCancel, onComplete} = props
     const handlePurchase = async (event) => {
-        event.preventDefault();
-    
-        if (!stripe || !elements) {
-          return;
-        }
-    
-        const result = await stripe.confirmCardPayment(payment_intent, {
-          payment_method: {
-            card: elements.getElement(CardElement),
-            billing_details: {
-              name: currentUser.first_name + " " + currentUser.last_name,
-            },
-          }
-        });
-    
-        if (result.error) {
-            message.error(result.error.message)
-        } else {
-          if (result.paymentIntent.status === 'succeeded') {
-            onComplete()
-          } else {
-              console.log("status: " + result.paymentIntent.status)
-          }
-        }
-      };
+      const { nonce } = await instance_drop.requestPaymentMethod();
+      onComplete(nonce)
+    };
 
     return (
         <Modal
             title="Purchase Ticket"
             visible={visible}
             onCancel={onCancel}
-            footer={[
-                <Button disabled={!stripe} onClick={handlePurchase}>Confirm Ticket</Button>
-            ]}
+            onOk={handlePurchase}
             >
-            <CardElement options={CARD_ELEMENT_OPTIONS} />
+              {token === '' ?  
+                <Loading/> :
+                <DropIn 
+                  options={{authorization: token, venmo: true, paypal: true}}
+                  onInstance={(instance) => (instance_drop = instance)}
+                />
+              }
+              
         </Modal>
     );
 };

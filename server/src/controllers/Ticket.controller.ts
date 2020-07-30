@@ -3,7 +3,7 @@ import {Request as ExRequest} from 'express'
 import {Ticket} from '../entity/Ticket'
 import {User} from '../entity/User'
 import {getCustomRepository, getConnection, getRepository} from 'typeorm'
-import {jwtSecret, getFromJWT} from '../config'
+import {jwtSecret, getFromJWT, gateway} from '../config'
 import { 
     FilterOptions, 
     MichiganFootballGame, 
@@ -91,7 +91,7 @@ export class TicketController extends Controller {
                 currency: 'usd',
                 application_fee_amount: Math.trunc(price*0.05),
                 transfer_data: {
-                  destination: ticket.seller.stripe_id,
+                  destination: ticket.seller.payment_id,
                 },
               });
             return paymentIntent.client_secret
@@ -108,6 +108,15 @@ export class TicketController extends Controller {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
             const seller = ticket.seller
             const buyer = await getRepository(User).findOneOrFail(jwt_info['id'])
+
+            gateway.transaction.sale({
+                amount: ticket.price + "",
+                paymentMethodNonce: body.nonce,
+                options: {
+                  submitForSettlement: true
+                }
+            })
+
             await getRepository(Ticket).update({id: body.ticket_id}, {buyer, status: TicketStatus.PendingTransfer})
             
             const mail = new MailService()
@@ -157,7 +166,7 @@ export class TicketController extends Controller {
             const transfer = await stripe.transfers.create({
                 amount: price,
                 currency: "usd",
-                destination: ticket.seller.stripe_id,
+                destination: ticket.seller.payment_id,
               });
         } catch (error) {
             throw new ApiError('Error while confirming transfer by buyer', 401, error.message)
