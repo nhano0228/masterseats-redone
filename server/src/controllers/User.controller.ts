@@ -5,10 +5,11 @@ import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
 import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody } from '../config/types';
 import * as jwt from "jsonwebtoken";
-import {jwtSecret, getFromJWT, verifyToken, stripe, gateway} from '../config'
+import {jwtSecret, getFromJWT, verifyToken, gateway, client_hyperwallet, STARTING_LINK} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
 import { ApiError } from '../config/ApiError';
+import { v4 as uuidv4 } from 'uuid';
 
 @Route('user/')
 export class UserController extends Controller {
@@ -42,45 +43,79 @@ export class UserController extends Controller {
         createUser.last_name = request.last_name
         createUser.hashPassword()
 
+        const hyperwalletData = {
+            clientUserId: uuidv4(),
+            profileType: "INDIVIDUAL",
+            firstName: createUser.first_name,
+            lastName: createUser.last_name,
+            email: createUser.email,
+            dateOfBirth: request.dob,
+            addressLine1: request.address,
+            city: request.city,
+            stateProvince: request.state,
+            country: request.country,
+            postalCode: request.zipcode,
+        };
+
         var token: string
         try {
-            const account = await gateway.customer.create({
+            const braintree_account = await gateway.customer.create({
                 firstName: createUser.first_name,
                 lastName: createUser.last_name,
                 email: createUser.email
-              })
+            })
+            
+            client_hyperwallet.createUser(hyperwalletData, async (errors, body, res) => {
+                if (errors) {
+                    console.log("Create User Failed");
+                    console.log(errors);
+                    throw new ApiError('Error while signing up', 401, errors)
+                } else {
+                    console.log("Create User Response");
+                    console.log(body);
+                    createUser.seller_payment_id = body.token
+                    createUser.payment_id = braintree_account.customer.id
+       
+                    token = jwt.sign({   
+                            email: createUser.email, 
+                            email_verified: createUser.is_email_verified,
+                            first_name: createUser.first_name, 
+                            last_name: createUser.last_name,
+                            id: createUser.id,
+                            payment_id: createUser.payment_id,
+                        },
+                            jwtSecret,
+                        {}
+                    )
 
-            console.log(account)
+                    await getConnection()
+                        .createQueryBuilder()
+                        .insert()
+                        .into(User)
+                        .values(createUser)
+                        .execute()
+        
+                    const mail = new MailService()
+                    mail.sendMail(createUser, EmailTemplates.SignUpConfirmation, {
+                        user: createUser,
+                        link: STARTING_LINK + "verification?token=" + token
+                    })
 
-            createUser.payment_id = account.customer.id
+                    client_hyperwallet.createTransferMethod(createUser.seller_payment_id, {
+                        type: "VENMO_ACCOUNT",
+                        transferMethodCountry: "US",
+                        transferMethodCurrency: "USD",
+                        accountId: request.venmo_phone + ""
+                    }, (errors, body, res) => {
+                        console.log(body)
+                    })
+                }
+             })
 
-            token = jwt.sign({   
-                    email: createUser.email, 
-                    email_verified: createUser.is_email_verified,
-                    first_name: createUser.first_name, 
-                    last_name: createUser.last_name,
-                    id: createUser.id,
-                    payment_id: createUser.payment_id,
-                },
-                jwtSecret,
-                {}
-            )
-            await getConnection()
-                .createQueryBuilder()
-                .insert()
-                .into(User)
-                .values(createUser)
-                .execute()
           } catch (err) {
             console.log(err)
             throw new ApiError('Error while signing up', 401, err.message)
           }
-        
-        const mail = new MailService()
-        mail.sendMail(createUser, EmailTemplates.SignUpConfirmation, {
-            user: createUser,
-            link: "https://masterseats-client.vercel.app/verification?token=" + token
-        })
     }
 
     @Security('bearer')
@@ -147,7 +182,7 @@ export class UserController extends Controller {
             const mail = new MailService()
             mail.sendMail(user, EmailTemplates.PasswordReset, {
                 email: body.email,
-                link: "https://masterseats-client.vercel.app/resetpassword?token=" + token
+                link: STARTING_LINK + "resetpassword?token=" + token
             })
         } catch (err) {
             throw new ApiError('Error while trying to find user', 401, err.message)

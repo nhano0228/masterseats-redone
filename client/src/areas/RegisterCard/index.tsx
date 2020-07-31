@@ -1,10 +1,25 @@
-import {Card, Form, Input, Button, Row, Typography, Col } from 'antd'
+import {Card, Form, Input, Button, Row, Typography, Col, DatePicker } from 'antd'
 import React, {useState, useContext} from 'react'
 import MasterSeatsCard from '../../components/MasterSeatsCard'
 import Navbar from '../Universal/Navbar'
 import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Universal/Card.styled'
 import Footer from '../Universal/Footer'
+import MaskedInput from 'antd-mask-input'
 import DropIn from "braintree-web-drop-in-react";
+import styled from 'styled-components'
+
+const ExternalContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+`
+
+const InternalContainer = styled.div`
+    margin-left: 15px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+`
 
 interface RegisterComponentProps {
     onFinish: (values) => void
@@ -18,55 +33,106 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
         <OuterContainer>
             <Navbar isLoggedIn={false} selected={2}/>
             <CardContainer>
-                <MasterSeatsCard style={{maxWidth: 450}} withLink={true}>
+                <MasterSeatsCard style={{maxWidth: 950}} withLink={true}>
                     <Form
                         hideRequiredMark={true}
                         name="basic"
                         initialValues={{ remember: true }}
                         onFinish={onFinish}
                     >
+                        <ExternalContainer>
+                            <InternalContainer>
+                                <Form.Item
+                                    label="First Name"
+                                    name="first_name"
+                                    rules={[{ required: true, message: 'First Name is required' }]}
+                                >
+                                    <Input placeholder="John"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            label="First Name"
-                            name="first_name"
-                            rules={[{ required: true, message: 'First Name is required' }]}
-                        >
-                            <Input placeholder="John"/>
-                        </Form.Item>
+                                <Form.Item
+                                    label="Last Name"
+                                    name="last_name"
+                                    rules={[{ required: true, message: 'Last Name is required' }]}
+                                >
+                                    <Input placeholder="Smith"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            label="Last Name"
-                            name="last_name"
-                            rules={[{ required: true, message: 'Last Name is required' }]}
-                        >
-                            <Input placeholder="Smith"/>
-                        </Form.Item>
+                                <Form.Item
+                                    label="UMich Unique ID"
+                                    name="uniq_id"
+                                    rules={[{ required: true, message: 'Email is required' }]}
+                                >
+                                    <Input placeholder="uniqid1234@umich.edu"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            label="UMich Unique ID"
-                            name="uniq_id"
-                            rules={[{ required: true, message: 'Email is required' }]}
-                        >
-                            <Input placeholder="uniqid1234" suffix={'@umich.edu'}/>
-                        </Form.Item>
+                                <Form.Item
+                                    label="New Password"
+                                    name="password"
+                                    rules={[{ required: true, message: 'Password is required' }]}
+                                >
+                                    <Input type="password" placeholder="password1234"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            label="New Password"
-                            name="password"
-                            rules={[{ required: true, message: 'Password is required' }]}
-                        >
-                            <Input type="password" placeholder="password1234"/>
-                        </Form.Item>
+                                <Form.Item
+                                    label="Repeat Password"
+                                    name="rep_password"
+                                    rules={[{ required: true, message: 'Password is required' }]}
+                                >
+                                    <Input type="password" placeholder="password1234"/>
+                                </Form.Item>
+                            </InternalContainer>
+                            <InternalContainer>
+                                <Form.Item
+                                    label="Phone Number Connected To Venmo"
+                                    name="phone"
+                                    rules={[{ required: true, message: 'Phone Number is required' }]}
+                                >
+                                    <MaskedInput mask="111-111-1111" placeholder="555-555-5555"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            style={{marginBottom: 0}}
-                            label="Repeat Password"
-                            name="rep_password"
-                            rules={[{ required: true, message: 'Password is required' }]}
-                        >
-                            <Input type="password" placeholder="password1234"/>
-                        </Form.Item>
-                        
+                                <Form.Item
+                                    label="Date of Birth"
+                                    name="dob"
+                                    rules={[{ required: true, message: 'Date of Birth is required' }]}
+                                >
+                                    <DatePicker />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Address"
+                                    name="address"
+                                    rules={[{ required: true, message: 'Address is required' }]}
+                                >
+                                    <Input placeholder="555 South University Avenue"/>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="City"
+                                    name="city"
+                                    rules={[{ required: true, message: 'City is required' }]}
+                                >
+                                    <Input placeholder="Ann Arbor"/>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="State"
+                                    name="state"
+                                    rules={[{ required: true, message: 'State is required' }]}
+                                >
+                                    <Input maxLength={2} placeholder="MI"/>
+                                </Form.Item>
+
+                                <Form.Item
+                                    style={{marginBottom: 0}}
+                                    label="Zip Code"
+                                    name="zipcode"
+                                    rules={[{ required: true, message: 'Zip Code is required' }]}
+                                >
+                                    <Input placeholder="10000"/>
+                                </Form.Item>
+                            </InternalContainer>
+                        </ExternalContainer>
                         <Form.Item>
                             <Row justify="center">
                                 <CardButton type="primary" htmlType="submit">

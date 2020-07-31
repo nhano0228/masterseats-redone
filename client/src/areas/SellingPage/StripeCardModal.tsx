@@ -1,27 +1,8 @@
 import React, { useContext } from 'react';
-import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import {Modal, Button, message} from 'antd'
 import { UserContext } from '../../lib/UserContext';
 import DropIn from 'braintree-web-drop-in-react';
 import Loading from '../../components/Loading';
-
-const CARD_ELEMENT_OPTIONS = {
-  style: {
-    base: {
-      color: "#32325d",
-      fontFamily: `"Mark Pro Bold", "Helvetica Neue", Helvetica, sans-serif`,
-      fontSize: "16px",
-      fontWeight: '800',
-      "::placeholder": {
-        color: "#aab7c4",
-      },
-    },
-    invalid: {
-      color: "#fa755a",
-      iconColor: "#fa755a",
-    },
-  },
-};
 
 interface StripeCardProps {
     visible: boolean

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Modal, Form, Input, Row} from 'antd'
+import {Modal, Form, Input, Row, InputNumber} from 'antd'
 import {GenButton} from '../DashboardPage/DashboardPage.styled'
 import {GameSelect, SectionSelect} from '../../components/SelectOptions'
 import {MichiganFootballGame, PostTicketBody} from '../../../api'
@@ -16,17 +16,11 @@ const SellingForm: React.FC<SellingFormProps> = props => {
     const [form] = Form.useForm()
 
     useEffect(() => {
-        if (localStorage.getItem('game') !== undefined || localStorage.getItem('game') !== '') {
+        if (localStorage.getItem('game') !== undefined && localStorage.getItem('game') !== '') {
             form.setFieldsValue({
                 game: localStorage.getItem('game'),
                 section: parseInt(localStorage.getItem('section')),
                 price: parseFloat(localStorage.getItem('price'))
-            })
-        } else {
-            form.setFieldsValue({
-                game: undefined,
-                section: undefined,
-                price: undefined
             })
         }
     }, [])
@@ -68,7 +62,7 @@ const SellingForm: React.FC<SellingFormProps> = props => {
                     name="price"
                     rules={[{ required: true, message: 'Listing Price is required' }]}
                 >
-                    <Input type="section" placeholder="25" prefix={"$"}/>
+                    <InputNumber type="price" placeholder="25.00" step={0.01} prefix={"$"}/>
                 </Form.Item>
 
                 <Form.Item

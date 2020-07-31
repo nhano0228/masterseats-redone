@@ -48,6 +48,13 @@ export interface LoginBody {
 export interface SignUpBody extends LoginBody {
     first_name: string
     last_name: string
+    venmo_phone: number
+    dob: string
+    address: string
+    city: string
+    state: string
+    country: string
+    zipcode: string
 }
 
 export interface ChangePassword {
@@ -67,7 +74,12 @@ export interface ForgotPasswordBody {
     email: string
 }
 
+
 export interface CheckoutTicket {
+    ticket_id: string
+}
+
+export interface OrderConfirmation {
     ticket_id: string
     nonce: string
 }

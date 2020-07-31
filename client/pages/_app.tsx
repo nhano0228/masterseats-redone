@@ -5,8 +5,6 @@ import {createGlobalStyle} from 'styled-components'
 import { NextSeo } from 'next-seo';
 import media from 'styled-media-query'
 import UserProvider from '../src/lib/UserContext'
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
 
 const GlobalInjection = createGlobalStyle`
     .ant-table-cell {
@@ -124,8 +122,6 @@ const GlobalInjection = createGlobalStyle`
 
 `
 
-const stripePromise = loadStripe("pk_test_51H8nrPLchQMoIhQGl3UZDJ34JcDjbE9TSb2Xe87daScoVjHH2H57ufdzjEp43P3vDqvpQeUcwoRo4YKcxvVZ78DD003iIXOWN1");
-
 export default function App({ Component, pageProps }) {
     return (
         <>
@@ -144,9 +140,7 @@ export default function App({ Component, pageProps }) {
                 />
             <GlobalInjection/>
             <UserProvider>
-                <Elements stripe={stripePromise}>
-                    <Component {...pageProps} />
-                </Elements>
+                <Component {...pageProps} />
             </UserProvider>
         </>
     )

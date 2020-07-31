@@ -1,6 +1,6 @@
 import {EntityRepository, Repository} from "typeorm";
 import {Ticket} from "../entity/Ticket";
-import { MichiganFootballGame, FilterOptions } from "../config/types";
+import { MichiganFootballGame, FilterOptions, TicketStatus } from "../config/types";
 
 @EntityRepository(Ticket)
 export class TicketRepository extends Repository<Ticket> {
@@ -12,6 +12,7 @@ export class TicketRepository extends Repository<Ticket> {
         var res = this.createQueryBuilder("ticket")
         if (game !== undefined) {
             res = res.where("ticket.game = :game", {game})
+                    .andWhere("ticket.status = :status", { status: TicketStatus.Open })
         }
 
         if (filter !== undefined) {
@@ -42,8 +43,10 @@ export class TicketRepository extends Repository<Ticket> {
         if (game !== undefined) {
             res = res.where(`ticket."sellerId" != :id`, {id})
                     .andWhere("ticket.game = :game", {game})
+                    .andWhere("ticket.status = :status", { status: TicketStatus.Open })
         } else {
             res = res.where(`ticket."sellerId" != :id`, {id})
+                    .andWhere("ticket.status = :status", { status: TicketStatus.Open })
         }
 
         if (filter !== undefined) {

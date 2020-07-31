@@ -13,7 +13,7 @@ export class Ticket {
     @Column("integer")
     section: number;
 
-    @Column("decimal")
+    @Column("decimal", {scale: 2})
     price: number;
 
     @Column({

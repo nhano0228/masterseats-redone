@@ -1,11 +1,13 @@
 import {Request } from 'express'
 import jwt from 'jsonwebtoken'
-import Stripe from 'stripe'
 import braintree from 'braintree'
+import Hyperwallet from 'hyperwallet-sdk'
 
-export const stripe = new Stripe('sk_test_51H8nrPLchQMoIhQGH16PhZyAnDFo7JI3LGUTzYVz57IkPpnKXLIcL5rPQopDMH7v3JaDlsJuczHfmJQHknNFcqfS00IJi0L9z5', {
-    apiVersion: '2020-03-02'
-})
+export const client_hyperwallet = new Hyperwallet({
+    username: "restapiuser@49022191610",
+    password: "Dogshitamiright1!",
+    programToken: "prg-f1ab84b4-84d5-4178-a299-af4a65be81e4",
+});
 
 export const gateway = braintree.connect({
     environment: braintree.Environment.Sandbox,
@@ -15,6 +17,8 @@ export const gateway = braintree.connect({
   });
 
 export const jwtSecret = "BIG DICKSSS"
+
+export const STARTING_LINK = "https://masterseats-client.vercel.app/"
 
 export const getFromJWT = async (request: Request, sections: [string], self): Promise<{[key: string]: string}> => {
     const token = request.headers.authorization.replace('Bearer ', '') as string

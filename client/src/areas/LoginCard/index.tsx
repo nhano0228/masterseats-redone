@@ -43,7 +43,7 @@ const LoginComponent: React.FC<LoginComponentProps> = (props) => {
                             name="uniq_id"
                             rules={[{ required: true, message: 'Email is required' }]}
                         >
-                            <Input placeholder="Email" suffix={'@umich.edu'}/>
+                            <Input placeholder="Email"/>
                         </Form.Item>
 
                         <Form.Item

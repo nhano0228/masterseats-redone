@@ -3,7 +3,7 @@ import {Request as ExRequest} from 'express'
 import {Ticket} from '../entity/Ticket'
 import {User} from '../entity/User'
 import {getCustomRepository, getConnection, getRepository} from 'typeorm'
-import {jwtSecret, getFromJWT, gateway} from '../config'
+import {jwtSecret, getFromJWT, gateway, client_hyperwallet, STARTING_LINK} from '../config'
 import { 
     FilterOptions, 
     MichiganFootballGame, 
@@ -12,9 +12,9 @@ import {
     PostTicketBody,
     RemoveTicketBody,
     CheckoutTicket,
-    EmailTemplates
+    EmailTemplates,
+    OrderConfirmation
     } from '../config/types';
-import {stripe} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository';
 import jwt from 'jsonwebtoken'
 import {MailService} from '../mail'
@@ -79,30 +79,8 @@ export class TicketController extends Controller {
     }
 
     @Security('bearer')
-    @Post('checkout-ticket')
-    public async checkoutTicket(@Body() body: CheckoutTicket): Promise<string> {
-        try {
-            const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
-            const price = Math.trunc(ticket.price*100)
-
-            const paymentIntent = await stripe.paymentIntents.create({
-                payment_method_types: ['card'],
-                amount: price,
-                currency: 'usd',
-                application_fee_amount: Math.trunc(price*0.05),
-                transfer_data: {
-                  destination: ticket.seller.payment_id,
-                },
-              });
-            return paymentIntent.client_secret
-        } catch (error) {
-            throw new ApiError('Error while making this transaction', 401, error.message)
-        }
-    }
-
-    @Security('bearer')
     @Post('order-confirmation')
-    public async orderConfirmation(@Body() body: CheckoutTicket, @Request() request: ExRequest): Promise<void> {
+    public async orderConfirmation(@Body() body: OrderConfirmation, @Request() request: ExRequest): Promise<void> {
         const jwt_info = await getFromJWT(request, ['id'], this)
         try {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
@@ -110,7 +88,7 @@ export class TicketController extends Controller {
             const buyer = await getRepository(User).findOneOrFail(jwt_info['id'])
             const price = ticket.price * 1.05
 
-            gateway.transaction.sale({
+            const sale = await gateway.transaction.sale({
                 amount: price + "",
                 paymentMethodNonce: body.nonce,
                 options: {
@@ -118,19 +96,21 @@ export class TicketController extends Controller {
                 }
             })
 
+            console.log(sale)
+
             await getRepository(Ticket).update({id: body.ticket_id}, {buyer, status: TicketStatus.PendingTransfer})
             
             const mail = new MailService()
             mail.sendMail(seller, EmailTemplates.SellerTransfer, {
                 user: seller,
+                buyer,
                 ticket,
-                link: "Something?"
+                link: STARTING_LINK + "ticketwallet"
             })
 
             mail.sendMail(buyer, EmailTemplates.OrderConfirmation, {
                 user: buyer,
-                ticket,
-                link: "Something?"
+                ticket
             })
         } catch (error) {
             throw new ApiError('Error while confirming an order', 401, error.message)
@@ -146,10 +126,10 @@ export class TicketController extends Controller {
 
             const mail = new MailService()
 
-            mail.sendMail(ticket.buyer, EmailTemplates.OrderConfirmation, {
+            mail.sendMail(ticket.buyer, EmailTemplates.TransferConfirmation, {
                 user: ticket.buyer,
                 ticket,
-                link: "Something?"
+                link: STARTING_LINK + "ticketwallet"
             })
         } catch (error) {
             throw new ApiError('Error while confirming transfer by seller', 401, error.message)
@@ -162,13 +142,18 @@ export class TicketController extends Controller {
         try {
             await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true, status: TicketStatus.CompletedTransfer})
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
-            const price = Math.trunc(ticket.price*100)
+            const seller = ticket.seller
+            const price = ticket.price
 
-            const transfer = await stripe.transfers.create({
-                amount: price,
-                currency: "usd",
-                destination: ticket.seller.payment_id,
-              });
+            client_hyperwallet.createPayment({
+                amount: price + "",
+                currency: "USD",
+                destinationToken: seller.seller_payment_id,
+                purpose: "OTHER",
+                clientPaymentId: ticket.id
+            }, (errors, body, res) => {
+                console.log(body)
+            })
         } catch (error) {
             throw new ApiError('Error while confirming transfer by buyer', 401, error.message)
         }

@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     const { setToken, api } = useContext(UserContext)
     const onFinish = async ({uniq_id, password}) => {
         try {
-            const email = uniq_id + "@umich.edu"
+            const email = uniq_id
             const res = await api.login({email, password})
             localStorage.setItem('email', email)
             localStorage.setItem('password', password)

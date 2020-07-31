@@ -23,6 +23,9 @@ export class User {
     @Column()
     payment_id: string;
 
+    @Column()
+    seller_payment_id: string;
+
     @Column({
         default: false
     })

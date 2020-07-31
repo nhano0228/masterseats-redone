@@ -21,6 +21,7 @@ const Verification: React.FC = props => {
             } catch (err) {
                 message.error("There was a problem verifying your account. Please contact us.")
             }
+            message.success("Thank you for verifying your email!")
             OpenPage('/dashboard')
         }
 
