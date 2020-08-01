@@ -69,4 +69,12 @@ export class TicketRepository extends Repository<Ticket> {
         return res.getMany()
     }
 
+    getTicketsByStatus(id: string, status: TicketStatus) {
+        const res = this.createQueryBuilder("ticket")
+                    .where(`ticket."buyerId" != :id`, {id})
+                    .andWhere("ticket.status = :status", { status })
+
+        return res.getMany()
+    }
+
 }

@@ -39,6 +39,29 @@ export class TicketController extends Controller {
         return ticket_arr
     }
 
+    @Security('bearer')
+    @Get('get-pending-tickets')
+    public async getPendingTickets(@Request() req: ExRequest): Promise<Ticket[]> {
+        const jwt_info = await getFromJWT(req, ['id'], this)
+        const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.PendingTransfer)
+        return ticket_arr
+    }
+
+    @Security('bearer')
+    @Get('get-completed-tickets')
+    public async getCompletedTickets(@Request() req: ExRequest): Promise<Ticket[]> {
+        const jwt_info = await getFromJWT(req, ['id'], this)
+        const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.CompletedTransfer)
+        return ticket_arr
+    }
+
+    @Security('bearer')
+    @Post('refund-ticket')
+    public async refundTicket(@Body() body: RemoveTicketBody): Promise<void> {
+        const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.id})
+        await gateway.transaction.refund(ticket.transactionId)
+        await getRepository(Ticket).update({id: body.id}, {confirmed_seller_transfer: false, confirmed_buyer_transfer: false, buyer: null, status: TicketStatus.Open})
+    }
 
     @Security('bearer')
     @Post('post-ticket')
@@ -96,9 +119,9 @@ export class TicketController extends Controller {
                 }
             })
 
-            console.log(sale)
+            console.log(sale.transaction.id)
 
-            await getRepository(Ticket).update({id: body.ticket_id}, {buyer, status: TicketStatus.PendingTransfer})
+            await getRepository(Ticket).update({id: body.ticket_id}, {transactionId: sale.transaction.id, buyer, status: TicketStatus.PendingTransfer})
             
             const mail = new MailService()
             mail.sendMail(seller, EmailTemplates.SellerTransfer, {

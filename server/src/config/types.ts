@@ -74,7 +74,6 @@ export interface ForgotPasswordBody {
     email: string
 }
 
-
 export interface CheckoutTicket {
     ticket_id: string
 }

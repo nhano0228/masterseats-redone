@@ -33,6 +33,9 @@ export class Ticket {
     @ManyToOne(() => User, (user: User) => user.ticket_purchases, {eager: true})
     buyer?: User;
 
+    @Column({type: "varchar", nullable: true})
+    transactionId?: string;
+
     @Column({
         type: "boolean",
         default: false
