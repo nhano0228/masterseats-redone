@@ -3,7 +3,7 @@ import {User} from '../entity/User'
 import {Ticket} from '../entity/Ticket'
 import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
-import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody } from '../config/types';
+import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody, TicketStatus } from '../config/types';
 import * as jwt from "jsonwebtoken";
 import {jwtSecret, getFromJWT, verifyToken, gateway, client_hyperwallet, STARTING_LINK} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
@@ -232,10 +232,8 @@ export class UserController extends Controller {
     public async getTicketWallet(@Request() request: ExRequest): Promise<Ticket[]> {
         try {
             const jwt_info = await getFromJWT(request, ["id"], this)
-            const tickets = await getCustomRepository(TicketRepository).find({
-                relations: ['seller'],
-                where: { seller: { id: jwt_info["id"] } },
-              })
+            const tickets = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.Open)
+   
             return tickets
         } catch (error) {
             throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
