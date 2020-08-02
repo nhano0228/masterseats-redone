@@ -19,6 +19,7 @@ import {GameSelect, FilterSelect} from '../../components/SelectOptions'
 import {UserContext} from '../../lib/UserContext'
 import OpenPage from '../Universal/OpenPage'
 import PurchaseTicketModal from './PurchaseTicketModal'
+import {serialize} from '../../lib'
 
 const {useBreakpoint} = Grid
 

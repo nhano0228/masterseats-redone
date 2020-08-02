@@ -1,7 +1,7 @@
 import React from 'react'
 import {Modal} from 'antd'
 import {PostTicketBody} from '../../../api'
-import SellingForm from '../TicketWallet/SellingForm'
+import SellingForm from './SellingForm'
 
 interface AddTicketModalProps {
     visible: boolean

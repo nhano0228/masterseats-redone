@@ -3,6 +3,7 @@ import {Modal, Button, message} from 'antd'
 import { UserContext } from '../../lib/UserContext';
 import DropIn from 'braintree-web-drop-in-react';
 import Loading from '../../components/Loading';
+import OpenPage from '../Universal/OpenPage'
 
 interface PurchaseTicketModalProps {
     visible: boolean

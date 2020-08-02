@@ -3,7 +3,7 @@ import {Table, Modal, Grid, message} from 'antd'
 import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline} from '../../DashboardPage/DashboardPage.styled'
 import {MichiganFootballGame, Ticket, TicketStatus, PostTicketBody} from '../../../../api'
 import {ScreenSize} from '../../../lib'
-import AddTicketModal from '../../DashboardPage/AddTicketModal'
+import AddTicketModal from '../AddTicketModal'
 import {UserContext} from '../../../lib/UserContext'
 import OpenPage from '../../Universal/OpenPage'
 
