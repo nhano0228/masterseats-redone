@@ -26,7 +26,8 @@ export enum EmailTemplates {
     PasswordReset = "password_reset",
     OrderConfirmation = 'order_confirmation',
     SellerTransfer = 'seller_transfer',
-    TransferConfirmation = 'transfer_confirmation'
+    TransferConfirmation = 'transfer_confirmation',
+    PayoutTicket = 'payout_ticket'
 }
 
 export interface PostTicketBody {
@@ -48,7 +49,10 @@ export interface LoginBody {
 export interface SignUpBody extends LoginBody {
     first_name: string
     last_name: string
-    venmo_phone: number
+    venmo_phone: string
+}
+
+export interface HyperWalletBody {
     dob: string
     address: string
     city: string

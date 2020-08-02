@@ -24,6 +24,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", "src/areas/Home/Sections"
+    "**/*.tsx", 
+    "src/areas/Home/Sections",
+    "src/areas/TicketWallet/Sections"
   ]
 }

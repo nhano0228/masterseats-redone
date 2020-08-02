@@ -1,4 +1,4 @@
-import {EntityRepository, Repository} from "typeorm";
+import {EntityRepository, Repository, Brackets} from "typeorm";
 import {Ticket} from "../entity/Ticket";
 import { MichiganFootballGame, FilterOptions, TicketStatus } from "../config/types";
 
@@ -69,10 +69,21 @@ export class TicketRepository extends Repository<Ticket> {
         return res.getMany()
     }
 
+    getTicketsByStatusByUser(id: string, spec: string, status: TicketStatus) {
+        const res = this.createQueryBuilder("ticket")
+                    .where(`ticket."${spec}" = :id`, {id})
+                    .andWhere("ticket.status = :status", { status })
+
+        return res.getMany()
+    }
+
     getTicketsByStatus(id: string, status: TicketStatus) {
         const res = this.createQueryBuilder("ticket")
-                    .where(`ticket."buyerId" != :id`, {id})
-                    .andWhere("ticket.status = :status", { status })
+                    .where("ticket.status = :status", { status })
+                    .andWhere(new Brackets(qb => {
+                        qb.where(`ticket."buyerId" = :id`, {id})
+                        .orWhere(`ticket."sellerId" = :id`, {id})
+                    }))
 
         return res.getMany()
     }

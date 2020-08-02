@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {PageDashboard} from '../Universal/PageUniversal'
-import BuySection from '../Sections/Buy'
+import BuySection from './Buy'
 import {UserContext} from '../../lib/UserContext'
 import {Ticket} from '../../../api'
 

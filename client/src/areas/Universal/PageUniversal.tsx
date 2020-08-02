@@ -18,6 +18,8 @@ interface PageDashboardProps {
     children: ReactNode
     isLoggedIn?: boolean
     selected?: number
+    cardStyle?: React.CSSProperties,
+    pageStyle?: React.CSSProperties
 }
 
 export const PageDashboard: React.FC<PageDashboardProps> = (props) => {
@@ -25,8 +27,8 @@ export const PageDashboard: React.FC<PageDashboardProps> = (props) => {
         <LayoutNoBG>
             <Navbar isLoggedIn={props.isLoggedIn === undefined ? true : props.isLoggedIn} isDashboard={true} selected={props.selected !== undefined ? props.selected : 0}/>
             <BackgroundPolygons/>
-            <Page style={{...FULL_SCREEN_WITH_BAR, backgroundColor: '#FFCB05', paddingLeft: 0, paddingRight: 0}}>
-                <Card style={{marginBottom: 50}}>
+            <Page style={{ ...FULL_SCREEN_WITH_BAR, ...props.pageStyle, backgroundColor: '#FFCB05', paddingLeft: 0, paddingRight: 0}}>
+                <Card style={{...props.cardStyle, marginBottom: 50}}>
                     {props.children}
                 </Card>
             </Page>

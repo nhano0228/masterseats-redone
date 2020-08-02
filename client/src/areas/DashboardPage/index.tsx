@@ -1,5 +1,4 @@
 import React from 'react'
-import {PageDashboard} from '../Universal/PageUniversal'
 import Navbar from '../../areas/Universal/Navbar'
 import BackgroundPolygons from '../../components/BackgroundPolygons'
 import Page from '../../components/Page'

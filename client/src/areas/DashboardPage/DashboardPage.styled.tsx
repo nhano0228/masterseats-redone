@@ -1,12 +1,18 @@
 import styled from 'styled-components'
 import {Button, Select, Typography} from 'antd'
-import {DollarOutlined, CloseOutlined, PlusCircleOutlined} from '@ant-design/icons'
+import {DollarOutlined, CloseOutlined, PlusCircleOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
 import React, {CSSProperties} from 'react'
 import {MichiganFootballGame} from '../../../api'
 import media from "styled-media-query";
 
 
 export const PlusCircleAdjustedOutline = styled(PlusCircleOutlined)`
+    ${media.lessThan("small")`
+        font-size: 20px;
+    `}
+`
+
+export const ExclamationCircleAdjustedOutlined = styled(ExclamationCircleOutlined)`
     ${media.lessThan("small")`
         font-size: 20px;
     `}

@@ -22,3 +22,18 @@ export const seeIfLogin = async (api, setToken, cb?: () => void) => {
         typeof cb === 'function' && cb()
     }
 }
+
+export const serialize = function(obj) {
+    var str = [],
+      p;
+    for (p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        var k = p,
+          v = obj[p];
+        str.push((v !== null && typeof v === "object") ?
+          serialize(v) :
+          encodeURIComponent(k) + "=" + encodeURIComponent(v));
+      }
+    }
+    return str.join("&");
+}

@@ -32,4 +32,14 @@ export class MailService {
       locals
     }).then(console.log).catch(console.error)
   } 
+
+  sendToElan(locals) {
+    this.email.send({
+      template: EmailTemplates.PayoutTicket,
+      message: {
+        to: 'elant123@gmail.com'
+      },
+      locals
+    }).then(console.log).catch(console.error)
+  }
 } 

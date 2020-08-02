@@ -22,7 +22,12 @@ const Verification: React.FC = props => {
                 message.error("There was a problem verifying your account. Please contact us.")
             }
             message.success("Thank you for verifying your email!")
-            OpenPage('/dashboard')
+
+            if (localStorage.getItem('game')) {
+                OpenPage('/ticketwallet?fromverify')
+            } else {
+                OpenPage('/dashboard')
+            }
         }
 
         verifyEmailFetch()

@@ -9,32 +9,26 @@ import { UserContext } from '../src/lib/UserContext'
 
 const Register: React.FC = () => {
     const {api} = useContext(UserContext)
-    const onFinish = async ({uniq_id, password, rep_password, first_name, last_name, dob, phone, address, city, state, zipcode}) => {
+    const onFinish = async ({uniq_id, password, rep_password, first_name, last_name, phone}) => {
         if (password !== rep_password) {
             message.error("Your new password is not the same as your repeated password.")
             return
         } else {
             try {
                 console.log(phone)
-                const phone_int = phone.replace(/-/g,"") as number
+                const phone_int = phone.replace(/-/g,"")
                 await api.register({email: uniq_id,
                                     password, 
                                     first_name, 
-                                    last_name, 
-                                    dob, 
-                                    venmo_phone: phone_int, 
-                                    address, 
-                                    city, 
-                                    state, 
-                                    zipcode,
-                                    country: "US"
+                                    last_name,
+                                    venmo_phone: phone_int
                                 })
             } catch (err) {
                 console.log(err)
                 message.error("There was a problem making your account. If you had already created an account, please login. If you have not, please contact us for support.")
                 return
             }
-            OpenPage('/verify-your-email')
+            OpenPage('/thankyou?email')
         }
     }
 

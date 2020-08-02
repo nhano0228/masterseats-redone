@@ -7,14 +7,14 @@ import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
 
 const Login: React.FC = () => {
-    const { setToken, api } = useContext(UserContext)
+    const { setToken, api, currentUser } = useContext(UserContext)
     const onFinish = async ({uniq_id, password}) => {
         try {
             const email = uniq_id
             const res = await api.login({email, password})
             localStorage.setItem('email', email)
             localStorage.setItem('password', password)
-            await setToken(res.data)
+            await setToken(res.data, true)
             OpenPage('/dashboard')
         } catch (error) {
             if (error.response.status === 410) {

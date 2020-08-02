@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {PageDashboard} from '../Universal/PageUniversal'
 import ResetForm from '../LoginCard/ResetForm'
 import {UserContext} from '../../lib/UserContext'
@@ -9,10 +9,20 @@ import {OuterContainer } from '../Universal/Card.styled'
 import Page from '../../components/Page'
 import BackgroundPolygons from '../../components/BackgroundPolygons'
 import styled from 'styled-components'
+import AutomaticPaymentForm from './AutomaticPaymentForm'
 
 const Profile: React.FC = () => {
-    const {api, setToken} = useContext(UserContext)
+    const {api, setToken, currentUser} = useContext(UserContext)
+    const [hasAutomaticPayouts, setHasAutomaticPayouts] = useState(false)
     
+    useEffect(() => {
+        if (currentUser !== null) {
+            if (currentUser.seller_payment_id !== null) {
+                setHasAutomaticPayouts(true)
+            }
+        }
+    }, [currentUser])
+
     const resetPassword = async (body_change) => {
         if (body_change.new_password !== body_change.repeat_password) {
             message.error("Your new password is not the same as your repeated password.")
@@ -27,17 +37,36 @@ const Profile: React.FC = () => {
         }
     }
 
+    const addHyperWalletData = async (values) => {
+        await api.addHyperWalletData({
+            dob: values.dob,
+            address: values.address,
+            city: values.city,
+            state: values.state,
+            country: values.country,
+            zipcode: values.zipcode
+        }).then(() => {
+            setTimeout(async () => {
+                const new_user = await api.getUser()
+        
+                if (new_user.data.seller_payment_id !== null) {
+                    message.error("Something went wrong while trying to add you to automatic payouts. Please contact our support team for help.")
+                } else {
+                    setHasAutomaticPayouts(true)
+                }
+            }, 2000)
+        })
+    }
+
     return (
-        <OuterContainer>
-            <Navbar isDashboard={true} isLoggedIn={true} selected={1}/>
-            <BackgroundPolygons/>
-            <Page>
-                <Card bodyStyle={{marginBottom: 50, padding: 60, flexDirection: 'column', display: 'flex', alignItems: 'center'}}>
-                    <Typography.Title style={{marginBottom: 45}}>Profile</Typography.Title>
-                    <ResetForm onFinish={resetPassword}/>
-                </Card>
-            </Page>
-        </OuterContainer>
+        <PageDashboard pageStyle={{marginTop: '-15px !important'}} cardStyle={{paddingLeft: '20%', paddingRight: '20%', paddingTop: 50}} isLoggedIn={currentUser === null ? false : true} selected={-1}>
+            <Typography.Title style={{marginBottom: 45}}>Profile</Typography.Title>
+            <ResetForm onFinish={resetPassword}/>
+            {hasAutomaticPayouts ? 
+                <Typography.Text>Congratulations! You signed up for automatic payouts. The next time a ticket is sold, you will get paid out immediately.</Typography.Text> : 
+                <AutomaticPaymentForm onFinish={addHyperWalletData}/>
+            }
+        </PageDashboard>
     )
 }
 

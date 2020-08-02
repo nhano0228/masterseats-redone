@@ -40,22 +40,6 @@ export class TicketController extends Controller {
     }
 
     @Security('bearer')
-    @Get('get-pending-tickets')
-    public async getPendingTickets(@Request() req: ExRequest): Promise<Ticket[]> {
-        const jwt_info = await getFromJWT(req, ['id'], this)
-        const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.PendingTransfer)
-        return ticket_arr
-    }
-
-    @Security('bearer')
-    @Get('get-completed-tickets')
-    public async getCompletedTickets(@Request() req: ExRequest): Promise<Ticket[]> {
-        const jwt_info = await getFromJWT(req, ['id'], this)
-        const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.CompletedTransfer)
-        return ticket_arr
-    }
-
-    @Security('bearer')
     @Post('refund-ticket')
     public async refundTicket(@Body() body: RemoveTicketBody): Promise<void> {
         const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.id})
@@ -128,7 +112,7 @@ export class TicketController extends Controller {
                 user: seller,
                 buyer,
                 ticket,
-                link: STARTING_LINK + "ticketwallet"
+                link: STARTING_LINK + "ticketwallet?pending"
             })
 
             mail.sendMail(buyer, EmailTemplates.OrderConfirmation, {
@@ -148,11 +132,10 @@ export class TicketController extends Controller {
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
 
             const mail = new MailService()
-
             mail.sendMail(ticket.buyer, EmailTemplates.TransferConfirmation, {
                 user: ticket.buyer,
                 ticket,
-                link: STARTING_LINK + "ticketwallet"
+                link: STARTING_LINK + "ticketwallet?pending"
             })
         } catch (error) {
             throw new ApiError('Error while confirming transfer by seller', 401, error.message)
@@ -163,20 +146,28 @@ export class TicketController extends Controller {
     @Post('transferred-ticket-buyer-confirmation')
     public async transferredTicketBuyerConfirmation(@Body() body: CheckoutTicket) {
         try {
-            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true, status: TicketStatus.CompletedTransfer})
             const ticket = await getConnection().getRepository(Ticket).findOneOrFail({id: body.ticket_id})
             const seller = ticket.seller
             const price = ticket.price
 
-            client_hyperwallet.createPayment({
-                amount: price + "",
-                currency: "USD",
-                destinationToken: seller.seller_payment_id,
-                purpose: "OTHER",
-                clientPaymentId: ticket.id
-            }, (errors, body, res) => {
-                console.log(body)
-            })
+            if (seller.seller_payment_id === null) {
+                const mail = new MailService()
+                mail.sendToElan({
+                    venmo: seller.venmo_phone,
+                    price: price
+                })
+            } else {
+                client_hyperwallet.createPayment({
+                    amount: price + "",
+                    currency: "USD",
+                    destinationToken: seller.seller_payment_id,
+                    purpose: "OTHER",
+                    clientPaymentId: ticket.id
+                }, (errors, body, res) => {
+                    console.log(body)
+                })
+            }
+            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true, status: TicketStatus.CompletedTransfer})
         } catch (error) {
             throw new ApiError('Error while confirming transfer by buyer', 401, error.message)
         }

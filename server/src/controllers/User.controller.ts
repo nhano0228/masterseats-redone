@@ -3,13 +3,21 @@ import {User} from '../entity/User'
 import {Ticket} from '../entity/Ticket'
 import {getRepository, getConnection, getCustomRepository} from 'typeorm'
 import {Request as ExRequest} from 'express'
-import { SignUpBody, LoginBody, ChangePassword, EmailTemplates, VerifyEmailBody, ForgotPasswordBody, TicketStatus } from '../config/types';
+import { 
+    SignUpBody, 
+    LoginBody, 
+    ChangePassword, 
+    EmailTemplates, 
+    VerifyEmailBody, 
+    ForgotPasswordBody, 
+    TicketStatus, 
+    HyperWalletBody 
+} from '../config/types';
 import * as jwt from "jsonwebtoken";
 import {jwtSecret, getFromJWT, verifyToken, gateway, client_hyperwallet, STARTING_LINK} from '../config'
 import { TicketRepository } from '../repositories/TicketRepository'; 
 import {MailService} from '../mail';
 import { ApiError } from '../config/ApiError';
-import { v4 as uuidv4 } from 'uuid';
 
 @Route('user/')
 export class UserController extends Controller {
@@ -35,27 +43,14 @@ export class UserController extends Controller {
     }
 
     @Post('register')
-    public async register(@Body() request: SignUpBody, @Request() req: ExRequest): Promise<void> {
+    public async register(@Body() request: SignUpBody): Promise<void> {
         const createUser = new User()
         createUser.email = request.email
         createUser.password = request.password
         createUser.first_name = request.first_name
         createUser.last_name = request.last_name
+        createUser.venmo_phone = request.venmo_phone
         createUser.hashPassword()
-
-        const hyperwalletData = {
-            clientUserId: uuidv4(),
-            profileType: "INDIVIDUAL",
-            firstName: createUser.first_name,
-            lastName: createUser.last_name,
-            email: createUser.email,
-            dateOfBirth: request.dob,
-            addressLine1: request.address,
-            city: request.city,
-            stateProvince: request.state,
-            country: request.country,
-            postalCode: request.zipcode,
-        };
 
         var token: string
         try {
@@ -64,58 +59,80 @@ export class UserController extends Controller {
                 lastName: createUser.last_name,
                 email: createUser.email
             })
-            
-            client_hyperwallet.createUser(hyperwalletData, async (errors, body, res) => {
-                if (errors) {
-                    console.log("Create User Failed");
-                    console.log(errors);
-                    throw new ApiError('Error while signing up', 401, errors)
-                } else {
-                    console.log("Create User Response");
-                    console.log(body);
-                    createUser.seller_payment_id = body.token
-                    createUser.payment_id = braintree_account.customer.id
-       
-                    token = jwt.sign({   
-                            email: createUser.email, 
-                            email_verified: createUser.is_email_verified,
-                            first_name: createUser.first_name, 
-                            last_name: createUser.last_name,
-                            id: createUser.id,
-                            payment_id: createUser.payment_id,
-                        },
-                            jwtSecret,
-                        {}
-                    )
 
-                    await getConnection()
-                        .createQueryBuilder()
-                        .insert()
-                        .into(User)
-                        .values(createUser)
-                        .execute()
-        
-                    const mail = new MailService()
-                    mail.sendMail(createUser, EmailTemplates.SignUpConfirmation, {
-                        user: createUser,
-                        link: STARTING_LINK + "verification?token=" + token
-                    })
+            createUser.payment_id = braintree_account.customer.id
 
-                    client_hyperwallet.createTransferMethod(createUser.seller_payment_id, {
-                        type: "VENMO_ACCOUNT",
-                        transferMethodCountry: "US",
-                        transferMethodCurrency: "USD",
-                        accountId: request.venmo_phone + ""
-                    }, (errors, body, res) => {
-                        console.log(body)
-                    })
-                }
-             })
+            token = jwt.sign({   
+                email: createUser.email, 
+                email_verified: createUser.is_email_verified,
+                first_name: createUser.first_name, 
+                last_name: createUser.last_name,
+                id: createUser.id,
+                payment_id: createUser.payment_id,
+            },
+                jwtSecret,
+            {}
+            )
+
+            await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(User)
+                .values(createUser)
+                .execute()
+
+            const mail = new MailService()
+            mail.sendMail(createUser, EmailTemplates.SignUpConfirmation, {
+                user: createUser,
+                link: STARTING_LINK + "verification?token=" + token
+            })
 
           } catch (err) {
             console.log(err)
             throw new ApiError('Error while signing up', 401, err.message)
           }
+    }
+
+    @Security('bearer')
+    @Post('add-hyperwallet-data')
+    public async addHyperWalletData(@Body() body: HyperWalletBody, @Request() req: ExRequest): Promise<void> {
+        const jwt_info = await getFromJWT(req, ["id"], this)
+        const user = await getRepository(User).findOneOrFail(jwt_info["id"]);
+
+        const hyperwalletData = {
+            profileType: "INDIVIDUAL",
+            clientUserId: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            dateOfBirth: body.dob,
+            addressLine1: body.address,
+            city: body.city,
+            stateProvince: body.state,
+            country: body.country,
+            postalCode: body.zipcode,
+        };
+
+        client_hyperwallet.createUser(hyperwalletData, async (errors, body, res) => {
+            if (errors) {
+                console.log("Create User Failed");
+                console.log(errors);
+                throw new ApiError('Error while signing up', 401, errors)
+            } else {
+                console.log("Create User Response");
+                console.log(body);
+                user.seller_payment_id = body.token
+
+                client_hyperwallet.createTransferMethod(user.seller_payment_id, {
+                    type: "VENMO_ACCOUNT",
+                    transferMethodCountry: "US",
+                    transferMethodCurrency: "USD",
+                    accountId: user.venmo_phone + ""
+                }, (errors, body, res) => {
+                    console.log(body)
+                })
+            }
+         })
     }
 
     @Security('bearer')
@@ -232,9 +249,44 @@ export class UserController extends Controller {
     public async getTicketWallet(@Request() request: ExRequest): Promise<Ticket[]> {
         try {
             const jwt_info = await getFromJWT(request, ["id"], this)
-            const tickets = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.Open)
-   
+            const tickets = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "sellerId", TicketStatus.Open)
             return tickets
+        } catch (error) {
+            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
+        }
+    }
+
+    @Security('bearer')
+    @Get('get-pending-tickets-buyer')
+    public async getPendingTicketsBuyer(@Request() req: ExRequest): Promise<Ticket[]> {
+        try {
+            const jwt_info = await getFromJWT(req, ['id'], this)
+            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "buyerId", TicketStatus.PendingTransfer)
+            return ticket_arr
+        } catch (error) {
+            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
+        }
+    }
+
+    @Security('bearer')
+    @Get('get-pending-tickets-seller')
+    public async getPendingTicketsSeller(@Request() req: ExRequest): Promise<Ticket[]> {
+        try {
+            const jwt_info = await getFromJWT(req, ['id'], this)
+            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "sellerId", TicketStatus.PendingTransfer)
+            return ticket_arr
+        } catch (error) {
+            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
+        }
+    }  
+
+    @Security('bearer')
+    @Get('get-completed-tickets')
+    public async getCompletedTickets(@Request() req: ExRequest): Promise<Ticket[]> {
+        try {
+            const jwt_info = await getFromJWT(req, ['id'], this)
+            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.CompletedTransfer)
+            return ticket_arr
         } catch (error) {
             throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
         }

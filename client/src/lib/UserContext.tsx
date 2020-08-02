@@ -1,13 +1,13 @@
 import React, { Component, createContext } from "react";
-import Router, {withRouter} from "next/router";
 import {message} from 'antd'
+import Router, {withRouter} from "next/router";
 import { NextPage, NextPageContext } from 'next';
 import {User, DefaultApi} from '../../api'
 
 interface ContextProps {
   currentUser?: User,
   api?: DefaultApi
-  setToken: (token: string | null) => Promise<void>
+  setToken: (token: string | null, login?: boolean) => Promise<void>
 }
 
 export const UserContext = createContext<Partial<ContextProps>>({
@@ -16,7 +16,7 @@ export const UserContext = createContext<Partial<ContextProps>>({
     api: null
 });
 class UserProvider extends Component {
-    setToken = async (token: string | null) => {
+    setToken = async (token: string | null, login?: boolean) => {
         if (token === null) {
             this.setState({api: new DefaultApi(), currentToken: null, currentUser: null})
             return
@@ -24,6 +24,9 @@ class UserProvider extends Component {
         try {
             const api = new DefaultApi({accessToken: token})
             const body = await api.getUser()
+            if (login !== undefined) {
+                message.success("Welcome, " + body.data.first_name + "!")
+            }
             this.setState({api, currentUser: body.data})
         } catch (err) {
             console.error(err)
