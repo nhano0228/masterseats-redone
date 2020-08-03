@@ -33,7 +33,6 @@ const Verification: React.FC = props => {
         verifyEmailFetch()
     }, [router.query])
 
-    // TODO: Create Verification Alert!
     return (
         <>
             <Head>
