@@ -44,14 +44,13 @@ export const GameSelect: React.FC<SelectGameProps> = (props) => {
             value={value}
             onSelect={(e) => setValue(e as MichiganFootballGame)}
             placeholder="Select a game"
-            optionFilterProp="children"
             filterOption={(input, option) =>
                 option.children.indexOf(input) >= 0
             }
         >
             {_.map((hasAllGames ? [...GAMES, "All Games"] : GAMES), (game) => {
                 return (
-                    <Option value={game}>{game}</Option>
+                    <Option key={game} value={game}>{game}</Option>
                 )
             })}
         </SelectStyled>
@@ -77,7 +76,7 @@ export const SectionSelect: React.FC<SectionSelectProps> = (props) => {
         >
             {_.map(SECTION_NUMS, (num) => {
                 return (
-                    <Option value={num}>{num}</Option>
+                    <Option key={num} value={num}>{num}</Option>
                 )
             })}
         </SelectStyled>

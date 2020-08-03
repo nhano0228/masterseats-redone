@@ -6,6 +6,7 @@ import { UserContext } from '../src/lib/UserContext';
 import {seeIfLogin} from '../src/lib'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import Loading from '../src/components/Loading'
+import { resetSellingIfUndefined } from '../src/lib'
 
 const Buying: React.FC = () => {
     const { api, setToken } = useContext(UserContext)
@@ -15,6 +16,8 @@ const Buying: React.FC = () => {
         seeIfLogin(api, setToken).then(() => {
             setIsLoading(false)
         })
+
+        resetSellingIfUndefined()
     }, [])
 
     return (

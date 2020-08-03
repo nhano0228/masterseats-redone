@@ -8,7 +8,7 @@ import {UserContext} from '../../lib/UserContext'
 import {Ticket, PostTicketBody} from '../../../api'
 import { Tabs } from 'antd';
 import OpenPage from '../Universal/OpenPage'
-import { serialize } from '../../lib'
+import { serialize, resetSellingForm } from '../../lib'
 
 const { TabPane } = Tabs;
 
@@ -57,9 +57,7 @@ const TicketWallet: React.FC<TicketWalletProps> = props => {
 
     const postTicket = async (ticketBody: PostTicketBody) => {
         await api.postTicket(ticketBody)
-        localStorage.setItem('game', '')
-        localStorage.setItem('section', '')
-        localStorage.setItem('price', '')
+        resetSellingForm()
         await getUnsoldTickets()
         console.log(serialize({'post': ticketBody.game}))
         OpenPage('/thankyou?' + serialize({'post': ticketBody.game}))

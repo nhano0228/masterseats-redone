@@ -1,10 +1,11 @@
-import React, {useContext } from 'react'
+import React, {useContext, useEffect } from 'react'
 import {message} from 'antd'
 import Head from 'next/head'
 import LoginCard from '../src/areas/LoginCard'
 import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
+import { resetSellingIfUndefined } from '../src/lib'
 
 const Login: React.FC = () => {
     const { setToken, api, currentUser } = useContext(UserContext)
@@ -24,6 +25,10 @@ const Login: React.FC = () => {
             }
         }
     }
+
+    useEffect(() => {
+        resetSellingIfUndefined()
+    }, [])
 
     return (
         <>

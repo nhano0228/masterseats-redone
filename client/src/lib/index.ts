@@ -37,3 +37,15 @@ export const serialize = function(obj) {
     }
     return str.join("&");
 }
+
+export const resetSellingForm = () => {
+  localStorage.setItem('game', '')
+  localStorage.setItem('section', '')
+  localStorage.setItem('price', '')
+}
+
+export const resetSellingIfUndefined = () => {
+  if (localStorage.getItem('game') !== undefined && localStorage.getItem('game') !== '') {
+    resetSellingForm()
+  }
+}

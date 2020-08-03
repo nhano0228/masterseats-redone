@@ -74,7 +74,8 @@ const Sell: React.FC<SellProps> = props => {
                 {
                     title: 'Price ($)',
                     key: 'price',
-                    dataIndex: 'price'
+                    dataIndex: 'price',
+                    render: (text) => parseFloat(text).toFixed(2)
                 },
                 {
                     title: '',

@@ -48,7 +48,8 @@ const Pending: React.FC<PendingProps> = props => {
                 {
                     title: 'Price ($)',
                     key: 'price',
-                    dataIndex: 'price'
+                    dataIndex: 'price',
+                    render: (text) => parseFloat(text).toFixed(2)
                 },
                 {
                     title: '',

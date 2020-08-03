@@ -5,6 +5,7 @@ import {createGlobalStyle} from 'styled-components'
 import { NextSeo } from 'next-seo';
 import media from 'styled-media-query'
 import UserProvider from '../src/lib/UserContext'
+import {resetSellingForm} from '../src/lib'
 
 const GlobalInjection = createGlobalStyle`
     .ant-table-cell {
@@ -122,6 +123,13 @@ const GlobalInjection = createGlobalStyle`
 `
 
 export default function App({ Component, pageProps }) {
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", () => {  
+            resetSellingForm()
+        });
+    }, [])
+
     return (
         <>
             <Head>

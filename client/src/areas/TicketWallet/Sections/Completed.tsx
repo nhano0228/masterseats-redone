@@ -46,7 +46,8 @@ const Completed: React.FC<CompletedProps> = props => {
                 {
                     title: 'Price ($)',
                     key: 'price',
-                    dataIndex: 'price'
+                    dataIndex: 'price',
+                    render: (text) => parseFloat(text).toFixed(2)
                 }
             ]} dataSource={tickets} pagination={{ position: ['bottomCenter'] }} />
         </Container>

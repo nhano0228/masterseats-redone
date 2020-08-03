@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
+import { resetSellingIfUndefined } from '../src/lib'
 
 const Index: React.FC = () => {
     useEffect(() => {
@@ -13,6 +14,8 @@ const Index: React.FC = () => {
         if (email !== "" && email !== null) {
             OpenPage('/dashboard')
         }
+
+        resetSellingIfUndefined()
     }, [])
 
     return (

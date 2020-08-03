@@ -120,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                     {_.map(options, ({title, onClick, isDropdown}, index) => {
                         if (isDropdown !== undefined) {
                             return (
-                            <Dropdown overlay={menu} trigger={['click']}>
+                            <Dropdown key={title} overlay={menu} trigger={['click']}>
                                 <NavDropdownContainer>
                                     <NavButtonStyledTitle>
                                         {title}
@@ -133,13 +133,13 @@ const Navbar: React.FC<NavbarProps> = (props) => {
 
                         if (index === selected) {
                             return (
-                                <NavBarItemMain onClick={onClick}>
+                                <NavBarItemMain key={title} onClick={onClick}>
                                     {title}
                                 </NavBarItemMain>
                             )
                         } else {
                             return (
-                                <NavBarItem onClick={onClick}>
+                                <NavBarItem key={title} onClick={onClick}>
                                     {title}
                                 </NavBarItem>
                             )
