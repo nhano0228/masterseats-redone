@@ -59,6 +59,11 @@ export class TicketController extends Controller {
 
         try {
             createTicket.seller = await getRepository(User).findOneOrFail(jwt_info['id'])
+
+            if (body.venmo_phone !== undefined) {
+                await getRepository(User).update({id: jwt_info["id"]}, {venmo_phone: body.venmo_phone})
+            }
+
             await getConnection()
                 .createQueryBuilder()
                 .insert()
@@ -112,7 +117,7 @@ export class TicketController extends Controller {
                 user: seller,
                 buyer,
                 ticket,
-                link: STARTING_LINK + "ticketwallet?pending"
+                link: STARTING_LINK + "ticketwallet"
             })
 
             mail.sendMail(buyer, EmailTemplates.OrderConfirmation, {
@@ -135,7 +140,7 @@ export class TicketController extends Controller {
             mail.sendMail(ticket.buyer, EmailTemplates.TransferConfirmation, {
                 user: ticket.buyer,
                 ticket,
-                link: STARTING_LINK + "ticketwallet?pending"
+                link: STARTING_LINK + "orders"
             })
         } catch (error) {
             throw new ApiError('Error while confirming transfer by seller', 401, error.message)

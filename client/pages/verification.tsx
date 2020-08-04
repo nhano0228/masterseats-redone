@@ -24,7 +24,7 @@ const Verification: React.FC = props => {
             message.success("Thank you for verifying your email!")
 
             if (localStorage.getItem('game') !== undefined && localStorage.getItem('game') !== '') {
-                OpenPage('/ticketwallet?fromverify')
+                OpenPage('/login?fromverify')
             } else {
                 OpenPage('/dashboard')
             }

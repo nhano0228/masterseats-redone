@@ -21,7 +21,7 @@ const SellingFormComponent: React.FC = () => {
         <Container>
             <CardContainer>
                 <MasterSeatsCard style={{maxWidth: 450}} withLink={true}>
-                    <SellingForm postTicket={postTicket}/>
+                    <SellingForm postTicket={postTicket} showVenmo={false}/>
                 </MasterSeatsCard>
             </CardContainer>
         </Container>

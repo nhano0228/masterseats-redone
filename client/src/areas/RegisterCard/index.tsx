@@ -79,14 +79,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                         >
                             <Input type="password" placeholder="password1234"/>
                         </Form.Item>
-
-                        <Form.Item
-                            label="Phone Number (connected to Venmo)"
-                            name="phone"
-                            rules={[{ required: true, message: 'Phone Number is required' }]}
-                        >
-                            <MaskedInput mask="111-111-1111" placeholder="555-555-5555"/>
-                        </Form.Item>
+                        
                         <Form.Item>
                             <Row justify="center">
                                 <CardButton type="primary" htmlType="submit">

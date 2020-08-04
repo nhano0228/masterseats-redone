@@ -69,21 +69,17 @@ export class TicketRepository extends Repository<Ticket> {
         return res.getMany()
     }
 
-    getTicketsByStatusByUser(id: string, spec: string, status: TicketStatus) {
+    getTicketWallet(id: string) {
         const res = this.createQueryBuilder("ticket")
-                    .where(`ticket."${spec}" = :id`, {id})
-                    .andWhere("ticket.status = :status", { status })
+                    .where(`ticket."sellerId" = :id`, {id})
+                    .where(`ticket.status != :status`, {status: TicketStatus.Removed})
 
         return res.getMany()
     }
 
-    getTicketsByStatus(id: string, status: TicketStatus) {
+    getOrders(id: string) {
         const res = this.createQueryBuilder("ticket")
-                    .where("ticket.status = :status", { status })
-                    .andWhere(new Brackets(qb => {
-                        qb.where(`ticket."buyerId" = :id`, {id})
-                        .orWhere(`ticket."sellerId" = :id`, {id})
-                    }))
+                    .where(`ticket."buyerId" = :id`, {id})
 
         return res.getMany()
     }

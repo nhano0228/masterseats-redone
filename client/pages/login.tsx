@@ -6,9 +6,12 @@ import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
 import { resetSellingIfUndefined } from '../src/lib'
+import { useRouter } from 'next/router'
 
 const Login: React.FC = () => {
     const { setToken, api, currentUser } = useContext(UserContext)
+    const router = useRouter()
+    
     const onFinish = async ({uniq_id, password}) => {
         try {
             const email = uniq_id
@@ -16,7 +19,11 @@ const Login: React.FC = () => {
             localStorage.setItem('email', email)
             localStorage.setItem('password', password)
             await setToken(res.data, true)
-            OpenPage('/dashboard')
+            if (router.query.fromverify !== undefined) {
+                OpenPage('/ticketwallet?fromverify')
+            } else {
+                OpenPage('/dashboard')
+            }
         } catch (error) {
             if (error.response.status === 410) {
                 message.info("Please remember to verify your email before trying to login.")

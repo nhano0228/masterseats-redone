@@ -49,7 +49,6 @@ export class UserController extends Controller {
         createUser.password = request.password
         createUser.first_name = request.first_name
         createUser.last_name = request.last_name
-        createUser.venmo_phone = request.venmo_phone
         createUser.hashPassword()
 
         var token: string
@@ -249,7 +248,7 @@ export class UserController extends Controller {
     public async getTicketWallet(@Request() request: ExRequest): Promise<Ticket[]> {
         try {
             const jwt_info = await getFromJWT(request, ["id"], this)
-            const tickets = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "sellerId", TicketStatus.Open)
+            const tickets = await getCustomRepository(TicketRepository).getTicketWallet(jwt_info["id"])
             return tickets
         } catch (error) {
             throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
@@ -257,35 +256,11 @@ export class UserController extends Controller {
     }
 
     @Security('bearer')
-    @Get('get-pending-tickets-buyer')
-    public async getPendingTicketsBuyer(@Request() req: ExRequest): Promise<Ticket[]> {
+    @Get('get-orders')
+    public async getOrders(@Request() req: ExRequest): Promise<Ticket[]> {
         try {
             const jwt_info = await getFromJWT(req, ['id'], this)
-            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "buyerId", TicketStatus.PendingTransfer)
-            return ticket_arr
-        } catch (error) {
-            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
-        }
-    }
-
-    @Security('bearer')
-    @Get('get-pending-tickets-seller')
-    public async getPendingTicketsSeller(@Request() req: ExRequest): Promise<Ticket[]> {
-        try {
-            const jwt_info = await getFromJWT(req, ['id'], this)
-            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatusByUser(jwt_info["id"], "sellerId", TicketStatus.PendingTransfer)
-            return ticket_arr
-        } catch (error) {
-            throw new ApiError('Error while trying to retrieve ticket', 401, error.message)
-        }
-    }  
-
-    @Security('bearer')
-    @Get('get-completed-tickets')
-    public async getCompletedTickets(@Request() req: ExRequest): Promise<Ticket[]> {
-        try {
-            const jwt_info = await getFromJWT(req, ['id'], this)
-            const ticket_arr = await getCustomRepository(TicketRepository).getTicketsByStatus(jwt_info["id"], TicketStatus.CompletedTransfer)
+            const ticket_arr = await getCustomRepository(TicketRepository).getOrders(jwt_info["id"])
             return ticket_arr
         } catch (error) {
             throw new ApiError('Error while trying to retrieve ticket', 401, error.message)

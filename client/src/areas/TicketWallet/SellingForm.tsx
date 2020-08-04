@@ -3,14 +3,16 @@ import {Modal, Form, Input, Row, InputNumber} from 'antd'
 import {GenButton} from '../DashboardPage/DashboardPage.styled'
 import {GameSelect, SectionSelect} from '../../components/SelectOptions'
 import {MichiganFootballGame, PostTicketBody} from '../../../api'
+import {MaskedInput} from 'antd-mask-input'
 
 interface SellingFormProps {
     onCancel?: () => void
     postTicket: (ticketBody: PostTicketBody) => void
+    showVenmo: boolean
 }
 
 const SellingForm: React.FC<SellingFormProps> = props => {
-    const {onCancel, postTicket} = props
+    const {onCancel, postTicket, showVenmo} = props
     const [gameValue, setGameValue] = useState<MichiganFootballGame>(undefined)
     const [sectionValue, setSectionValue] = useState<number>(undefined)
     const [form] = Form.useForm()
@@ -62,7 +64,7 @@ const SellingForm: React.FC<SellingFormProps> = props => {
                     name="price"
                     rules={[{ required: true, message: 'Listing Price is required' }]}
                 >
-                    <InputNumber type="price" placeholder="25.00" step={0.01} prefix={"$"}/>
+                    <InputNumber type="number" placeholder="25.00"/>
                 </Form.Item>
 
                 <Form.Item
@@ -77,6 +79,17 @@ const SellingForm: React.FC<SellingFormProps> = props => {
                             setSectionValue(e)
                         }}/>
                 </Form.Item>
+
+                {showVenmo ? 
+                    <Form.Item
+                        label="Venmo (Phone Number)"
+                        name="venmo_phone"
+                        rules={[{ required: true, message: 'Phone Number is required' }]}
+                    >
+                        <MaskedInput mask="111-111-1111" placeholder="555-555-5555"/>
+                    </Form.Item>
+                : null }
+                
 
                 <Form.Item>
                     <Row justify="center">

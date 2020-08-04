@@ -26,7 +26,7 @@ $ npm run build-prod:all
 
 Run the following to upload a new version to heroku:
 ```bash
-$ docker image build .
+$ docker image build . --no-cache
 $ heroku container:push web --app masterseats-server
 $ heroku container:release web --app masterseats-server
 ```

@@ -120,6 +120,10 @@ const GlobalInjection = createGlobalStyle`
     .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
         background-color: #fff;
     }
+
+    .ant-input-number-handler-wrap { 
+        visibility: hidden;
+    }
 `
 
 export default function App({ Component, pageProps }) {

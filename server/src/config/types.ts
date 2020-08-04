@@ -15,7 +15,7 @@ export enum FilterOptions {
 }
 
 export enum TicketStatus {
-    Open = "Open",
+    Open = "Available",
     Removed = "Removed",
     PendingTransfer = "Pending Transfer",
     CompletedTransfer = "Completed Transfer"
@@ -34,6 +34,7 @@ export interface PostTicketBody {
     game: MichiganFootballGame,
     price: number,
     section: number
+    venmo_phone?: string
 }
 
 export interface SortTicketsBody {
@@ -49,7 +50,6 @@ export interface LoginBody {
 export interface SignUpBody extends LoginBody {
     first_name: string
     last_name: string
-    venmo_phone: string
 }
 
 export interface HyperWalletBody {

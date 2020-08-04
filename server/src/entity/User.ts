@@ -23,8 +23,8 @@ export class User {
     @Column()
     payment_id: string;
 
-    @Column({type: "varchar"})
-    venmo_phone: string
+    @Column({type: "varchar", nullable: true})
+    venmo_phone?: string
 
     @Column({type: "varchar", nullable: true})
     seller_payment_id?: string;
