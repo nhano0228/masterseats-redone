@@ -1,9 +1,7 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {PageDashboard} from '../Universal/PageUniversal'
-import SellSection from './Sections/Sell'
-import PendingSection from './Sections/Pending'
-import CompletedSection from './Sections/Completed'
+import ConglomerateTable from './ConglomerateTable'
 import {UserContext} from '../../lib/UserContext'
 import {Ticket, PostTicketBody} from '../../../api'
 import { Tabs } from 'antd';
@@ -31,7 +29,7 @@ const TicketWallet: React.FC<TicketWalletProps> = props => {
 
     const getTicketWallet = async () => {
         const body = await api.getTicketWallet()
-        setWallet(body.data)
+        setWallet(body.data.reverse())
     }
 
     const postTicket = async (ticketBody: PostTicketBody) => {
@@ -82,7 +80,7 @@ const TicketWallet: React.FC<TicketWalletProps> = props => {
 
     return (
         <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1}>
-            <SellSection 
+            <ConglomerateTable 
                     visible={openModal}
                     setVisibility={setOpenModal}
                     tickets={wallet} 

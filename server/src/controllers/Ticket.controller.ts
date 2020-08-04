@@ -172,7 +172,7 @@ export class TicketController extends Controller {
                     console.log(body)
                 })
             }
-            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_seller_transfer: true, status: TicketStatus.CompletedTransfer})
+            await getRepository(Ticket).update({id: body.ticket_id}, {confirmed_buyer_transfer: true, status: TicketStatus.CompletedTransfer})
         } catch (error) {
             throw new ApiError('Error while confirming transfer by buyer', 401, error.message)
         }

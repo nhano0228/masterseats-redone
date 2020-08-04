@@ -56,8 +56,8 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                 <NavButtonStyled onClick={() => OpenPage('/ticketwallet')}>
                     Ticket Wallet
                 </NavButtonStyled>
-                <NavButtonStyled onClick={() => OpenPage('/buying')}>
-                    Buy A Ticket
+                <NavButtonStyled onClick={() => OpenPage('/orders')}>
+                    Current Orders
                 </NavButtonStyled>
                 <NavButtonStyled onClick={async () => {
                     localStorage.setItem('email', '')
