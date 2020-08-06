@@ -9,6 +9,7 @@ import MasterSeatsCard from '../../components/MasterSeatsCard'
 
 const SellingFormComponent: React.FC = () => {
     const postTicket = (ticketBody: PostTicketBody) => {
+        console.log(ticketBody.game)
         localStorage.setItem('game', ticketBody.game)
         localStorage.setItem('price', ticketBody.price + "")
         localStorage.setItem('section', ticketBody.section + "")

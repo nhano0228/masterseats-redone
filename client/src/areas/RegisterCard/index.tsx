@@ -4,22 +4,7 @@ import MasterSeatsCard from '../../components/MasterSeatsCard'
 import Navbar from '../Universal/Navbar'
 import {OuterContainer, CardContainer, ButtonLink, BottomText, CardButton} from '../Universal/Card.styled'
 import Footer from '../Universal/Footer'
-import MaskedInput from 'antd-mask-input'
-import DropIn from "braintree-web-drop-in-react";
-import styled from 'styled-components'
-
-const ExternalContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-`
-
-const InternalContainer = styled.div`
-    margin-left: 15px;
-    margin-right: 15px;
-    display: flex;
-    flex-direction: column;
-`
+import OpenPage from '../Universal/OpenPage'
 
 interface RegisterComponentProps {
     onFinish: (values) => void
@@ -89,6 +74,9 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                         </Form.Item>
                     </Form>
                 </MasterSeatsCard>
+                <BottomText>
+                    Have An Account? <ButtonLink onClick={() => OpenPage('/login')} type="link">Log in.</ButtonLink>
+                </BottomText>
             </CardContainer>
             <Footer/>
         </OuterContainer>

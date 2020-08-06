@@ -6,9 +6,11 @@ import styled from 'styled-components'
 import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import { UserContext } from '../src/lib/UserContext'
+import {resetSellingForm} from '../src/lib'
 
 const Register: React.FC = () => {
     const {api} = useContext(UserContext)
+
     const onFinish = async ({uniq_id, password, rep_password, first_name, last_name}) => {
         if (password !== rep_password) {
             message.error("Your new password is not the same as your repeated password.")

@@ -139,11 +139,8 @@ const EmojiGameContainer = styled.div`
 `
 
 export const returnEmojiString = (game: MichiganFootballGame) => {
-    var destination = <EmojifiedImage src={require('../../../assets/images/football/ballstate.png')}/>
+    var destination = <EmojifiedImage style={{height: 20}} src={require('../../../assets/images/football/purdue.png')}/>
     switch (game) {
-        case MichiganFootballGame.ArkansasState:
-            destination = <EmojifiedImage src={require('../../../assets/images/football/arkansasstate.png')}/>
-            break;
         case MichiganFootballGame.PennState:
             destination = <EmojifiedImage src={require('../../../assets/images/football/pennstate.png')}/>
             break;

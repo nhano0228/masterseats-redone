@@ -72,7 +72,7 @@ export class TicketRepository extends Repository<Ticket> {
     getTicketWallet(id: string) {
         const res = this.createQueryBuilder("ticket")
                     .where(`ticket."sellerId" = :id`, {id})
-                    .where(`ticket.status != :status`, {status: TicketStatus.Removed})
+                    .andWhere(`ticket.status != :status`, {status: TicketStatus.Removed})
 
         return res.getMany()
     }

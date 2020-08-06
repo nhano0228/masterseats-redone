@@ -26,7 +26,7 @@ const Verification: React.FC = props => {
             if (localStorage.getItem('game') !== undefined && localStorage.getItem('game') !== '') {
                 OpenPage('/login?fromverify')
             } else {
-                OpenPage('/dashboard')
+                OpenPage('/login')
             }
         }
 

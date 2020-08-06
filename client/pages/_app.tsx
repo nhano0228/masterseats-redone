@@ -127,13 +127,6 @@ const GlobalInjection = createGlobalStyle`
 `
 
 export default function App({ Component, pageProps }) {
-
-    useEffect(() => {
-        window.addEventListener("beforeunload", () => {  
-            resetSellingForm()
-        });
-    }, [])
-
     return (
         <>
             <Head>

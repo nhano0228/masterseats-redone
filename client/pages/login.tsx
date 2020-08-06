@@ -5,7 +5,7 @@ import LoginCard from '../src/areas/LoginCard'
 import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import {UserContext} from '../src/lib/UserContext'
-import { resetSellingIfUndefined } from '../src/lib'
+import { resetSellingForm } from '../src/lib'
 import { useRouter } from 'next/router'
 
 const Login: React.FC = () => {
@@ -32,10 +32,6 @@ const Login: React.FC = () => {
             }
         }
     }
-
-    useEffect(() => {
-        resetSellingIfUndefined()
-    }, [])
 
     return (
         <>

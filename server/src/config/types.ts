@@ -1,10 +1,9 @@
 export enum MichiganFootballGame {
-    Ball = "Michigan vs. Ball State",
-    Arkansas = "Michigan vs. Arkansas State",
     Wisconsin = "Michigan vs. Wisconsin",
     PennState = "Michigan vs. Penn State",
     Maryland = "Michigan vs. Maryland",
-    Indiana = "Michigan vs. Indiana"
+    Indiana = "Michigan vs. Indiana",
+    Purdue = "Michigan vs. Purdue"
 }
 
 export enum FilterOptions {

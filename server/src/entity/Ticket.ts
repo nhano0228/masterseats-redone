@@ -17,7 +17,7 @@ export class Ticket {
     price: number;
 
     @Column({
-        default: "Open"
+        default: "Available"
     })
     status: TicketStatus;
 
