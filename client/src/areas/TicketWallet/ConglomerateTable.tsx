@@ -1,12 +1,24 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {Table, Modal, Grid, message, Typography} from 'antd'
-import {Container, CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline, ExclamationCircleAdjustedOutlined} from '../DashboardPage/DashboardPage.styled'
+import {CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline, ExclamationCircleAdjustedOutlined} from '../DashboardPage/DashboardPage.styled'
 import {MichiganFootballGame, Ticket, TicketStatus, PostTicketBody} from '../../../api'
 import {ScreenSize} from '../../lib'
 import AddTicketModal from './AddTicketModal'
-import {UserContext} from '../../lib/UserContext'
-import OpenPage from '../Universal/OpenPage'
+import styled from 'styled-components'
 import AreYouSureModal from '../Universal/AreYouSureModal'
+import media from 'styled-media-query'
+
+const Container = styled.div`
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 15px;
+    padding-bottom: 30px;
+
+    ${media.lessThan("small")`
+        padding-left: 0px;
+        padding-right: 0px;
+    `}
+`
 
 const {useBreakpoint} = Grid
 

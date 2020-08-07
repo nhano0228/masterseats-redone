@@ -9,6 +9,7 @@ const RowStyled = styled(Row)`
     ${media.lessThan("small")`
         padding-left: 35px;
         padding-right: 35px;
+        width: fit-content;
     `}
 `
 

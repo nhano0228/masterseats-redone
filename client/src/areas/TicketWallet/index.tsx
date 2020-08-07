@@ -80,7 +80,7 @@ const TicketWallet: React.FC<TicketWalletProps> = props => {
     }
 
     return (
-        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1} hasTable={true}>
             <ConglomerateTable 
                     visible={openModal}
                     setVisibility={setOpenModal}

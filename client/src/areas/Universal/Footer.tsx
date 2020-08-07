@@ -13,6 +13,7 @@ const FooterStyled = styled(Footer)`
 
     ${media.lessThan("small")`
         font-size: 12px;
+        width: 100%;
     `}
 `
 

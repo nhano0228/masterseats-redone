@@ -124,7 +124,7 @@ const OrdersPage: React.FC<OrdersPageProps> = props => {
     ]
 
     return (
-        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1}>
+        <PageDashboard isLoggedIn={currentUser === null ? false : true} selected={-1} hasTable={true}>
             <AreYouSureModal title={"Are you sure you want to perform that action?"}
                     visible={visible}
                     onCancel={() => setVisibility(false)}
