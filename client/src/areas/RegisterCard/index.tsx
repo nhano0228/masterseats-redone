@@ -9,10 +9,11 @@ import OpenPage from '../Universal/OpenPage'
 interface RegisterComponentProps {
     onFinish: (values) => void
     title: string
+    isFromSeller?: boolean
 }
 
 const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
-    const {onFinish, title} = props
+    const {onFinish, title, isFromSeller} = props
 
     return (
         <OuterContainer>
@@ -50,7 +51,7 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                         </Form.Item>
 
                         <Form.Item
-                            label="New Password"
+                            label="Password"
                             name="password"
                             rules={[{ required: true, message: 'Password is required' }]}
                         >
@@ -75,7 +76,13 @@ const RegisterComponent: React.FC<RegisterComponentProps> = (props) => {
                     </Form>
                 </MasterSeatsCard>
                 <BottomText>
-                    Have An Account? <ButtonLink onClick={() => OpenPage('/login')} type="link">Log in.</ButtonLink>
+                    Have An Account? <ButtonLink onClick={() => {
+                        if (isFromSeller) {
+                            OpenPage('/login?fromverify')
+                        } else {
+                            OpenPage('/login')
+                        }
+                    }} type="link">Log in.</ButtonLink>
                 </BottomText>
             </CardContainer>
             <Footer/>

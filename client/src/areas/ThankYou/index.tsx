@@ -18,6 +18,7 @@ const TitleStyled = styled(Typography.Text)`
     margin-bottom: 30px !important;
     margin-top: 70px !important;
     font-size: 26px;
+    white-space: pre-line;
     ${media.lessThan("medium")`
         font-size: 24px !important;
     `}
@@ -51,14 +52,13 @@ const ThankYouComponent: React.FC<{message: string, isEmail: boolean}> = props =
                 <Card>
                     <CardContainer>
                         <Check />
-                        <TitleStyled>{message}</TitleStyled>
-                        <GenButton onClick={() => {
-                            if (isEmail) {
-                                OpenPage('/login')
-                            } else {
-                                OpenPage('/')
-                            }
-                        }}>Go {isEmail ? "Back" : "Home"}</GenButton>
+                        <TitleStyled>{message.split("<br/>").join("\n")}</TitleStyled>
+                        {!isEmail ? 
+                            <GenButton onClick={() => {
+                                OpenPage('/dashboard')
+                            }}>Go Home</GenButton>
+                        : null}
+                        
                     </CardContainer>
                 </Card>
             </Page>

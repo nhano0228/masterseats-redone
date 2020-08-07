@@ -121,8 +121,9 @@ const GlobalInjection = createGlobalStyle`
         background-color: #fff;
     }
 
-    .ant-input-number-handler-wrap { 
-        visibility: hidden;
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 `
 

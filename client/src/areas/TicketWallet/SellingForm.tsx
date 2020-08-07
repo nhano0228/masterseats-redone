@@ -1,9 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import {Modal, Form, Input, Row, InputNumber} from 'antd'
+import {Modal, Form, Input, Row, Typography} from 'antd'
 import {GenButton} from '../DashboardPage/DashboardPage.styled'
 import {GameSelect, SectionSelect} from '../../components/SelectOptions'
 import {MichiganFootballGame, PostTicketBody} from '../../../api'
 import {MaskedInput} from 'antd-mask-input'
+import styled from 'styled-components'
+
+const MiniCaption = styled(Typography.Text)`
+    font-size: 11px;
+    color: #808080;
+    margin-bottom: 20px;
+    line-height: 0;
+`
 
 interface SellingFormProps {
     onCancel?: () => void
@@ -64,7 +72,7 @@ const SellingForm: React.FC<SellingFormProps> = props => {
                     name="price"
                     rules={[{ required: true, message: 'Listing Price is required' }]}
                 >
-                    <InputNumber type="number" placeholder="25.00"/>
+                    <Input prefix="$" type="number" placeholder="25.00"/>
                 </Form.Item>
 
                 <Form.Item
@@ -81,19 +89,23 @@ const SellingForm: React.FC<SellingFormProps> = props => {
                 </Form.Item>
 
                 {showVenmo ? 
-                    <Form.Item
-                        label="Venmo (Phone Number)"
-                        name="venmo_phone"
-                        rules={[{ required: true, message: 'Phone Number is required' }]}
-                    >
-                        <MaskedInput mask="111-111-1111" placeholder="555-555-5555"/>
-                    </Form.Item>
+                    <>
+                        <Form.Item
+                            style={{marginBottom: 0}}
+                            label="Venmo (Phone Number)*"
+                            name="venmo_phone"
+                            rules={[{ required: true, message: 'Phone Number is required' }]}
+                        >
+                            <MaskedInput mask="111-111-1111" placeholder="555-555-5555"/>
+                        </Form.Item>
+                        <MiniCaption>*Please input the phone number you used to sign up for your Venmo account. We only use this information to pay you when someone buys your ticket. We will not use this number for any other purpose.</MiniCaption>
+                    </>
                 : null }
                 
 
                 <Form.Item>
                     <Row justify="center">
-                        <GenButton style={{fontFamily: 'Mark Pro'}} type="primary" htmlType="submit">
+                        <GenButton style={{fontFamily: 'Mark Pro', marginTop: showVenmo ? 20 : 0}} type="primary" htmlType="submit">
                             Post Ticket
                         </GenButton>
                     </Row>

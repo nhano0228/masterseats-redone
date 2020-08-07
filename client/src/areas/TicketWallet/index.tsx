@@ -34,6 +34,7 @@ const TicketWallet: React.FC<TicketWalletProps> = props => {
 
     const postTicket = async (ticketBody: PostTicketBody) => {
         var ticket: PostTicketBody 
+        
         if (ticketBody.venmo_phone === undefined) {
             ticket = {
                 game: ticketBody.game,

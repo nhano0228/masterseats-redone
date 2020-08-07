@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, CSSProperties} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {message} from 'antd'
 import Head from 'next/head'
 import RegisterCard from '../src/areas/RegisterCard'
@@ -7,9 +7,19 @@ import LoginBackground from '../src/components/LoginBackground'
 import OpenPage from '../src/areas/Universal/OpenPage'
 import { UserContext } from '../src/lib/UserContext'
 import {resetSellingForm} from '../src/lib'
+import {useRouter} from 'next/router'
 
 const Register: React.FC = () => {
     const {api} = useContext(UserContext)
+    const router = useRouter()
+    const [isFromSeller, setIsFromSeller] = useState(false)
+
+    useEffect(() => {
+        if (router.query.fromselling !== undefined) {
+            setIsFromSeller(true)
+        }
+    }, [router.query])
+
 
     const onFinish = async ({uniq_id, password, rep_password, first_name, last_name}) => {
         if (password !== rep_password) {
@@ -37,7 +47,7 @@ const Register: React.FC = () => {
                 <title>MasterSeats • Register</title>
             </Head>
             <LoginBackground>
-                <RegisterCard title={"Sign Up"} onFinish={onFinish} />
+                <RegisterCard title={"Sign Up"} onFinish={onFinish} isFromSeller={isFromSeller} />
             </LoginBackground>
         </>
     );

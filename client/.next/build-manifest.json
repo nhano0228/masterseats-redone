@@ -26,15 +26,31 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/buying": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/index": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
+    "/login": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/next/dist/pages/_error": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
     "/register": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/sellingform": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/thankyou": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/ticketwallet": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]
