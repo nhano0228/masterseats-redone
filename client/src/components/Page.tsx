@@ -33,17 +33,17 @@ const Page: React.FC<PageProps> = (props) => {
     }, [screens])
     return (
         <RowStyled style={{...props.style}}>
-            {screenSize <= 1 ? 
+            {screenSize <= 2 ? 
                 <Col style={props.style} span={24}>
                     {props.children}
                 </Col>
             : 
             <>
-                <Col span={4}/>
-                <Col style={props.style} span={16}>
+                <Col span={2}/>
+                <Col style={props.style} span={20}>
                     {props.children}
                 </Col>
-                <Col span={4}/>
+                <Col span={2}/>
             </>
             }
         </RowStyled>

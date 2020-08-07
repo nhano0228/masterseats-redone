@@ -14,7 +14,7 @@ export const FULL_SCREEN = {minHeight:"100vh"}
 export const LayoutNoBG = styled(Layout)<{ hasTable: boolean }>`
     background: rgba(0,0,0,0);
 
-    ${media.lessThan("small")`
+    ${media.lessThan("medium")`
         width: ${(props: any) => props.hasTable ? 'fit-content' : 'auto'};
     `}
 `

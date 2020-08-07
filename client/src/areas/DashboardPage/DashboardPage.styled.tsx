@@ -138,28 +138,58 @@ const EmojiGameContainer = styled.div`
     `}
 `
 
+const LogoAndTextContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+`
+
+const LogoAndTextBottom = styled(LogoAndTextContainer)`
+    ${media.lessThan("small")`
+        margin-top: 8px;
+    `}
+`
+
+const SchoolName = styled(Typography.Paragraph)`
+    font-family: 'Mark Pro';
+    margin-top: 5px;
+    margin-bottom: 0px !important;
+`
+
 export const returnEmojiString = (game: MichiganFootballGame) => {
-    var destination = <EmojifiedImage style={{height: 20}} src={require('../../../assets/images/football/purdue.png')}/>
+    var destination = <EmojifiedImage style={{height: 20, marginTop: 5, marginBottom: 5}} src={require('../../../assets/images/football/purdue.png')}/>
+    var destination_string = 'Purdue'
     switch (game) {
         case MichiganFootballGame.PennState:
             destination = <EmojifiedImage src={require('../../../assets/images/football/pennstate.png')}/>
+            destination_string = 'Penn State'
             break;
         case MichiganFootballGame.Maryland:
             destination = <EmojifiedImage src={require('../../../assets/images/football/maryland.png')}/>
+            destination_string = 'Maryland'
             break;
         case MichiganFootballGame.Indiana:
             destination = <EmojifiedImage src={require('../../../assets/images/football/indiana.png')}/>
+            destination_string = 'Indiana'
             break;
         case MichiganFootballGame.Wisconsin:
             destination = <EmojifiedImage src={require('../../../assets/images/football/wisconsin.png')}/>
+            destination_string = 'Wisconsin'
             break;
-        
     }
 
     return (
         <EmojiGameContainer>
-            <EmojifiedImage src={require('../../../assets/images/football/michigan.png')}/>
-            <Typography.Paragraph style={{marginLeft: 10, marginRight: 4, marginBottom: 0}}>{' vs. '}</Typography.Paragraph>
-            {destination}
+            <LogoAndTextContainer>
+                <EmojifiedImage src={require('../../../assets/images/football/michigan.png')}/>
+                <SchoolName>Michigan</SchoolName>
+            </LogoAndTextContainer>
+            <Typography.Paragraph style={{marginLeft: 20, marginRight: 20, marginBottom: 0, marginTop: 0}}>{' vs. '}</Typography.Paragraph>
+            <LogoAndTextBottom>
+                {destination}
+                <SchoolName>{destination_string}</SchoolName>
+            </LogoAndTextBottom>
         </EmojiGameContainer>)
 }
