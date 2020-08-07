@@ -7,7 +7,7 @@ import Greetings from '../Home/Sections/Greetings'
 
 const DashboardPage: React.FC = () => {
     return (
-        <LayoutNoBG>
+        <LayoutNoBG hasTable={false}>
             <Navbar isDashboard={true} isLoggedIn={true} selected={0}/>
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>

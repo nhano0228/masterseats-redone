@@ -12,7 +12,7 @@ import {LayoutNoBG, FULL_SCREEN, FULL_SCREEN_WITH_BAR} from '../Universal/PageUn
 
 const MainPage: React.FC = () => {
     return (
-        <LayoutNoBG>
+        <LayoutNoBG hasTable={false}>
             <Navbar selected={0} isLoggedIn={false}/>
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>

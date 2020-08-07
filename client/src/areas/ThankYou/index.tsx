@@ -45,7 +45,7 @@ const ThankYouComponent: React.FC<{message: string, isEmail: boolean}> = props =
         nav = <Navbar isLoggedIn={true} isDashboard={true} selected={-1}/>
     }
     return (
-        <LayoutNoBG>
+        <LayoutNoBG hasTable={false}>
             {nav}
             <BackgroundPolygons/>
             <Page style={FULL_SCREEN_WITH_BAR}>
