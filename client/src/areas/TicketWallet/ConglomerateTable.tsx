@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Table, Modal, Grid, message, Typography} from 'antd'
+import {Table, Modal, Grid, message, Typography, Tooltip} from 'antd'
 import {CloseAdjustedOutline, returnEmojiString, GenIconButton, GenButton, AddTicketContainer, PlusCircleAdjustedOutline, ExclamationCircleAdjustedOutlined} from '../DashboardPage/DashboardPage.styled'
 import {MichiganFootballGame, Ticket, TicketStatus, PostTicketBody} from '../../../api'
 import {ScreenSize} from '../../lib'
@@ -7,6 +7,12 @@ import AddTicketModal from './AddTicketModal'
 import styled from 'styled-components'
 import AreYouSureModal from '../Universal/AreYouSureModal'
 import media from 'styled-media-query'
+
+const optionsCursorTrueWithMargin = {
+    followCursor: true,
+    shiftX: -470,
+    shiftY: -300,
+  }
 
 const Container = styled.div`
     padding-left: 5%;
@@ -100,7 +106,29 @@ const ConglomerateTable: React.FC<SellProps> = props => {
                 {
                     title: 'Status',
                     key: 'status',
-                    dataIndex: 'status'
+                    dataIndex: 'status',
+                    render: (text: TicketStatus) => {
+                        var hover_output: string = ""
+                        switch (text) {
+                            case TicketStatus.Available:
+                                hover_output = 'Your ticket is listed on the platform and is waiting to be matched with the ideal buyer.'
+                                break 
+                            case TicketStatus.PendingTransfer:
+                                hover_output = "Your ticket has been purchased and needs to be transferred to the buyer."
+                                break
+                            case TicketStatus.CompletedTransfer:
+                                hover_output = "Your ticket has been transferred and you have been paid. If you have not been paid, please email support@masterseats.com."
+                                break
+                        }
+
+                        return (
+                            <Tooltip title={hover_output}>
+                                <Typography.Text>
+                                    {text}
+                                </Typography.Text>
+                            </Tooltip>
+                        )
+                    }
                 },
                 {
                     title: '',
