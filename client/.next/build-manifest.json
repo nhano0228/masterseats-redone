@@ -21,10 +21,6 @@
     ],
     "/_polyfills": [
       "static/runtime/polyfills.js"
-    ],
-    "/ticketwallet": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
     ]
   }
 }
