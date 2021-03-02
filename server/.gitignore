@@ -6,3 +6,4 @@
 /src/routes/
 /api/
 /.github/
+/src/config/index.ts
